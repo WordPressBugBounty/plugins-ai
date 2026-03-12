@@ -6,6 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'b952b7bb71a5e8271abe3f2cc08a14a8' => $vendorDir . '/wordpress/php-ai-client/src/polyfills.php',
     '901a0fcb8c5137115199739c3d628fd4' => $baseDir . '/includes/helpers.php',
 );
