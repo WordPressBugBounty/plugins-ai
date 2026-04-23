@@ -7,6 +7,10 @@ var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -52,24 +56,17 @@ var require_element = __commonJS({
   }
 });
 
-// package-external:@wordpress/core-data
-var require_core_data = __commonJS({
-  "package-external:@wordpress/core-data"(exports, module) {
-    module.exports = window.wp.coreData;
+// vendor-external:react
+var require_react = __commonJS({
+  "vendor-external:react"(exports, module) {
+    module.exports = window.React;
   }
 });
 
-// package-external:@wordpress/data
-var require_data = __commonJS({
-  "package-external:@wordpress/data"(exports, module) {
-    module.exports = window.wp.data;
-  }
-});
-
-// package-external:@wordpress/compose
-var require_compose = __commonJS({
-  "package-external:@wordpress/compose"(exports, module) {
-    module.exports = window.wp.compose;
+// vendor-external:react-dom
+var require_react_dom = __commonJS({
+  "vendor-external:react-dom"(exports, module) {
+    module.exports = window.ReactDOM;
   }
 });
 
@@ -87,10 +84,24 @@ var require_private_apis = __commonJS({
   }
 });
 
-// package-external:@wordpress/date
-var require_date = __commonJS({
-  "package-external:@wordpress/date"(exports, module) {
-    module.exports = window.wp.date;
+// package-external:@wordpress/compose
+var require_compose = __commonJS({
+  "package-external:@wordpress/compose"(exports, module) {
+    module.exports = window.wp.compose;
+  }
+});
+
+// package-external:@wordpress/core-data
+var require_core_data = __commonJS({
+  "package-external:@wordpress/core-data"(exports, module) {
+    module.exports = window.wp.coreData;
+  }
+});
+
+// package-external:@wordpress/data
+var require_data = __commonJS({
+  "package-external:@wordpress/data"(exports, module) {
+    module.exports = window.wp.data;
   }
 });
 
@@ -147,6 +158,13 @@ var require_es6 = __commonJS({
       }
       return a2 !== a2 && b2 !== b2;
     };
+  }
+});
+
+// package-external:@wordpress/date
+var require_date = __commonJS({
+  "package-external:@wordpress/date"(exports, module) {
+    module.exports = window.wp.date;
   }
 });
 
@@ -298,16 +316,2385 @@ var NavigableRegion = (0, import_element.forwardRef)(
 NavigableRegion.displayName = "NavigableRegion";
 var navigable_region_default = NavigableRegion;
 
-// node_modules/@wordpress/admin-ui/build-module/page/header.mjs
-var import_components2 = __toESM(require_components(), 1);
+// node_modules/@wordpress/ui/build-module/badge/badge.mjs
+var import_element3 = __toESM(require_element(), 1);
+
+// node_modules/@base-ui/utils/esm/useControlled.js
+var React = __toESM(require_react(), 1);
+
+// node_modules/@base-ui/utils/esm/error.js
+var set;
+if (true) {
+  set = /* @__PURE__ */ new Set();
+}
+function error(...messages) {
+  if (true) {
+    const messageKey = messages.join(" ");
+    if (!set.has(messageKey)) {
+      set.add(messageKey);
+      console.error(`Base UI: ${messageKey}`);
+    }
+  }
+}
+
+// node_modules/@base-ui/utils/esm/useControlled.js
+function useControlled({
+  controlled,
+  default: defaultProp,
+  name,
+  state = "value"
+}) {
+  const {
+    current: isControlled
+  } = React.useRef(controlled !== void 0);
+  const [valueState, setValue] = React.useState(defaultProp);
+  const value = isControlled ? controlled : valueState;
+  if (true) {
+    React.useEffect(() => {
+      if (isControlled !== (controlled !== void 0)) {
+        error([`A component is changing the ${isControlled ? "" : "un"}controlled ${state} state of ${name} to be ${isControlled ? "un" : ""}controlled.`, "Elements should not switch from uncontrolled to controlled (or vice versa).", `Decide between using a controlled or uncontrolled ${name} element for the lifetime of the component.`, "The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`.", "More info: https://fb.me/react-controlled-components"].join("\n"));
+      }
+    }, [state, name, controlled]);
+    const {
+      current: defaultValue
+    } = React.useRef(defaultProp);
+    React.useEffect(() => {
+      if (!isControlled && serializeToDevModeString(defaultValue) !== serializeToDevModeString(defaultProp)) {
+        error([`A component is changing the default ${state} state of an uncontrolled ${name} after being initialized. To suppress this warning opt to use a controlled ${name}.`].join("\n"));
+      }
+    }, [defaultProp]);
+  }
+  const setValueIfUncontrolled = React.useCallback((newValue) => {
+    if (!isControlled) {
+      setValue(newValue);
+    }
+  }, []);
+  return [value, setValueIfUncontrolled];
+}
+function serializeToDevModeString(input) {
+  let nextId = 0;
+  const seen = /* @__PURE__ */ new WeakMap();
+  try {
+    const result = JSON.stringify(input, function replacer(key, value) {
+      if (key === "_owner" && this != null && typeof this === "object" && "$$typeof" in this) {
+        return void 0;
+      }
+      if (typeof value === "bigint") {
+        return `__bigint__:${value}`;
+      }
+      if (value !== null && typeof value === "object") {
+        const id = seen.get(value);
+        if (id !== void 0) {
+          return `__object__:${id}`;
+        }
+        seen.set(value, nextId);
+        nextId += 1;
+      }
+      return value;
+    });
+    return result ?? `__top__:${typeof input}`;
+  } catch {
+    return "__unserializable__";
+  }
+}
+
+// node_modules/@base-ui/utils/esm/useStableCallback.js
+var React3 = __toESM(require_react(), 1);
+
+// node_modules/@base-ui/utils/esm/useRefWithInit.js
+var React2 = __toESM(require_react(), 1);
+var UNINITIALIZED = {};
+function useRefWithInit(init, initArg) {
+  const ref = React2.useRef(UNINITIALIZED);
+  if (ref.current === UNINITIALIZED) {
+    ref.current = init(initArg);
+  }
+  return ref;
+}
+
+// node_modules/@base-ui/utils/esm/useStableCallback.js
+var useInsertionEffect = React3[`useInsertionEffect${Math.random().toFixed(1)}`.slice(0, -3)];
+var useSafeInsertionEffect = (
+  // React 17 doesn't have useInsertionEffect.
+  useInsertionEffect && // Preact replaces useInsertionEffect with useLayoutEffect and fires too late.
+  useInsertionEffect !== React3.useLayoutEffect ? useInsertionEffect : (fn) => fn()
+);
+function useStableCallback(callback) {
+  const stable = useRefWithInit(createStableCallback).current;
+  stable.next = callback;
+  useSafeInsertionEffect(stable.effect);
+  return stable.trampoline;
+}
+function createStableCallback() {
+  const stable = {
+    next: void 0,
+    callback: assertNotCalled,
+    trampoline: (...args) => stable.callback?.(...args),
+    effect: () => {
+      stable.callback = stable.next;
+    }
+  };
+  return stable;
+}
+function assertNotCalled() {
+  if (true) {
+    throw (
+      /* minify-error-disabled */
+      new Error("Base UI: Cannot call an event handler while rendering.")
+    );
+  }
+}
+
+// node_modules/@base-ui/utils/esm/useIsoLayoutEffect.js
+var React4 = __toESM(require_react(), 1);
+var noop = () => {
+};
+var useIsoLayoutEffect = typeof document !== "undefined" ? React4.useLayoutEffect : noop;
+
+// node_modules/@base-ui/utils/esm/warn.js
+var set2;
+if (true) {
+  set2 = /* @__PURE__ */ new Set();
+}
+function warn(...messages) {
+  if (true) {
+    const messageKey = messages.join(" ");
+    if (!set2.has(messageKey)) {
+      set2.add(messageKey);
+      console.warn(`Base UI: ${messageKey}`);
+    }
+  }
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/useRenderElement.js
+var React7 = __toESM(require_react(), 1);
+
+// node_modules/@base-ui/utils/esm/useMergedRefs.js
+function useMergedRefs(a2, b2, c2, d2) {
+  const forkRef = useRefWithInit(createForkRef).current;
+  if (didChange(forkRef, a2, b2, c2, d2)) {
+    update(forkRef, [a2, b2, c2, d2]);
+  }
+  return forkRef.callback;
+}
+function useMergedRefsN(refs) {
+  const forkRef = useRefWithInit(createForkRef).current;
+  if (didChangeN(forkRef, refs)) {
+    update(forkRef, refs);
+  }
+  return forkRef.callback;
+}
+function createForkRef() {
+  return {
+    callback: null,
+    cleanup: null,
+    refs: []
+  };
+}
+function didChange(forkRef, a2, b2, c2, d2) {
+  return forkRef.refs[0] !== a2 || forkRef.refs[1] !== b2 || forkRef.refs[2] !== c2 || forkRef.refs[3] !== d2;
+}
+function didChangeN(forkRef, newRefs) {
+  return forkRef.refs.length !== newRefs.length || forkRef.refs.some((ref, index) => ref !== newRefs[index]);
+}
+function update(forkRef, refs) {
+  forkRef.refs = refs;
+  if (refs.every((ref) => ref == null)) {
+    forkRef.callback = null;
+    return;
+  }
+  forkRef.callback = (instance) => {
+    if (forkRef.cleanup) {
+      forkRef.cleanup();
+      forkRef.cleanup = null;
+    }
+    if (instance != null) {
+      const cleanupCallbacks = Array(refs.length).fill(null);
+      for (let i2 = 0; i2 < refs.length; i2 += 1) {
+        const ref = refs[i2];
+        if (ref == null) {
+          continue;
+        }
+        switch (typeof ref) {
+          case "function": {
+            const refCleanup = ref(instance);
+            if (typeof refCleanup === "function") {
+              cleanupCallbacks[i2] = refCleanup;
+            }
+            break;
+          }
+          case "object": {
+            ref.current = instance;
+            break;
+          }
+          default:
+        }
+      }
+      forkRef.cleanup = () => {
+        for (let i2 = 0; i2 < refs.length; i2 += 1) {
+          const ref = refs[i2];
+          if (ref == null) {
+            continue;
+          }
+          switch (typeof ref) {
+            case "function": {
+              const cleanupCallback = cleanupCallbacks[i2];
+              if (typeof cleanupCallback === "function") {
+                cleanupCallback();
+              } else {
+                ref(null);
+              }
+              break;
+            }
+            case "object": {
+              ref.current = null;
+              break;
+            }
+            default:
+          }
+        }
+      };
+    }
+  };
+}
+
+// node_modules/@base-ui/utils/esm/getReactElementRef.js
+var React6 = __toESM(require_react(), 1);
+
+// node_modules/@base-ui/utils/esm/reactVersion.js
+var React5 = __toESM(require_react(), 1);
+var majorVersion = parseInt(React5.version, 10);
+function isReactVersionAtLeast(reactVersionToCheck) {
+  return majorVersion >= reactVersionToCheck;
+}
+
+// node_modules/@base-ui/utils/esm/getReactElementRef.js
+function getReactElementRef(element) {
+  if (!/* @__PURE__ */ React6.isValidElement(element)) {
+    return null;
+  }
+  const reactElement = element;
+  const propsWithRef = reactElement.props;
+  return (isReactVersionAtLeast(19) ? propsWithRef?.ref : reactElement.ref) ?? null;
+}
+
+// node_modules/@base-ui/utils/esm/mergeObjects.js
+function mergeObjects(a2, b2) {
+  if (a2 && !b2) {
+    return a2;
+  }
+  if (!a2 && b2) {
+    return b2;
+  }
+  if (a2 || b2) {
+    return {
+      ...a2,
+      ...b2
+    };
+  }
+  return void 0;
+}
+
+// node_modules/@base-ui/utils/esm/empty.js
+var EMPTY_ARRAY = Object.freeze([]);
+var EMPTY_OBJECT = Object.freeze({});
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/getStateAttributesProps.js
+function getStateAttributesProps(state, customMapping) {
+  const props = {};
+  for (const key in state) {
+    const value = state[key];
+    if (customMapping?.hasOwnProperty(key)) {
+      const customProps = customMapping[key](value);
+      if (customProps != null) {
+        Object.assign(props, customProps);
+      }
+      continue;
+    }
+    if (value === true) {
+      props[`data-${key.toLowerCase()}`] = "";
+    } else if (value) {
+      props[`data-${key.toLowerCase()}`] = value.toString();
+    }
+  }
+  return props;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/utils/resolveClassName.js
+function resolveClassName(className, state) {
+  return typeof className === "function" ? className(state) : className;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/utils/resolveStyle.js
+function resolveStyle(style, state) {
+  return typeof style === "function" ? style(state) : style;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/merge-props/mergeProps.js
+var EMPTY_PROPS = {};
+function mergeProps(a2, b2, c2, d2, e2) {
+  if (!c2 && !d2 && !e2 && !a2) {
+    return createInitialMergedProps(b2);
+  }
+  let merged = createInitialMergedProps(a2);
+  if (b2) {
+    merged = mergeInto(merged, b2);
+  }
+  if (c2) {
+    merged = mergeInto(merged, c2);
+  }
+  if (d2) {
+    merged = mergeInto(merged, d2);
+  }
+  if (e2) {
+    merged = mergeInto(merged, e2);
+  }
+  return merged;
+}
+function mergePropsN(props) {
+  if (props.length === 0) {
+    return EMPTY_PROPS;
+  }
+  if (props.length === 1) {
+    return createInitialMergedProps(props[0]);
+  }
+  let merged = createInitialMergedProps(props[0]);
+  for (let i2 = 1; i2 < props.length; i2 += 1) {
+    merged = mergeInto(merged, props[i2]);
+  }
+  return merged;
+}
+function createInitialMergedProps(inputProps) {
+  if (isPropsGetter(inputProps)) {
+    return {
+      ...resolvePropsGetter(inputProps, EMPTY_PROPS)
+    };
+  }
+  return copyInitialProps(inputProps);
+}
+function mergeInto(merged, inputProps) {
+  if (isPropsGetter(inputProps)) {
+    return resolvePropsGetter(inputProps, merged);
+  }
+  return mutablyMergeInto(merged, inputProps);
+}
+function copyInitialProps(inputProps) {
+  const copiedProps = {
+    ...inputProps
+  };
+  for (const propName in copiedProps) {
+    const propValue = copiedProps[propName];
+    if (isEventHandler(propName, propValue)) {
+      copiedProps[propName] = wrapEventHandler(propValue);
+    }
+  }
+  return copiedProps;
+}
+function mutablyMergeInto(mergedProps, externalProps) {
+  if (!externalProps) {
+    return mergedProps;
+  }
+  for (const propName in externalProps) {
+    const externalPropValue = externalProps[propName];
+    switch (propName) {
+      case "style": {
+        mergedProps[propName] = mergeObjects(mergedProps.style, externalPropValue);
+        break;
+      }
+      case "className": {
+        mergedProps[propName] = mergeClassNames(mergedProps.className, externalPropValue);
+        break;
+      }
+      default: {
+        if (isEventHandler(propName, externalPropValue)) {
+          mergedProps[propName] = mergeEventHandlers(mergedProps[propName], externalPropValue);
+        } else {
+          mergedProps[propName] = externalPropValue;
+        }
+      }
+    }
+  }
+  return mergedProps;
+}
+function isEventHandler(key, value) {
+  const code0 = key.charCodeAt(0);
+  const code1 = key.charCodeAt(1);
+  const code2 = key.charCodeAt(2);
+  return code0 === 111 && code1 === 110 && code2 >= 65 && code2 <= 90 && (typeof value === "function" || typeof value === "undefined");
+}
+function isPropsGetter(inputProps) {
+  return typeof inputProps === "function";
+}
+function resolvePropsGetter(inputProps, previousProps) {
+  if (isPropsGetter(inputProps)) {
+    return inputProps(previousProps);
+  }
+  return inputProps ?? EMPTY_PROPS;
+}
+function mergeEventHandlers(ourHandler, theirHandler) {
+  if (!theirHandler) {
+    return ourHandler;
+  }
+  if (!ourHandler) {
+    return wrapEventHandler(theirHandler);
+  }
+  return (...args) => {
+    const event = args[0];
+    if (isSyntheticEvent(event)) {
+      const baseUIEvent = event;
+      makeEventPreventable(baseUIEvent);
+      const result2 = theirHandler(...args);
+      if (!baseUIEvent.baseUIHandlerPrevented) {
+        ourHandler?.(...args);
+      }
+      return result2;
+    }
+    const result = theirHandler(...args);
+    ourHandler?.(...args);
+    return result;
+  };
+}
+function wrapEventHandler(handler) {
+  if (!handler) {
+    return handler;
+  }
+  return (...args) => {
+    const event = args[0];
+    if (isSyntheticEvent(event)) {
+      makeEventPreventable(event);
+    }
+    return handler(...args);
+  };
+}
+function makeEventPreventable(event) {
+  event.preventBaseUIHandler = () => {
+    event.baseUIHandlerPrevented = true;
+  };
+  return event;
+}
+function mergeClassNames(ourClassName, theirClassName) {
+  if (theirClassName) {
+    if (ourClassName) {
+      return theirClassName + " " + ourClassName;
+    }
+    return theirClassName;
+  }
+  return ourClassName;
+}
+function isSyntheticEvent(event) {
+  return event != null && typeof event === "object" && "nativeEvent" in event;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/useRenderElement.js
+var import_react = __toESM(require_react(), 1);
+function useRenderElement(element, componentProps, params = {}) {
+  const renderProp = componentProps.render;
+  const outProps = useRenderElementProps(componentProps, params);
+  if (params.enabled === false) {
+    return null;
+  }
+  const state = params.state ?? EMPTY_OBJECT;
+  return evaluateRenderProp(element, renderProp, outProps, state);
+}
+function useRenderElementProps(componentProps, params = {}) {
+  const {
+    className: classNameProp,
+    style: styleProp,
+    render: renderProp
+  } = componentProps;
+  const {
+    state = EMPTY_OBJECT,
+    ref,
+    props,
+    stateAttributesMapping: stateAttributesMapping2,
+    enabled = true
+  } = params;
+  const className = enabled ? resolveClassName(classNameProp, state) : void 0;
+  const style = enabled ? resolveStyle(styleProp, state) : void 0;
+  const stateProps = enabled ? getStateAttributesProps(state, stateAttributesMapping2) : EMPTY_OBJECT;
+  const resolvedProps = enabled && props ? resolveRenderFunctionProps(props) : void 0;
+  const outProps = enabled ? mergeObjects(stateProps, resolvedProps) ?? {} : EMPTY_OBJECT;
+  if (typeof document !== "undefined") {
+    if (!enabled) {
+      useMergedRefs(null, null);
+    } else if (Array.isArray(ref)) {
+      outProps.ref = useMergedRefsN([outProps.ref, getReactElementRef(renderProp), ...ref]);
+    } else {
+      outProps.ref = useMergedRefs(outProps.ref, getReactElementRef(renderProp), ref);
+    }
+  }
+  if (!enabled) {
+    return EMPTY_OBJECT;
+  }
+  if (className !== void 0) {
+    outProps.className = mergeClassNames(outProps.className, className);
+  }
+  if (style !== void 0) {
+    outProps.style = mergeObjects(outProps.style, style);
+  }
+  return outProps;
+}
+function resolveRenderFunctionProps(props) {
+  if (Array.isArray(props)) {
+    return mergePropsN(props);
+  }
+  return mergeProps(void 0, props);
+}
+var REACT_LAZY_TYPE = /* @__PURE__ */ Symbol.for("react.lazy");
+var COMPONENT_IDENTIFIER_PATTERN = /^[A-Z][A-Za-z0-9$]*$/;
+var LOWERCASE_CHARACTER_PATTERN = /[a-z]/;
+function evaluateRenderProp(element, render4, props, state) {
+  if (render4) {
+    if (typeof render4 === "function") {
+      if (true) {
+        warnIfRenderPropLooksLikeComponent(render4);
+      }
+      return render4(props, state);
+    }
+    const mergedProps = mergeProps(props, render4.props);
+    mergedProps.ref = props.ref;
+    let newElement = render4;
+    if (newElement?.$$typeof === REACT_LAZY_TYPE) {
+      const children = React7.Children.toArray(render4);
+      newElement = children[0];
+    }
+    if (true) {
+      if (!/* @__PURE__ */ React7.isValidElement(newElement)) {
+        throw new Error(["Base UI: The `render` prop was provided an invalid React element as `React.isValidElement(render)` is `false`.", "A valid React element must be provided to the `render` prop because it is cloned with props to replace the default element.", "https://base-ui.com/r/invalid-render-prop"].join("\n"));
+      }
+    }
+    return /* @__PURE__ */ React7.cloneElement(newElement, mergedProps);
+  }
+  if (element) {
+    if (typeof element === "string") {
+      return renderTag(element, props);
+    }
+  }
+  throw new Error(true ? "Base UI: Render element or function are not defined." : formatErrorMessage_default(8));
+}
+function warnIfRenderPropLooksLikeComponent(renderFn) {
+  const functionName = renderFn.name;
+  if (functionName.length === 0) {
+    return;
+  }
+  if (!COMPONENT_IDENTIFIER_PATTERN.test(functionName)) {
+    return;
+  }
+  if (!LOWERCASE_CHARACTER_PATTERN.test(functionName)) {
+    return;
+  }
+  warn(`The \`render\` prop received a function named \`${functionName}\` that starts with an uppercase letter.`, "This usually means a React component was passed directly as `render={Component}`.", "Base UI calls `render` as a plain function, which can break the Rules of Hooks during reconciliation.", "If this is an intentional render callback, rename it to start with a lowercase letter.", "Use `render={<Component />}` or `render={(props) => <Component {...props} />}` instead.", "https://base-ui.com/r/invalid-render-prop");
+}
+function renderTag(Tag, props) {
+  if (Tag === "button") {
+    return /* @__PURE__ */ (0, import_react.createElement)("button", {
+      type: "button",
+      ...props,
+      key: props.key
+    });
+  }
+  if (Tag === "img") {
+    return /* @__PURE__ */ (0, import_react.createElement)("img", {
+      alt: "",
+      ...props,
+      key: props.key
+    });
+  }
+  return /* @__PURE__ */ React7.createElement(Tag, props);
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/reason-parts.js
+var reason_parts_exports = {};
+__export(reason_parts_exports, {
+  cancelOpen: () => cancelOpen,
+  chipRemovePress: () => chipRemovePress,
+  clearPress: () => clearPress,
+  closePress: () => closePress,
+  closeWatcher: () => closeWatcher,
+  decrementPress: () => decrementPress,
+  disabled: () => disabled,
+  drag: () => drag,
+  escapeKey: () => escapeKey,
+  focusOut: () => focusOut,
+  imperativeAction: () => imperativeAction,
+  incrementPress: () => incrementPress,
+  inputBlur: () => inputBlur,
+  inputChange: () => inputChange,
+  inputClear: () => inputClear,
+  inputPaste: () => inputPaste,
+  inputPress: () => inputPress,
+  itemPress: () => itemPress,
+  keyboard: () => keyboard,
+  linkPress: () => linkPress,
+  listNavigation: () => listNavigation,
+  none: () => none,
+  outsidePress: () => outsidePress,
+  pointer: () => pointer,
+  scrub: () => scrub,
+  siblingOpen: () => siblingOpen,
+  swipe: () => swipe,
+  trackPress: () => trackPress,
+  triggerFocus: () => triggerFocus,
+  triggerHover: () => triggerHover,
+  triggerPress: () => triggerPress,
+  wheel: () => wheel,
+  windowResize: () => windowResize
+});
+var none = "none";
+var triggerPress = "trigger-press";
+var triggerHover = "trigger-hover";
+var triggerFocus = "trigger-focus";
+var outsidePress = "outside-press";
+var itemPress = "item-press";
+var closePress = "close-press";
+var linkPress = "link-press";
+var clearPress = "clear-press";
+var chipRemovePress = "chip-remove-press";
+var trackPress = "track-press";
+var incrementPress = "increment-press";
+var decrementPress = "decrement-press";
+var inputChange = "input-change";
+var inputClear = "input-clear";
+var inputBlur = "input-blur";
+var inputPaste = "input-paste";
+var inputPress = "input-press";
+var focusOut = "focus-out";
+var escapeKey = "escape-key";
+var closeWatcher = "close-watcher";
+var listNavigation = "list-navigation";
+var keyboard = "keyboard";
+var pointer = "pointer";
+var drag = "drag";
+var wheel = "wheel";
+var scrub = "scrub";
+var cancelOpen = "cancel-open";
+var siblingOpen = "sibling-open";
+var disabled = "disabled";
+var imperativeAction = "imperative-action";
+var swipe = "swipe";
+var windowResize = "window-resize";
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/createBaseUIEventDetails.js
+function createChangeEventDetails(reason, event, trigger, customProperties) {
+  let canceled = false;
+  let allowPropagation = false;
+  const custom = customProperties ?? EMPTY_OBJECT;
+  const details = {
+    reason,
+    event: event ?? new Event("base-ui"),
+    cancel() {
+      canceled = true;
+    },
+    allowPropagation() {
+      allowPropagation = true;
+    },
+    get isCanceled() {
+      return canceled;
+    },
+    get isPropagationAllowed() {
+      return allowPropagation;
+    },
+    trigger,
+    ...custom
+  };
+  return details;
+}
+
+// node_modules/@base-ui/utils/esm/useId.js
+var React9 = __toESM(require_react(), 1);
+
+// node_modules/@base-ui/utils/esm/safeReact.js
+var React8 = __toESM(require_react(), 1);
+var SafeReact = {
+  ...React8
+};
+
+// node_modules/@base-ui/utils/esm/useId.js
+var globalId = 0;
+function useGlobalId(idOverride, prefix = "mui") {
+  const [defaultId, setDefaultId] = React9.useState(idOverride);
+  const id = idOverride || defaultId;
+  React9.useEffect(() => {
+    if (defaultId == null) {
+      globalId += 1;
+      setDefaultId(`${prefix}-${globalId}`);
+    }
+  }, [defaultId, prefix]);
+  return id;
+}
+var maybeReactUseId = SafeReact.useId;
+function useId(idOverride, prefix) {
+  if (maybeReactUseId !== void 0) {
+    const reactId = maybeReactUseId();
+    return idOverride ?? (prefix ? `${prefix}-${reactId}` : reactId);
+  }
+  return useGlobalId(idOverride, prefix);
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/useBaseUiId.js
+function useBaseUiId(idOverride) {
+  return useId(idOverride, "base-ui");
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/root/useCollapsibleRoot.js
+var React12 = __toESM(require_react(), 1);
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/useAnimationsFinished.js
+var ReactDOM = __toESM(require_react_dom(), 1);
+
+// node_modules/@base-ui/utils/esm/useOnMount.js
+var React10 = __toESM(require_react(), 1);
+var EMPTY = [];
+function useOnMount(fn) {
+  React10.useEffect(fn, EMPTY);
+}
+
+// node_modules/@base-ui/utils/esm/useAnimationFrame.js
+var EMPTY2 = null;
+var LAST_RAF = globalThis.requestAnimationFrame;
+var Scheduler = class {
+  /* This implementation uses an array as a backing data-structure for frame callbacks.
+   * It allows `O(1)` callback cancelling by inserting a `null` in the array, though it
+   * never calls the native `cancelAnimationFrame` if there are no frames left. This can
+   * be much more efficient if there is a call pattern that alterns as
+   * "request-cancel-request-cancel-…".
+   * But in the case of "request-request-…-cancel-cancel-…", it leaves the final animation
+   * frame to run anyway. We turn that frame into a `O(1)` no-op via `callbacksCount`. */
+  callbacks = [];
+  callbacksCount = 0;
+  nextId = 1;
+  startId = 1;
+  isScheduled = false;
+  tick = (timestamp) => {
+    this.isScheduled = false;
+    const currentCallbacks = this.callbacks;
+    const currentCallbacksCount = this.callbacksCount;
+    this.callbacks = [];
+    this.callbacksCount = 0;
+    this.startId = this.nextId;
+    if (currentCallbacksCount > 0) {
+      for (let i2 = 0; i2 < currentCallbacks.length; i2 += 1) {
+        currentCallbacks[i2]?.(timestamp);
+      }
+    }
+  };
+  request(fn) {
+    const id = this.nextId;
+    this.nextId += 1;
+    this.callbacks.push(fn);
+    this.callbacksCount += 1;
+    const didRAFChange = LAST_RAF !== requestAnimationFrame && (LAST_RAF = requestAnimationFrame, true);
+    if (!this.isScheduled || didRAFChange) {
+      requestAnimationFrame(this.tick);
+      this.isScheduled = true;
+    }
+    return id;
+  }
+  cancel(id) {
+    const index = id - this.startId;
+    if (index < 0 || index >= this.callbacks.length) {
+      return;
+    }
+    this.callbacks[index] = null;
+    this.callbacksCount -= 1;
+  }
+};
+var scheduler = new Scheduler();
+var AnimationFrame = class _AnimationFrame {
+  static create() {
+    return new _AnimationFrame();
+  }
+  static request(fn) {
+    return scheduler.request(fn);
+  }
+  static cancel(id) {
+    return scheduler.cancel(id);
+  }
+  currentId = EMPTY2;
+  /**
+   * Executes `fn` after `delay`, clearing any previously scheduled call.
+   */
+  request(fn) {
+    this.cancel();
+    this.currentId = scheduler.request(() => {
+      this.currentId = EMPTY2;
+      fn();
+    });
+  }
+  cancel = () => {
+    if (this.currentId !== EMPTY2) {
+      scheduler.cancel(this.currentId);
+      this.currentId = EMPTY2;
+    }
+  };
+  disposeEffect = () => {
+    return this.cancel;
+  };
+};
+function useAnimationFrame() {
+  const timeout = useRefWithInit(AnimationFrame.create).current;
+  useOnMount(timeout.disposeEffect);
+  return timeout;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/utils/resolveRef.js
+function resolveRef(maybeRef) {
+  if (maybeRef == null) {
+    return maybeRef;
+  }
+  return "current" in maybeRef ? maybeRef.current : maybeRef;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/stateAttributesMapping.js
+var TransitionStatusDataAttributes = /* @__PURE__ */ (function(TransitionStatusDataAttributes2) {
+  TransitionStatusDataAttributes2["startingStyle"] = "data-starting-style";
+  TransitionStatusDataAttributes2["endingStyle"] = "data-ending-style";
+  return TransitionStatusDataAttributes2;
+})({});
+var STARTING_HOOK = {
+  [TransitionStatusDataAttributes.startingStyle]: ""
+};
+var ENDING_HOOK = {
+  [TransitionStatusDataAttributes.endingStyle]: ""
+};
+var transitionStatusMapping = {
+  transitionStatus(value) {
+    if (value === "starting") {
+      return STARTING_HOOK;
+    }
+    if (value === "ending") {
+      return ENDING_HOOK;
+    }
+    return null;
+  }
+};
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/useAnimationsFinished.js
+function useAnimationsFinished(elementOrRef, waitForStartingStyleRemoved = false, treatAbortedAsFinished = true) {
+  const frame = useAnimationFrame();
+  return useStableCallback((fnToExecute, signal = null) => {
+    frame.cancel();
+    const element = resolveRef(elementOrRef);
+    if (element == null) {
+      return;
+    }
+    const resolvedElement = element;
+    const done = () => {
+      ReactDOM.flushSync(fnToExecute);
+    };
+    if (typeof resolvedElement.getAnimations !== "function" || globalThis.BASE_UI_ANIMATIONS_DISABLED) {
+      fnToExecute();
+      return;
+    }
+    function exec() {
+      Promise.all(resolvedElement.getAnimations().map((animation) => animation.finished)).then(() => {
+        if (!signal?.aborted) {
+          done();
+        }
+      }).catch(() => {
+        if (treatAbortedAsFinished) {
+          if (!signal?.aborted) {
+            done();
+          }
+          return;
+        }
+        const currentAnimations = resolvedElement.getAnimations();
+        if (!signal?.aborted && currentAnimations.length > 0 && currentAnimations.some((animation) => animation.pending || animation.playState !== "finished")) {
+          exec();
+        }
+      });
+    }
+    if (waitForStartingStyleRemoved) {
+      const startingStyleAttribute = TransitionStatusDataAttributes.startingStyle;
+      if (!resolvedElement.hasAttribute(startingStyleAttribute)) {
+        frame.request(exec);
+        return;
+      }
+      const attributeObserver = new MutationObserver(() => {
+        if (!resolvedElement.hasAttribute(startingStyleAttribute)) {
+          attributeObserver.disconnect();
+          exec();
+        }
+      });
+      attributeObserver.observe(resolvedElement, {
+        attributes: true,
+        attributeFilter: [startingStyleAttribute]
+      });
+      signal?.addEventListener("abort", () => attributeObserver.disconnect(), {
+        once: true
+      });
+      return;
+    }
+    frame.request(exec);
+  });
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/useTransitionStatus.js
+var React11 = __toESM(require_react(), 1);
+function useTransitionStatus(open, enableIdleState = false, deferEndingState = false) {
+  const [transitionStatus, setTransitionStatus] = React11.useState(open && enableIdleState ? "idle" : void 0);
+  const [mounted, setMounted] = React11.useState(open);
+  if (open && !mounted) {
+    setMounted(true);
+    setTransitionStatus("starting");
+  }
+  if (!open && mounted && transitionStatus !== "ending" && !deferEndingState) {
+    setTransitionStatus("ending");
+  }
+  if (!open && !mounted && transitionStatus === "ending") {
+    setTransitionStatus(void 0);
+  }
+  useIsoLayoutEffect(() => {
+    if (!open && mounted && transitionStatus !== "ending" && deferEndingState) {
+      const frame = AnimationFrame.request(() => {
+        setTransitionStatus("ending");
+      });
+      return () => {
+        AnimationFrame.cancel(frame);
+      };
+    }
+    return void 0;
+  }, [open, mounted, transitionStatus, deferEndingState]);
+  useIsoLayoutEffect(() => {
+    if (!open || enableIdleState) {
+      return void 0;
+    }
+    const frame = AnimationFrame.request(() => {
+      setTransitionStatus(void 0);
+    });
+    return () => {
+      AnimationFrame.cancel(frame);
+    };
+  }, [enableIdleState, open]);
+  useIsoLayoutEffect(() => {
+    if (!open || !enableIdleState) {
+      return void 0;
+    }
+    if (open && mounted && transitionStatus !== "idle") {
+      setTransitionStatus("starting");
+    }
+    const frame = AnimationFrame.request(() => {
+      setTransitionStatus("idle");
+    });
+    return () => {
+      AnimationFrame.cancel(frame);
+    };
+  }, [enableIdleState, open, mounted, transitionStatus]);
+  return {
+    mounted,
+    setMounted,
+    transitionStatus
+  };
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/root/useCollapsibleRoot.js
+function useCollapsibleRoot(parameters) {
+  const {
+    open: openParam,
+    defaultOpen,
+    onOpenChange,
+    disabled: disabled2
+  } = parameters;
+  const isControlled = openParam !== void 0;
+  const [open, setOpen] = useControlled({
+    controlled: openParam,
+    default: defaultOpen,
+    name: "Collapsible",
+    state: "open"
+  });
+  const {
+    mounted,
+    setMounted,
+    transitionStatus
+  } = useTransitionStatus(open, true, true);
+  const [visible, setVisible] = React12.useState(open);
+  const [{
+    height,
+    width
+  }, setDimensions] = React12.useState({
+    height: void 0,
+    width: void 0
+  });
+  const defaultPanelId = useBaseUiId();
+  const [panelIdState, setPanelIdState] = React12.useState();
+  const panelId = panelIdState ?? defaultPanelId;
+  const [hiddenUntilFound, setHiddenUntilFound] = React12.useState(false);
+  const [keepMounted, setKeepMounted] = React12.useState(false);
+  const abortControllerRef = React12.useRef(null);
+  const animationTypeRef = React12.useRef(null);
+  const transitionDimensionRef = React12.useRef(null);
+  const panelRef = React12.useRef(null);
+  const runOnceAnimationsFinish = useAnimationsFinished(panelRef, false);
+  const handleTrigger = useStableCallback((event) => {
+    const nextOpen = !open;
+    const eventDetails = createChangeEventDetails(reason_parts_exports.triggerPress, event.nativeEvent);
+    onOpenChange(nextOpen, eventDetails);
+    if (eventDetails.isCanceled) {
+      return;
+    }
+    const panel = panelRef.current;
+    if (animationTypeRef.current === "css-animation" && panel != null) {
+      panel.style.removeProperty("animation-name");
+    }
+    if (!hiddenUntilFound && !keepMounted) {
+      if (animationTypeRef.current != null && animationTypeRef.current !== "css-animation") {
+        if (!mounted && nextOpen) {
+          setMounted(true);
+        }
+      }
+      if (animationTypeRef.current === "css-animation") {
+        if (!visible && nextOpen) {
+          setVisible(true);
+        }
+        if (!mounted && nextOpen) {
+          setMounted(true);
+        }
+      }
+    }
+    setOpen(nextOpen);
+    if (animationTypeRef.current === "none" && mounted && !nextOpen) {
+      setMounted(false);
+    }
+  });
+  useIsoLayoutEffect(() => {
+    if (isControlled && animationTypeRef.current === "none" && !open) {
+      setMounted(false);
+    }
+  }, [isControlled, open, openParam, setMounted]);
+  return React12.useMemo(() => ({
+    abortControllerRef,
+    animationTypeRef,
+    disabled: disabled2,
+    handleTrigger,
+    height,
+    mounted,
+    open,
+    panelId,
+    panelRef,
+    runOnceAnimationsFinish,
+    setDimensions,
+    setHiddenUntilFound,
+    setKeepMounted,
+    setMounted,
+    setOpen,
+    setPanelIdState,
+    setVisible,
+    transitionDimensionRef,
+    transitionStatus,
+    visible,
+    width
+  }), [abortControllerRef, animationTypeRef, disabled2, handleTrigger, height, mounted, open, panelId, panelRef, runOnceAnimationsFinish, setDimensions, setHiddenUntilFound, setKeepMounted, setMounted, setOpen, setVisible, transitionDimensionRef, transitionStatus, visible, width]);
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/root/CollapsibleRootContext.js
+var React13 = __toESM(require_react(), 1);
+var CollapsibleRootContext = /* @__PURE__ */ React13.createContext(void 0);
+if (true) CollapsibleRootContext.displayName = "CollapsibleRootContext";
+function useCollapsibleRootContext() {
+  const context = React13.useContext(CollapsibleRootContext);
+  if (context === void 0) {
+    throw new Error(true ? "Base UI: CollapsibleRootContext is missing. Collapsible parts must be placed within <Collapsible.Root>." : formatErrorMessage_default(15));
+  }
+  return context;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanelDataAttributes.js
+var CollapsiblePanelDataAttributes = (function(CollapsiblePanelDataAttributes2) {
+  CollapsiblePanelDataAttributes2["open"] = "data-open";
+  CollapsiblePanelDataAttributes2["closed"] = "data-closed";
+  CollapsiblePanelDataAttributes2[CollapsiblePanelDataAttributes2["startingStyle"] = TransitionStatusDataAttributes.startingStyle] = "startingStyle";
+  CollapsiblePanelDataAttributes2[CollapsiblePanelDataAttributes2["endingStyle"] = TransitionStatusDataAttributes.endingStyle] = "endingStyle";
+  return CollapsiblePanelDataAttributes2;
+})({});
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/trigger/CollapsibleTriggerDataAttributes.js
+var CollapsibleTriggerDataAttributes = /* @__PURE__ */ (function(CollapsibleTriggerDataAttributes2) {
+  CollapsibleTriggerDataAttributes2["panelOpen"] = "data-panel-open";
+  return CollapsibleTriggerDataAttributes2;
+})({});
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/utils/collapsibleOpenStateMapping.js
+var PANEL_OPEN_HOOK = {
+  [CollapsiblePanelDataAttributes.open]: ""
+};
+var PANEL_CLOSED_HOOK = {
+  [CollapsiblePanelDataAttributes.closed]: ""
+};
+var triggerOpenStateMapping = {
+  open(value) {
+    if (value) {
+      return {
+        [CollapsibleTriggerDataAttributes.panelOpen]: ""
+      };
+    }
+    return null;
+  }
+};
+var collapsibleOpenStateMapping = {
+  open(value) {
+    if (value) {
+      return PANEL_OPEN_HOOK;
+    }
+    return PANEL_CLOSED_HOOK;
+  }
+};
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/use-button/useButton.js
+var React16 = __toESM(require_react(), 1);
+
+// node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs
+function hasWindow() {
+  return typeof window !== "undefined";
+}
+function getWindow(node) {
+  var _node$ownerDocument;
+  return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
+}
+function isHTMLElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/composite/root/CompositeRootContext.js
+var React14 = __toESM(require_react(), 1);
+var CompositeRootContext = /* @__PURE__ */ React14.createContext(void 0);
+if (true) CompositeRootContext.displayName = "CompositeRootContext";
+function useCompositeRootContext(optional = false) {
+  const context = React14.useContext(CompositeRootContext);
+  if (context === void 0 && !optional) {
+    throw new Error(true ? "Base UI: CompositeRootContext is missing. Composite parts must be placed within <Composite.Root>." : formatErrorMessage_default(16));
+  }
+  return context;
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/utils/useFocusableWhenDisabled.js
+var React15 = __toESM(require_react(), 1);
+function useFocusableWhenDisabled(parameters) {
+  const {
+    focusableWhenDisabled,
+    disabled: disabled2,
+    composite = false,
+    tabIndex: tabIndexProp = 0,
+    isNativeButton
+  } = parameters;
+  const isFocusableComposite = composite && focusableWhenDisabled !== false;
+  const isNonFocusableComposite = composite && focusableWhenDisabled === false;
+  const props = React15.useMemo(() => {
+    const additionalProps = {
+      // allow Tabbing away from focusableWhenDisabled elements
+      onKeyDown(event) {
+        if (disabled2 && focusableWhenDisabled && event.key !== "Tab") {
+          event.preventDefault();
+        }
+      }
+    };
+    if (!composite) {
+      additionalProps.tabIndex = tabIndexProp;
+      if (!isNativeButton && disabled2) {
+        additionalProps.tabIndex = focusableWhenDisabled ? tabIndexProp : -1;
+      }
+    }
+    if (isNativeButton && (focusableWhenDisabled || isFocusableComposite) || !isNativeButton && disabled2) {
+      additionalProps["aria-disabled"] = disabled2;
+    }
+    if (isNativeButton && (!focusableWhenDisabled || isNonFocusableComposite)) {
+      additionalProps.disabled = disabled2;
+    }
+    return additionalProps;
+  }, [composite, disabled2, focusableWhenDisabled, isFocusableComposite, isNonFocusableComposite, isNativeButton, tabIndexProp]);
+  return {
+    props
+  };
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/use-button/useButton.js
+function useButton(parameters = {}) {
+  const {
+    disabled: disabled2 = false,
+    focusableWhenDisabled,
+    tabIndex = 0,
+    native: isNativeButton = true,
+    composite: compositeProp
+  } = parameters;
+  const elementRef = React16.useRef(null);
+  const compositeRootContext = useCompositeRootContext(true);
+  const isCompositeItem = compositeProp ?? compositeRootContext !== void 0;
+  const {
+    props: focusableWhenDisabledProps
+  } = useFocusableWhenDisabled({
+    focusableWhenDisabled,
+    disabled: disabled2,
+    composite: isCompositeItem,
+    tabIndex,
+    isNativeButton
+  });
+  if (true) {
+    React16.useEffect(() => {
+      if (!elementRef.current) {
+        return;
+      }
+      const isButtonTag = isButtonElement(elementRef.current);
+      if (isNativeButton) {
+        if (!isButtonTag) {
+          const ownerStackMessage = SafeReact.captureOwnerStack?.() || "";
+          const message2 = "A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.";
+          error(`${message2}${ownerStackMessage}`);
+        }
+      } else if (isButtonTag) {
+        const ownerStackMessage = SafeReact.captureOwnerStack?.() || "";
+        const message2 = "A component that acts as a button expected a non-<button> because the `nativeButton` prop is false. Rendering a <button> keeps native behavior while Base UI applies non-native attributes and handlers, which can add unintended extra attributes (such as `role` or `aria-disabled`). Use a non-<button> in the `render` prop, or set `nativeButton` to `true`.";
+        error(`${message2}${ownerStackMessage}`);
+      }
+    }, [isNativeButton]);
+  }
+  const updateDisabled = React16.useCallback(() => {
+    const element = elementRef.current;
+    if (!isButtonElement(element)) {
+      return;
+    }
+    if (isCompositeItem && disabled2 && focusableWhenDisabledProps.disabled === void 0 && element.disabled) {
+      element.disabled = false;
+    }
+  }, [disabled2, focusableWhenDisabledProps.disabled, isCompositeItem]);
+  useIsoLayoutEffect(updateDisabled, [updateDisabled]);
+  const getButtonProps = React16.useCallback((externalProps = {}) => {
+    const {
+      onClick: externalOnClick,
+      onMouseDown: externalOnMouseDown,
+      onKeyUp: externalOnKeyUp,
+      onKeyDown: externalOnKeyDown,
+      onPointerDown: externalOnPointerDown,
+      ...otherExternalProps
+    } = externalProps;
+    const type = isNativeButton ? "button" : void 0;
+    return mergeProps({
+      type,
+      onClick(event) {
+        if (disabled2) {
+          event.preventDefault();
+          return;
+        }
+        externalOnClick?.(event);
+      },
+      onMouseDown(event) {
+        if (!disabled2) {
+          externalOnMouseDown?.(event);
+        }
+      },
+      onKeyDown(event) {
+        if (disabled2) {
+          return;
+        }
+        makeEventPreventable(event);
+        externalOnKeyDown?.(event);
+        if (event.baseUIHandlerPrevented) {
+          return;
+        }
+        const isCurrentTarget = event.target === event.currentTarget;
+        const currentTarget = event.currentTarget;
+        const isButton = isButtonElement(currentTarget);
+        const isLink = !isNativeButton && isValidLinkElement(currentTarget);
+        const shouldClick = isCurrentTarget && (isNativeButton ? isButton : !isLink);
+        const isEnterKey = event.key === "Enter";
+        const isSpaceKey = event.key === " ";
+        const role = currentTarget.getAttribute("role");
+        const isTextNavigationRole = role?.startsWith("menuitem") || role === "option" || role === "gridcell";
+        if (isCurrentTarget && isCompositeItem && isSpaceKey) {
+          if (event.defaultPrevented && isTextNavigationRole) {
+            return;
+          }
+          event.preventDefault();
+          if (isLink || isNativeButton && isButton) {
+            currentTarget.click();
+            event.preventBaseUIHandler();
+          } else if (shouldClick) {
+            externalOnClick?.(event);
+            event.preventBaseUIHandler();
+          }
+          return;
+        }
+        if (shouldClick) {
+          if (!isNativeButton && (isSpaceKey || isEnterKey)) {
+            event.preventDefault();
+          }
+          if (!isNativeButton && isEnterKey) {
+            externalOnClick?.(event);
+          }
+        }
+      },
+      onKeyUp(event) {
+        if (disabled2) {
+          return;
+        }
+        makeEventPreventable(event);
+        externalOnKeyUp?.(event);
+        if (event.target === event.currentTarget && isNativeButton && isCompositeItem && isButtonElement(event.currentTarget) && event.key === " ") {
+          event.preventDefault();
+          return;
+        }
+        if (event.baseUIHandlerPrevented) {
+          return;
+        }
+        if (event.target === event.currentTarget && !isNativeButton && !isCompositeItem && event.key === " ") {
+          externalOnClick?.(event);
+        }
+      },
+      onPointerDown(event) {
+        if (disabled2) {
+          event.preventDefault();
+          return;
+        }
+        externalOnPointerDown?.(event);
+      }
+    }, !isNativeButton ? {
+      role: "button"
+    } : void 0, focusableWhenDisabledProps, otherExternalProps);
+  }, [disabled2, focusableWhenDisabledProps, isCompositeItem, isNativeButton]);
+  const buttonRef = useStableCallback((element) => {
+    elementRef.current = element;
+    updateDisabled();
+  });
+  return {
+    getButtonProps,
+    buttonRef
+  };
+}
+function isButtonElement(elem) {
+  return isHTMLElement(elem) && elem.tagName === "BUTTON";
+}
+function isValidLinkElement(elem) {
+  return Boolean(elem?.tagName === "A" && elem?.href);
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/panel/useCollapsiblePanel.js
+var React17 = __toESM(require_react(), 1);
+
+// node_modules/@base-ui/utils/esm/addEventListener.js
+function addEventListener(target, type, listener, options) {
+  target.addEventListener(type, listener, options);
+  return () => {
+    target.removeEventListener(type, listener, options);
+  };
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/accordion/root/AccordionRootDataAttributes.js
+var AccordionRootDataAttributes = /* @__PURE__ */ (function(AccordionRootDataAttributes2) {
+  AccordionRootDataAttributes2["disabled"] = "data-disabled";
+  AccordionRootDataAttributes2["orientation"] = "data-orientation";
+  return AccordionRootDataAttributes2;
+})({});
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/panel/useCollapsiblePanel.js
+function useCollapsiblePanel(parameters) {
+  const {
+    abortControllerRef,
+    animationTypeRef,
+    externalRef,
+    height,
+    hiddenUntilFound,
+    keepMounted,
+    id: idParam,
+    mounted,
+    onOpenChange,
+    open,
+    panelRef,
+    runOnceAnimationsFinish,
+    setDimensions,
+    setMounted,
+    setOpen,
+    setVisible,
+    transitionDimensionRef,
+    visible,
+    width
+  } = parameters;
+  const isBeforeMatchRef = React17.useRef(false);
+  const latestAnimationNameRef = React17.useRef(null);
+  const shouldCancelInitialOpenAnimationRef = React17.useRef(open);
+  const shouldCancelInitialOpenTransitionRef = React17.useRef(open);
+  const endingStyleFrame = useAnimationFrame();
+  const hidden = React17.useMemo(() => {
+    if (animationTypeRef.current === "css-animation") {
+      return !visible;
+    }
+    return !open && !mounted;
+  }, [open, mounted, visible, animationTypeRef]);
+  const handlePanelRef = useStableCallback((element) => {
+    if (!element) {
+      return void 0;
+    }
+    if (animationTypeRef.current == null || transitionDimensionRef.current == null) {
+      const panelStyles = getComputedStyle(element);
+      const hasAnimation = panelStyles.animationName !== "none" && panelStyles.animationName !== "";
+      const hasTransition = panelStyles.transitionDuration !== "0s" && panelStyles.transitionDuration !== "";
+      if (hasAnimation && hasTransition) {
+        if (true) {
+          warn("CSS transitions and CSS animations both detected on Collapsible or Accordion panel.", "Only one of either animation type should be used.");
+        }
+      } else if (panelStyles.animationName === "none" && panelStyles.transitionDuration !== "0s") {
+        animationTypeRef.current = "css-transition";
+      } else if (panelStyles.animationName !== "none" && panelStyles.transitionDuration === "0s") {
+        animationTypeRef.current = "css-animation";
+      } else {
+        animationTypeRef.current = "none";
+      }
+      if (element.getAttribute(AccordionRootDataAttributes.orientation) === "horizontal" || panelStyles.transitionProperty.indexOf("width") > -1) {
+        transitionDimensionRef.current = "width";
+      } else {
+        transitionDimensionRef.current = "height";
+      }
+    }
+    if (animationTypeRef.current !== "css-transition") {
+      return void 0;
+    }
+    if (height === void 0 || width === void 0) {
+      setDimensions({
+        height: element.scrollHeight,
+        width: element.scrollWidth
+      });
+      if (shouldCancelInitialOpenTransitionRef.current) {
+        element.style.setProperty("transition-duration", "0s");
+      }
+    }
+    let frame = -1;
+    let nextFrame = -1;
+    frame = AnimationFrame.request(() => {
+      shouldCancelInitialOpenTransitionRef.current = false;
+      nextFrame = AnimationFrame.request(() => {
+        setTimeout(() => {
+          element.style.removeProperty("transition-duration");
+        });
+      });
+    });
+    return () => {
+      AnimationFrame.cancel(frame);
+      AnimationFrame.cancel(nextFrame);
+    };
+  });
+  const mergedPanelRef = useMergedRefs(externalRef, panelRef, handlePanelRef);
+  useIsoLayoutEffect(() => {
+    if (animationTypeRef.current !== "css-transition") {
+      return void 0;
+    }
+    const panel = panelRef.current;
+    if (!panel) {
+      return void 0;
+    }
+    let resizeFrame = -1;
+    if (abortControllerRef.current != null) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    if (open) {
+      const originalLayoutStyles = {
+        "justify-content": panel.style.justifyContent,
+        "align-items": panel.style.alignItems,
+        "align-content": panel.style.alignContent,
+        "justify-items": panel.style.justifyItems
+      };
+      Object.keys(originalLayoutStyles).forEach((key) => {
+        panel.style.setProperty(key, "initial", "important");
+      });
+      if (!shouldCancelInitialOpenTransitionRef.current && !keepMounted) {
+        panel.setAttribute(CollapsiblePanelDataAttributes.startingStyle, "");
+      }
+      setDimensions({
+        height: panel.scrollHeight,
+        width: panel.scrollWidth
+      });
+      resizeFrame = AnimationFrame.request(() => {
+        Object.entries(originalLayoutStyles).forEach(([key, value]) => {
+          if (value === "") {
+            panel.style.removeProperty(key);
+          } else {
+            panel.style.setProperty(key, value);
+          }
+        });
+      });
+    } else {
+      if (panel.scrollHeight === 0 && panel.scrollWidth === 0) {
+        return void 0;
+      }
+      setDimensions({
+        height: panel.scrollHeight,
+        width: panel.scrollWidth
+      });
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
+      const signal = abortController.signal;
+      let attributeObserver = null;
+      const endingStyleAttribute = CollapsiblePanelDataAttributes.endingStyle;
+      attributeObserver = new MutationObserver((mutationList) => {
+        const hasEndingStyle = mutationList.some((mutation) => mutation.type === "attributes" && mutation.attributeName === endingStyleAttribute);
+        if (hasEndingStyle) {
+          attributeObserver?.disconnect();
+          attributeObserver = null;
+          runOnceAnimationsFinish(() => {
+            setDimensions({
+              height: 0,
+              width: 0
+            });
+            panel.style.removeProperty("content-visibility");
+            setMounted(false);
+            if (abortControllerRef.current === abortController) {
+              abortControllerRef.current = null;
+            }
+          }, signal);
+        }
+      });
+      attributeObserver.observe(panel, {
+        attributes: true,
+        attributeFilter: [endingStyleAttribute]
+      });
+      return () => {
+        attributeObserver?.disconnect();
+        endingStyleFrame.cancel();
+        if (abortControllerRef.current === abortController) {
+          abortController.abort();
+          abortControllerRef.current = null;
+        }
+      };
+    }
+    return () => {
+      AnimationFrame.cancel(resizeFrame);
+    };
+  }, [abortControllerRef, animationTypeRef, endingStyleFrame, hiddenUntilFound, keepMounted, mounted, open, panelRef, runOnceAnimationsFinish, setDimensions, setMounted]);
+  useIsoLayoutEffect(() => {
+    if (animationTypeRef.current !== "css-animation") {
+      return;
+    }
+    const panel = panelRef.current;
+    if (!panel) {
+      return;
+    }
+    latestAnimationNameRef.current = panel.style.animationName || latestAnimationNameRef.current;
+    panel.style.setProperty("animation-name", "none");
+    setDimensions({
+      height: panel.scrollHeight,
+      width: panel.scrollWidth
+    });
+    if (!shouldCancelInitialOpenAnimationRef.current && !isBeforeMatchRef.current) {
+      panel.style.removeProperty("animation-name");
+    }
+    if (open) {
+      if (abortControllerRef.current != null) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+      setMounted(true);
+      setVisible(true);
+    } else {
+      abortControllerRef.current = new AbortController();
+      runOnceAnimationsFinish(() => {
+        setMounted(false);
+        setVisible(false);
+        abortControllerRef.current = null;
+      }, abortControllerRef.current.signal);
+    }
+  }, [abortControllerRef, animationTypeRef, open, panelRef, runOnceAnimationsFinish, setDimensions, setMounted, setVisible, visible]);
+  useOnMount(() => {
+    const frame = AnimationFrame.request(() => {
+      shouldCancelInitialOpenAnimationRef.current = false;
+    });
+    return () => AnimationFrame.cancel(frame);
+  });
+  useIsoLayoutEffect(() => {
+    if (!hiddenUntilFound) {
+      return void 0;
+    }
+    const panel = panelRef.current;
+    if (!panel) {
+      return void 0;
+    }
+    let frame = -1;
+    let nextFrame = -1;
+    if (open && isBeforeMatchRef.current) {
+      panel.style.transitionDuration = "0s";
+      setDimensions({
+        height: panel.scrollHeight,
+        width: panel.scrollWidth
+      });
+      frame = AnimationFrame.request(() => {
+        isBeforeMatchRef.current = false;
+        nextFrame = AnimationFrame.request(() => {
+          setTimeout(() => {
+            panel.style.removeProperty("transition-duration");
+          });
+        });
+      });
+    }
+    return () => {
+      AnimationFrame.cancel(frame);
+      AnimationFrame.cancel(nextFrame);
+    };
+  }, [hiddenUntilFound, open, panelRef, setDimensions]);
+  useIsoLayoutEffect(() => {
+    const panel = panelRef.current;
+    if (panel && hiddenUntilFound && hidden) {
+      panel.setAttribute("hidden", "until-found");
+      if (animationTypeRef.current === "css-transition") {
+        panel.setAttribute(CollapsiblePanelDataAttributes.startingStyle, "");
+      }
+    }
+  }, [hiddenUntilFound, hidden, animationTypeRef, panelRef]);
+  React17.useEffect(function registerBeforeMatchListener() {
+    const panel = panelRef.current;
+    if (!panel) {
+      return void 0;
+    }
+    function handleBeforeMatch(event) {
+      isBeforeMatchRef.current = true;
+      setOpen(true);
+      onOpenChange(true, createChangeEventDetails(reason_parts_exports.none, event));
+    }
+    return addEventListener(panel, "beforematch", handleBeforeMatch);
+  }, [onOpenChange, panelRef, setOpen]);
+  return React17.useMemo(() => ({
+    props: {
+      hidden,
+      id: idParam,
+      ref: mergedPanelRef
+    }
+  }), [hidden, idParam, mergedPanelRef]);
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/internals/useOpenChangeComplete.js
+var React18 = __toESM(require_react(), 1);
+function useOpenChangeComplete(parameters) {
+  const {
+    enabled = true,
+    open,
+    ref,
+    onComplete: onCompleteParam
+  } = parameters;
+  const onComplete = useStableCallback(onCompleteParam);
+  const runOnceAnimationsFinish = useAnimationsFinished(ref, open, false);
+  React18.useEffect(() => {
+    if (!enabled) {
+      return void 0;
+    }
+    const abortController = new AbortController();
+    runOnceAnimationsFinish(onComplete, abortController.signal);
+    return () => {
+      abortController.abort();
+    };
+  }, [enabled, open, onComplete, runOnceAnimationsFinish]);
+}
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/index.parts.js
+var index_parts_exports = {};
+__export(index_parts_exports, {
+  Panel: () => CollapsiblePanel,
+  Root: () => CollapsibleRoot,
+  Trigger: () => CollapsibleTrigger
+});
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/root/CollapsibleRoot.js
+var React19 = __toESM(require_react(), 1);
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/root/stateAttributesMapping.js
+var collapsibleStateAttributesMapping = {
+  ...collapsibleOpenStateMapping,
+  ...transitionStatusMapping
+};
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/root/CollapsibleRoot.js
+var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
+var CollapsibleRoot = /* @__PURE__ */ React19.forwardRef(function CollapsibleRoot2(componentProps, forwardedRef) {
+  const {
+    render: render4,
+    className,
+    defaultOpen = false,
+    disabled: disabled2 = false,
+    onOpenChange: onOpenChangeProp,
+    open,
+    style,
+    ...elementProps
+  } = componentProps;
+  const onOpenChange = useStableCallback(onOpenChangeProp);
+  const collapsible = useCollapsibleRoot({
+    open,
+    defaultOpen,
+    onOpenChange,
+    disabled: disabled2
+  });
+  const state = React19.useMemo(() => ({
+    open: collapsible.open,
+    disabled: collapsible.disabled,
+    transitionStatus: collapsible.transitionStatus
+  }), [collapsible.open, collapsible.disabled, collapsible.transitionStatus]);
+  const contextValue = React19.useMemo(() => ({
+    ...collapsible,
+    onOpenChange,
+    state
+  }), [collapsible, onOpenChange, state]);
+  const element = useRenderElement("div", componentProps, {
+    state,
+    ref: forwardedRef,
+    props: elementProps,
+    stateAttributesMapping: collapsibleStateAttributesMapping
+  });
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(CollapsibleRootContext.Provider, {
+    value: contextValue,
+    children: element
+  });
+});
+if (true) CollapsibleRoot.displayName = "CollapsibleRoot";
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/trigger/CollapsibleTrigger.js
+var React20 = __toESM(require_react(), 1);
+var stateAttributesMapping = {
+  ...triggerOpenStateMapping,
+  ...transitionStatusMapping
+};
+var CollapsibleTrigger = /* @__PURE__ */ React20.forwardRef(function CollapsibleTrigger2(componentProps, forwardedRef) {
+  const {
+    panelId,
+    open,
+    handleTrigger,
+    state,
+    disabled: contextDisabled
+  } = useCollapsibleRootContext();
+  const {
+    className,
+    disabled: disabled2 = contextDisabled,
+    id,
+    render: render4,
+    nativeButton = true,
+    style,
+    ...elementProps
+  } = componentProps;
+  const {
+    getButtonProps,
+    buttonRef
+  } = useButton({
+    disabled: disabled2,
+    focusableWhenDisabled: true,
+    native: nativeButton
+  });
+  const props = React20.useMemo(() => ({
+    "aria-controls": open ? panelId : void 0,
+    "aria-expanded": open,
+    onClick: handleTrigger
+  }), [panelId, open, handleTrigger]);
+  const element = useRenderElement("button", componentProps, {
+    state,
+    ref: [forwardedRef, buttonRef],
+    props: [props, elementProps, getButtonProps],
+    stateAttributesMapping
+  });
+  return element;
+});
+if (true) CollapsibleTrigger.displayName = "CollapsibleTrigger";
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanel.js
+var React21 = __toESM(require_react(), 1);
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanelCssVars.js
+var CollapsiblePanelCssVars = /* @__PURE__ */ (function(CollapsiblePanelCssVars2) {
+  CollapsiblePanelCssVars2["collapsiblePanelHeight"] = "--collapsible-panel-height";
+  CollapsiblePanelCssVars2["collapsiblePanelWidth"] = "--collapsible-panel-width";
+  return CollapsiblePanelCssVars2;
+})({});
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/collapsible/panel/CollapsiblePanel.js
+var CollapsiblePanel = /* @__PURE__ */ React21.forwardRef(function CollapsiblePanel2(componentProps, forwardedRef) {
+  const {
+    className,
+    hiddenUntilFound: hiddenUntilFoundProp,
+    keepMounted: keepMountedProp,
+    render: render4,
+    id: idProp,
+    style,
+    ...elementProps
+  } = componentProps;
+  if (true) {
+    useIsoLayoutEffect(() => {
+      if (hiddenUntilFoundProp && keepMountedProp === false) {
+        warn("The `keepMounted={false}` prop on a Collapsible will be ignored when using `hiddenUntilFound` since it requires the Panel to remain mounted even when closed.");
+      }
+    }, [hiddenUntilFoundProp, keepMountedProp]);
+  }
+  const {
+    abortControllerRef,
+    animationTypeRef,
+    height,
+    mounted,
+    onOpenChange,
+    open,
+    panelId,
+    panelRef,
+    runOnceAnimationsFinish,
+    setDimensions,
+    setHiddenUntilFound,
+    setKeepMounted,
+    setMounted,
+    setPanelIdState,
+    setOpen,
+    setVisible,
+    state,
+    transitionDimensionRef,
+    visible,
+    width,
+    transitionStatus
+  } = useCollapsibleRootContext();
+  const hiddenUntilFound = hiddenUntilFoundProp ?? false;
+  const keepMounted = keepMountedProp ?? false;
+  useIsoLayoutEffect(() => {
+    if (idProp) {
+      setPanelIdState(idProp);
+      return () => {
+        setPanelIdState(void 0);
+      };
+    }
+    return void 0;
+  }, [idProp, setPanelIdState]);
+  useIsoLayoutEffect(() => {
+    setHiddenUntilFound(hiddenUntilFound);
+  }, [setHiddenUntilFound, hiddenUntilFound]);
+  useIsoLayoutEffect(() => {
+    setKeepMounted(keepMounted);
+  }, [setKeepMounted, keepMounted]);
+  const {
+    props
+  } = useCollapsiblePanel({
+    abortControllerRef,
+    animationTypeRef,
+    externalRef: forwardedRef,
+    height,
+    hiddenUntilFound,
+    id: panelId,
+    keepMounted,
+    mounted,
+    onOpenChange,
+    open,
+    panelRef,
+    runOnceAnimationsFinish,
+    setDimensions,
+    setMounted,
+    setOpen,
+    setVisible,
+    transitionDimensionRef,
+    visible,
+    width
+  });
+  useOpenChangeComplete({
+    open: open && transitionStatus === "idle",
+    ref: panelRef,
+    onComplete() {
+      if (!open) {
+        return;
+      }
+      setDimensions({
+        height: void 0,
+        width: void 0
+      });
+    }
+  });
+  const panelState = React21.useMemo(() => ({
+    ...state,
+    transitionStatus
+  }), [state, transitionStatus]);
+  const element = useRenderElement("div", componentProps, {
+    state: panelState,
+    ref: [forwardedRef, panelRef],
+    props: [props, {
+      style: {
+        [CollapsiblePanelCssVars.collapsiblePanelHeight]: height === void 0 ? "auto" : `${height}px`,
+        [CollapsiblePanelCssVars.collapsiblePanelWidth]: width === void 0 ? "auto" : `${width}px`
+      }
+    }, elementProps],
+    stateAttributesMapping: collapsibleStateAttributesMapping
+  });
+  const shouldRender = keepMounted || hiddenUntilFound || mounted;
+  if (!shouldRender) {
+    return null;
+  }
+  return element;
+});
+if (true) CollapsiblePanel.displayName = "CollapsiblePanel";
+
+// node_modules/@wordpress/ui/node_modules/@base-ui/react/esm/use-render/useRender.js
+function useRender(params) {
+  return useRenderElement(params.defaultTagName ?? "div", params, params);
+}
+
+// node_modules/@wordpress/ui/build-module/text/text.mjs
+var import_element2 = __toESM(require_element(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='4130d64bea']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "4130d64bea");
+  style.appendChild(document.createTextNode('@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{._83ed8a8da5dd50ea__text{margin:0}._14437cfb77831647__heading-2xl{--_gcd-heading-font-size:var(--wpds-typography-font-size-2xl,32px);font-size:var(--wpds-typography-font-size-2xl,32px);line-height:var(--wpds-typography-line-height-2xl,40px)}._14437cfb77831647__heading-2xl,._3c78b7fa9b4072dd__heading-xl{font-family:var(--wpds-typography-font-family-heading,-apple-system,system-ui,"Segoe UI","Roboto","Oxygen-Sans","Ubuntu","Cantarell","Helvetica Neue",sans-serif);font-weight:var(--wpds-typography-font-weight-medium,499)}._3c78b7fa9b4072dd__heading-xl{--_gcd-heading-font-size:var(--wpds-typography-font-size-xl,20px);font-size:var(--wpds-typography-font-size-xl,20px);line-height:var(--wpds-typography-line-height-md,24px)}.aa58f227716bcde2__heading-lg{--_gcd-heading-font-size:var(--wpds-typography-font-size-lg,15px);font-size:var(--wpds-typography-font-size-lg,15px)}.aa58f227716bcde2__heading-lg,.fc4da56d8dfe52c4__heading-md{font-family:var(--wpds-typography-font-family-heading,-apple-system,system-ui,"Segoe UI","Roboto","Oxygen-Sans","Ubuntu","Cantarell","Helvetica Neue",sans-serif);font-weight:var(--wpds-typography-font-weight-medium,499);line-height:var(--wpds-typography-line-height-sm,20px)}.fc4da56d8dfe52c4__heading-md{--_gcd-heading-font-size:var(--wpds-typography-font-size-md,13px);font-size:var(--wpds-typography-font-size-md,13px)}.a9b78c7c82e8dff7__heading-sm{--_gcd-heading-font-size:var(--wpds-typography-font-size-xs,11px);font-family:var(--wpds-typography-font-family-heading,-apple-system,system-ui,"Segoe UI","Roboto","Oxygen-Sans","Ubuntu","Cantarell","Helvetica Neue",sans-serif);font-size:var(--wpds-typography-font-size-xs,11px);font-weight:var(--wpds-typography-font-weight-medium,499);line-height:var(--wpds-typography-line-height-xs,16px);text-transform:uppercase}._305ff559e52180d5__body-xl{--_gcd-p-font-size:var(--wpds-typography-font-size-xl,20px);--_gcd-p-line-height:var(--wpds-typography-line-height-xl,32px);font-size:var(--wpds-typography-font-size-xl,20px);line-height:var(--wpds-typography-line-height-xl,32px)}._305ff559e52180d5__body-xl,.ca1aa3fc2029e958__body-lg{font-family:var(--wpds-typography-font-family-body,-apple-system,system-ui,"Segoe UI","Roboto","Oxygen-Sans","Ubuntu","Cantarell","Helvetica Neue",sans-serif);font-weight:var(--wpds-typography-font-weight-regular,400)}.ca1aa3fc2029e958__body-lg{--_gcd-p-font-size:var(--wpds-typography-font-size-lg,15px);--_gcd-p-line-height:var(--wpds-typography-line-height-md,24px);font-size:var(--wpds-typography-font-size-lg,15px);line-height:var(--wpds-typography-line-height-md,24px)}._131101940be12424__body-md{--_gcd-p-font-size:var(--wpds-typography-font-size-md,13px);--_gcd-p-line-height:var(--wpds-typography-line-height-sm,20px);font-size:var(--wpds-typography-font-size-md,13px);line-height:var(--wpds-typography-line-height-sm,20px)}._0e8d87a42c1f75fa__body-sm,._131101940be12424__body-md{font-family:var(--wpds-typography-font-family-body,-apple-system,system-ui,"Segoe UI","Roboto","Oxygen-Sans","Ubuntu","Cantarell","Helvetica Neue",sans-serif);font-weight:var(--wpds-typography-font-weight-regular,400)}._0e8d87a42c1f75fa__body-sm{--_gcd-p-font-size:var(--wpds-typography-font-size-sm,12px);--_gcd-p-line-height:var(--wpds-typography-line-height-xs,16px);font-size:var(--wpds-typography-font-size-sm,12px);line-height:var(--wpds-typography-line-height-xs,16px)}}'));
+  document.head.appendChild(style);
+}
+var style_default = { "text": "_83ed8a8da5dd50ea__text", "heading-2xl": "_14437cfb77831647__heading-2xl", "heading-xl": "_3c78b7fa9b4072dd__heading-xl", "heading-lg": "aa58f227716bcde2__heading-lg", "heading-md": "fc4da56d8dfe52c4__heading-md", "heading-sm": "a9b78c7c82e8dff7__heading-sm", "body-xl": "_305ff559e52180d5__body-xl", "body-lg": "ca1aa3fc2029e958__body-lg", "body-md": "_131101940be12424__body-md", "body-sm": "_0e8d87a42c1f75fa__body-sm" };
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='1fb29d3a3c']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "1fb29d3a3c");
+  style.appendChild(document.createTextNode("._6defc79820e382c6__button{box-sizing:var(--_gcd-button-box-sizing,border-box);font-family:var(--_gcd-button-font-family,inherit);font-size:var(--_gcd-button-font-size,inherit);font-weight:var(--_gcd-button-font-weight,inherit)}.d2cff2e5dea83bd1__input{box-sizing:var(--_gcd-input-box-sizing,border-box);font-family:var(--_gcd-input-font-family,inherit);font-size:var(--_gcd-input-font-size,inherit);font-weight:var(--_gcd-input-font-weight,inherit);margin:var(--_gcd-input-margin,0);&:is(textarea,[type=text],[type=password],[type=color],[type=date],[type=datetime],[type=datetime-local],[type=email],[type=month],[type=number],[type=search],[type=tel],[type=time],[type=url],[type=week]){background-color:var(--_gcd-input-background-color,#0000);border:var(--_gcd-input-border,none);border-radius:var(--_gcd-input-border-radius,0);box-shadow:var(--_gcd-input-box-shadow,0 0 0 #0000);color:var(--_gcd-input-color,var(--wpds-color-fg-interactive-neutral,#1e1e1e));&:focus{border-color:var(--_gcd-input-border-color-focus,var(--wp-admin-theme-color));box-shadow:var(--_gcd-input-box-shadow-focus,none);outline:var(--_gcd-input-outline-focus,none)}&:disabled{background:var(--_gcd-input-background-disabled,#0000);border-color:var(--_gcd-input-border-color-disabled,#0000);box-shadow:var(--_gcd-input-box-shadow-disabled,none);color:var(--_gcd-input-color-disabled,var(--wpds-color-fg-interactive-neutral-disabled,#8d8d8d))}&::placeholder{color:var(--_gcd-input-placeholder-color,var(--wpds-color-fg-interactive-neutral-disabled,#8d8d8d))}}&:is(textarea,[type=text],[type=password],[type=date],[type=datetime],[type=datetime-local],[type=email],[type=month],[type=number],[type=search],[type=tel],[type=time],[type=url],[type=week]){line-height:var(--_gcd-input-line-height,inherit);min-height:var(--_gcd-input-min-height,auto);padding:var(--_gcd-input-padding,0)}}._547d86373d02e108__textarea{box-sizing:var(--_gcd-textarea-box-sizing,border-box);overflow:var(--_gcd-textarea-overflow,auto);resize:var(--_gcd-textarea-resize,block)}._8c15fd0ed9f28ba4__div{outline:var(--_gcd-div-outline,0 solid #0000)}p._43cec3e1eec1066d__p{font-size:var(--_gcd-p-font-size,13px);line-height:var(--_gcd-p-line-height,1.5);margin:var(--_gcd-p-margin,0)}:is(h1,h2,h3,h4,h5,h6).e97669c6d9a38497__heading{color:var(--_gcd-heading-color,var(--wpds-color-fg-content-neutral,#1e1e1e));font-size:var(--_gcd-heading-font-size,inherit);font-weight:var(--_gcd-heading-font-weight,var(--wpds-typography-font-weight-medium,499));margin:var(--_gcd-heading-margin,0)}._2c0831b0499dbd6e__a,._2c0831b0499dbd6e__a:is(:hover,:focus,:active){border-radius:var(--_gcd-a-border-radius,0);box-shadow:var(--_gcd-a-box-shadow,none);color:var(--_gcd-a-color,inherit);outline:var(--_gcd-a-outline,0 solid #0000);transition:var(--_gcd-a-transition,none)}"));
+  document.head.appendChild(style);
+}
+var global_css_defense_default = { "button": "_6defc79820e382c6__button", "input": "d2cff2e5dea83bd1__input", "textarea": "_547d86373d02e108__textarea", "div": "_8c15fd0ed9f28ba4__div", "p": "_43cec3e1eec1066d__p", "heading": "e97669c6d9a38497__heading", "a": "_2c0831b0499dbd6e__a" };
+var Text = (0, import_element2.forwardRef)(function Text2({ variant = "body-md", render: render4, className, ...props }, ref) {
+  const element = useRender({
+    render: render4,
+    defaultTagName: "span",
+    ref,
+    props: mergeProps(props, {
+      className: clsx_default(
+        style_default.text,
+        variant.startsWith("heading-") && global_css_defense_default.heading,
+        variant.startsWith("body-") && global_css_defense_default.p,
+        style_default[variant],
+        className
+      )
+    })
+  });
+  return element;
+});
+
+// node_modules/@wordpress/ui/build-module/badge/badge.mjs
+var import_jsx_runtime3 = __toESM(require_jsx_runtime(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='d6a685e1aa']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "d6a685e1aa");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{._96e6251aad1a6136__badge{border-radius:var(--wpds-border-radius-lg,8px);padding-block:var(--wpds-dimension-padding-xs,4px);padding-inline:var(--wpds-dimension-padding-sm,8px)}._99f7158cb520f750__is-high-intent{background-color:var(--wpds-color-bg-surface-error,#f6e6e3);color:var(--wpds-color-fg-content-error,#470000)}.c20ebef2365bc8b7__is-medium-intent{background-color:var(--wpds-color-bg-surface-warning,#fde6be);color:var(--wpds-color-fg-content-warning,#2e1900)}._365e1626c6202e52__is-low-intent{background-color:var(--wpds-color-bg-surface-caution,#fee995);color:var(--wpds-color-fg-content-caution,#281d00)}._33f8198127ddf4ef__is-stable-intent{background-color:var(--wpds-color-bg-surface-success,#c6f7cd);color:var(--wpds-color-fg-content-success,#002900)}._04c1aca8fc449412__is-informational-intent{background-color:var(--wpds-color-bg-surface-info,#deebfa);color:var(--wpds-color-fg-content-info,#001b4f)}._90726e69d495ec19__is-draft-intent{background-color:var(--wpds-color-bg-surface-neutral-weak,#f4f4f4);color:var(--wpds-color-fg-content-neutral,#1e1e1e)}._898f4a544993bd39__is-none-intent{background-color:var(--wpds-color-bg-surface-neutral-strong,#fff);border:var(--wpds-border-width-xs,1px) solid var(--wpds-color-stroke-surface-neutral,#dbdbdb);color:var(--wpds-color-fg-content-neutral,#1e1e1e);padding-block:calc(var(--wpds-dimension-padding-xs, 4px) - var(--wpds-border-width-xs, 1px));padding-inline:calc(var(--wpds-dimension-padding-sm, 8px) - var(--wpds-border-width-xs, 1px))}}"));
+  document.head.appendChild(style);
+}
+var style_default2 = { "badge": "_96e6251aad1a6136__badge", "is-high-intent": "_99f7158cb520f750__is-high-intent", "is-medium-intent": "c20ebef2365bc8b7__is-medium-intent", "is-low-intent": "_365e1626c6202e52__is-low-intent", "is-stable-intent": "_33f8198127ddf4ef__is-stable-intent", "is-informational-intent": "_04c1aca8fc449412__is-informational-intent", "is-draft-intent": "_90726e69d495ec19__is-draft-intent", "is-none-intent": "_898f4a544993bd39__is-none-intent" };
+var Badge = (0, import_element3.forwardRef)(function Badge2({ intent = "none", className, ...props }, ref) {
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+    Text,
+    {
+      ref,
+      className: clsx_default(
+        style_default2.badge,
+        style_default2[`is-${intent}-intent`],
+        className
+      ),
+      ...props,
+      variant: "body-sm"
+    }
+  );
+});
+
+// node_modules/@wordpress/ui/build-module/icon/icon.mjs
+var import_element4 = __toESM(require_element(), 1);
+var import_primitives = __toESM(require_primitives(), 1);
+var import_jsx_runtime4 = __toESM(require_jsx_runtime(), 1);
+var Icon = (0, import_element4.forwardRef)(function Icon2({ icon, size = 24, ...restProps }, ref) {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    import_primitives.SVG,
+    {
+      ref,
+      fill: "currentColor",
+      ...icon.props,
+      ...restProps,
+      width: size,
+      height: size
+    }
+  );
+});
+
+// node_modules/@wordpress/ui/build-module/card/index.mjs
+var card_exports = {};
+__export(card_exports, {
+  Content: () => Content,
+  FullBleed: () => FullBleed,
+  Header: () => Header,
+  Root: () => Root,
+  Title: () => Title
+});
+
+// node_modules/@wordpress/ui/build-module/card/root.mjs
+var import_element5 = __toESM(require_element(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='e3ae230cea']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "e3ae230cea");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-utilities{._336cd3e4e743482f__box-sizing{box-sizing:border-box;*,:after,:before{box-sizing:inherit}}}"));
+  document.head.appendChild(style);
+}
+var resets_default = { "box-sizing": "_336cd3e4e743482f__box-sizing" };
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='14f5e9ddeb']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "14f5e9ddeb");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{._02872bf298eadc43__root{--wp-ui-card-padding:var(--wpds-dimension-padding-2xl,24px);--wp-ui-card-header-content-gap:var(--wpds-dimension-gap-xl,24px);--wp-ui-card-header-content-margin:calc(var(--wp-ui-card-header-content-gap) - var(--wp-ui-card-padding));background-color:var(--wpds-color-bg-surface-neutral-strong,#fff);border:1px solid var(--wpds-color-stroke-surface-neutral-weak,#e4e4e4);border-radius:var(--wpds-border-radius-lg,8px);color:var(--wpds-color-fg-content-neutral,#1e1e1e);display:flex;flex-direction:column;overflow:clip}._5dffdaf2a6e669ac__content,.bbccc92e6ba5662d__header{padding:var(--wp-ui-card-padding);&:not(:first-child):not(:last-child){padding-block-end:0}}.bbccc92e6ba5662d__header+._5dffdaf2a6e669ac__content{margin-block-start:var(--wp-ui-card-header-content-margin);padding-block-start:0}.c1fa192587e1b4a6__fullbleed{margin-inline:calc(var(--wp-ui-card-padding)*-1);width:calc(100% + var(--wp-ui-card-padding)*2)}}"));
+  document.head.appendChild(style);
+}
+var style_default3 = { "root": "_02872bf298eadc43__root", "header": "bbccc92e6ba5662d__header", "content": "_5dffdaf2a6e669ac__content", "fullbleed": "c1fa192587e1b4a6__fullbleed" };
+var Root = (0, import_element5.forwardRef)(function Card({ render: render4, ...restProps }, ref) {
+  const mergedClassName = clsx_default(style_default3.root, resets_default["box-sizing"]);
+  const element = useRender({
+    defaultTagName: "div",
+    render: render4,
+    ref,
+    props: mergeProps({ className: mergedClassName }, restProps)
+  });
+  return element;
+});
+
+// node_modules/@wordpress/ui/build-module/card/header.mjs
+var import_element6 = __toESM(require_element(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='14f5e9ddeb']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "14f5e9ddeb");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{._02872bf298eadc43__root{--wp-ui-card-padding:var(--wpds-dimension-padding-2xl,24px);--wp-ui-card-header-content-gap:var(--wpds-dimension-gap-xl,24px);--wp-ui-card-header-content-margin:calc(var(--wp-ui-card-header-content-gap) - var(--wp-ui-card-padding));background-color:var(--wpds-color-bg-surface-neutral-strong,#fff);border:1px solid var(--wpds-color-stroke-surface-neutral-weak,#e4e4e4);border-radius:var(--wpds-border-radius-lg,8px);color:var(--wpds-color-fg-content-neutral,#1e1e1e);display:flex;flex-direction:column;overflow:clip}._5dffdaf2a6e669ac__content,.bbccc92e6ba5662d__header{padding:var(--wp-ui-card-padding);&:not(:first-child):not(:last-child){padding-block-end:0}}.bbccc92e6ba5662d__header+._5dffdaf2a6e669ac__content{margin-block-start:var(--wp-ui-card-header-content-margin);padding-block-start:0}.c1fa192587e1b4a6__fullbleed{margin-inline:calc(var(--wp-ui-card-padding)*-1);width:calc(100% + var(--wp-ui-card-padding)*2)}}"));
+  document.head.appendChild(style);
+}
+var style_default4 = { "root": "_02872bf298eadc43__root", "header": "bbccc92e6ba5662d__header", "content": "_5dffdaf2a6e669ac__content", "fullbleed": "c1fa192587e1b4a6__fullbleed" };
+var Header = (0, import_element6.forwardRef)(
+  function CardHeader({ render: render4, ...props }, ref) {
+    const element = useRender({
+      defaultTagName: "div",
+      render: render4,
+      ref,
+      props: mergeProps({ className: style_default4.header }, props)
+    });
+    return element;
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/card/content.mjs
+var import_element7 = __toESM(require_element(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='14f5e9ddeb']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "14f5e9ddeb");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{._02872bf298eadc43__root{--wp-ui-card-padding:var(--wpds-dimension-padding-2xl,24px);--wp-ui-card-header-content-gap:var(--wpds-dimension-gap-xl,24px);--wp-ui-card-header-content-margin:calc(var(--wp-ui-card-header-content-gap) - var(--wp-ui-card-padding));background-color:var(--wpds-color-bg-surface-neutral-strong,#fff);border:1px solid var(--wpds-color-stroke-surface-neutral-weak,#e4e4e4);border-radius:var(--wpds-border-radius-lg,8px);color:var(--wpds-color-fg-content-neutral,#1e1e1e);display:flex;flex-direction:column;overflow:clip}._5dffdaf2a6e669ac__content,.bbccc92e6ba5662d__header{padding:var(--wp-ui-card-padding);&:not(:first-child):not(:last-child){padding-block-end:0}}.bbccc92e6ba5662d__header+._5dffdaf2a6e669ac__content{margin-block-start:var(--wp-ui-card-header-content-margin);padding-block-start:0}.c1fa192587e1b4a6__fullbleed{margin-inline:calc(var(--wp-ui-card-padding)*-1);width:calc(100% + var(--wp-ui-card-padding)*2)}}"));
+  document.head.appendChild(style);
+}
+var style_default5 = { "root": "_02872bf298eadc43__root", "header": "bbccc92e6ba5662d__header", "content": "_5dffdaf2a6e669ac__content", "fullbleed": "c1fa192587e1b4a6__fullbleed" };
+var Content = (0, import_element7.forwardRef)(
+  function CardContent({ render: render4, ...props }, ref) {
+    const element = useRender({
+      defaultTagName: "div",
+      render: render4,
+      ref,
+      props: mergeProps({ className: style_default5.content }, props)
+    });
+    return element;
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/card/full-bleed.mjs
+var import_element8 = __toESM(require_element(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='14f5e9ddeb']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "14f5e9ddeb");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{._02872bf298eadc43__root{--wp-ui-card-padding:var(--wpds-dimension-padding-2xl,24px);--wp-ui-card-header-content-gap:var(--wpds-dimension-gap-xl,24px);--wp-ui-card-header-content-margin:calc(var(--wp-ui-card-header-content-gap) - var(--wp-ui-card-padding));background-color:var(--wpds-color-bg-surface-neutral-strong,#fff);border:1px solid var(--wpds-color-stroke-surface-neutral-weak,#e4e4e4);border-radius:var(--wpds-border-radius-lg,8px);color:var(--wpds-color-fg-content-neutral,#1e1e1e);display:flex;flex-direction:column;overflow:clip}._5dffdaf2a6e669ac__content,.bbccc92e6ba5662d__header{padding:var(--wp-ui-card-padding);&:not(:first-child):not(:last-child){padding-block-end:0}}.bbccc92e6ba5662d__header+._5dffdaf2a6e669ac__content{margin-block-start:var(--wp-ui-card-header-content-margin);padding-block-start:0}.c1fa192587e1b4a6__fullbleed{margin-inline:calc(var(--wp-ui-card-padding)*-1);width:calc(100% + var(--wp-ui-card-padding)*2)}}"));
+  document.head.appendChild(style);
+}
+var style_default6 = { "root": "_02872bf298eadc43__root", "header": "bbccc92e6ba5662d__header", "content": "_5dffdaf2a6e669ac__content", "fullbleed": "c1fa192587e1b4a6__fullbleed" };
+var FullBleed = (0, import_element8.forwardRef)(
+  function CardFullBleed({ render: render4, ...props }, ref) {
+    const element = useRender({
+      defaultTagName: "div",
+      render: render4,
+      ref,
+      props: mergeProps(
+        { className: style_default6.fullbleed },
+        props
+      )
+    });
+    return element;
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/card/title.mjs
+var import_element9 = __toESM(require_element(), 1);
+var import_jsx_runtime5 = __toESM(require_jsx_runtime(), 1);
+var DEFAULT_TAG = /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", {});
+var Title = (0, import_element9.forwardRef)(
+  function CardTitle({ render: render4 = DEFAULT_TAG, children, ...props }, ref) {
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+      Text,
+      {
+        ref,
+        variant: "heading-lg",
+        render: render4,
+        ...props,
+        children
+      }
+    );
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/collapsible/panel.mjs
+var import_element10 = __toESM(require_element(), 1);
+var import_jsx_runtime6 = __toESM(require_jsx_runtime(), 1);
+var Panel = (0, import_element10.forwardRef)(
+  function CollapsiblePanel3(props, forwardedRef) {
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(index_parts_exports.Panel, { ref: forwardedRef, ...props });
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/collapsible/root.mjs
+var import_element11 = __toESM(require_element(), 1);
+var import_jsx_runtime7 = __toESM(require_jsx_runtime(), 1);
+var Root2 = (0, import_element11.forwardRef)(
+  function CollapsibleRoot3(props, forwardedRef) {
+    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(index_parts_exports.Root, { ref: forwardedRef, ...props });
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/collapsible/trigger.mjs
+var import_element12 = __toESM(require_element(), 1);
+var import_jsx_runtime8 = __toESM(require_jsx_runtime(), 1);
+var Trigger = (0, import_element12.forwardRef)(
+  function CollapsibleTrigger3(props, forwardedRef) {
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(index_parts_exports.Trigger, { ref: forwardedRef, ...props });
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/collapsible-card/index.mjs
+var collapsible_card_exports = {};
+__export(collapsible_card_exports, {
+  Content: () => Content2,
+  Header: () => Header2,
+  HeaderDescription: () => HeaderDescription,
+  Root: () => Root3
+});
+
+// node_modules/@wordpress/ui/build-module/collapsible-card/root.mjs
+var import_element13 = __toESM(require_element(), 1);
+var import_jsx_runtime9 = __toESM(require_jsx_runtime(), 1);
+var Root3 = (0, import_element13.forwardRef)(
+  function CollapsibleCardRoot({ render: render4, ...restProps }, ref) {
+    return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      Root2,
+      {
+        ref,
+        render: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Root, { render: render4 }),
+        ...restProps
+      }
+    );
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/collapsible-card/header.mjs
+var import_element15 = __toESM(require_element(), 1);
+
+// node_modules/@wordpress/icons/build-module/library/chevron-down.mjs
+var import_primitives2 = __toESM(require_primitives(), 1);
+var import_jsx_runtime10 = __toESM(require_jsx_runtime(), 1);
+var chevron_down_default = /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_primitives2.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_primitives2.Path, { d: "M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z" }) });
+
+// node_modules/@wordpress/icons/build-module/library/close-small.mjs
+var import_primitives3 = __toESM(require_primitives(), 1);
+var import_jsx_runtime11 = __toESM(require_jsx_runtime(), 1);
+var close_small_default = /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_primitives3.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_primitives3.Path, { d: "M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z" }) });
+
+// node_modules/@wordpress/icons/build-module/library/envelope.mjs
+var import_primitives4 = __toESM(require_primitives(), 1);
+var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
+var envelope_default = /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_primitives4.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_primitives4.Path, { fillRule: "evenodd", clipRule: "evenodd", d: "M3 7c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm2-.5h14c.3 0 .5.2.5.5v1L12 13.5 4.5 7.9V7c0-.3.2-.5.5-.5Zm-.5 3.3V17c0 .3.2.5.5.5h14c.3 0 .5-.2.5-.5V9.8L12 15.4 4.5 9.8Z" }) });
+
+// node_modules/@wordpress/icons/build-module/library/error.mjs
+var import_primitives5 = __toESM(require_primitives(), 1);
+var import_jsx_runtime13 = __toESM(require_jsx_runtime(), 1);
+var error_default = /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_primitives5.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_primitives5.Path, { fillRule: "evenodd", clipRule: "evenodd", d: "M12.218 5.377a.25.25 0 0 0-.436 0l-7.29 12.96a.25.25 0 0 0 .218.373h14.58a.25.25 0 0 0 .218-.372l-7.29-12.96Zm-1.743-.735c.669-1.19 2.381-1.19 3.05 0l7.29 12.96a1.75 1.75 0 0 1-1.525 2.608H4.71a1.75 1.75 0 0 1-1.525-2.608l7.29-12.96ZM12.75 17.46h-1.5v-1.5h1.5v1.5Zm-1.5-3h1.5v-5h-1.5v5Z" }) });
+
+// node_modules/@wordpress/icons/build-module/library/link.mjs
+var import_primitives6 = __toESM(require_primitives(), 1);
+var import_jsx_runtime14 = __toESM(require_jsx_runtime(), 1);
+var link_default = /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_primitives6.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_primitives6.Path, { d: "M10 17.389H8.444A5.194 5.194 0 1 1 8.444 7H10v1.5H8.444a3.694 3.694 0 0 0 0 7.389H10v1.5ZM14 7h1.556a5.194 5.194 0 0 1 0 10.39H14v-1.5h1.556a3.694 3.694 0 0 0 0-7.39H14V7Zm-4.5 6h5v-1.5h-5V13Z" }) });
+
+// node_modules/@wordpress/icons/build-module/library/mobile.mjs
+var import_primitives7 = __toESM(require_primitives(), 1);
+var import_jsx_runtime15 = __toESM(require_jsx_runtime(), 1);
+var mobile_default = /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_primitives7.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_primitives7.Path, { d: "M15 4H9c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm.5 14c0 .3-.2.5-.5.5H9c-.3 0-.5-.2-.5-.5V6c0-.3.2-.5.5-.5h6c.3 0 .5.2.5.5v12zm-4.5-.5h2V16h-2v1.5z" }) });
+
+// node_modules/@wordpress/icons/build-module/library/pencil.mjs
+var import_primitives8 = __toESM(require_primitives(), 1);
+var import_jsx_runtime16 = __toESM(require_jsx_runtime(), 1);
+var pencil_default = /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_primitives8.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_primitives8.Path, { d: "m19 7-3-3-8.5 8.5-1 4 4-1L19 7Zm-7 11.5H5V20h7v-1.5Z" }) });
+
+// node_modules/@wordpress/icons/build-module/library/seen.mjs
+var import_primitives9 = __toESM(require_primitives(), 1);
+var import_jsx_runtime17 = __toESM(require_jsx_runtime(), 1);
+var seen_default = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_primitives9.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_primitives9.Path, { d: "M3.99961 13C4.67043 13.3354 4.6703 13.3357 4.67017 13.3359L4.67298 13.3305C4.67621 13.3242 4.68184 13.3135 4.68988 13.2985C4.70595 13.2686 4.7316 13.2218 4.76695 13.1608C4.8377 13.0385 4.94692 12.8592 5.09541 12.6419C5.39312 12.2062 5.84436 11.624 6.45435 11.0431C7.67308 9.88241 9.49719 8.75 11.9996 8.75C14.502 8.75 16.3261 9.88241 17.5449 11.0431C18.1549 11.624 18.6061 12.2062 18.9038 12.6419C19.0523 12.8592 19.1615 13.0385 19.2323 13.1608C19.2676 13.2218 19.2933 13.2686 19.3093 13.2985C19.3174 13.3135 19.323 13.3242 19.3262 13.3305L19.3291 13.3359C19.3289 13.3357 19.3288 13.3354 19.9996 13C20.6704 12.6646 20.6703 12.6643 20.6701 12.664L20.6697 12.6632L20.6688 12.6614L20.6662 12.6563L20.6583 12.6408C20.6517 12.6282 20.6427 12.6108 20.631 12.5892C20.6078 12.5459 20.5744 12.4852 20.5306 12.4096C20.4432 12.2584 20.3141 12.0471 20.1423 11.7956C19.7994 11.2938 19.2819 10.626 18.5794 9.9569C17.1731 8.61759 14.9972 7.25 11.9996 7.25C9.00203 7.25 6.82614 8.61759 5.41987 9.9569C4.71736 10.626 4.19984 11.2938 3.85694 11.7956C3.68511 12.0471 3.55605 12.2584 3.4686 12.4096C3.42484 12.4852 3.39142 12.5459 3.36818 12.5892C3.35656 12.6108 3.34748 12.6282 3.34092 12.6408L3.33297 12.6563L3.33041 12.6614L3.32948 12.6632L3.32911 12.664C3.32894 12.6643 3.32879 12.6646 3.99961 13ZM11.9996 16C13.9326 16 15.4996 14.433 15.4996 12.5C15.4996 10.567 13.9326 9 11.9996 9C10.0666 9 8.49961 10.567 8.49961 12.5C8.49961 14.433 10.0666 16 11.9996 16Z" }) });
+
+// node_modules/@wordpress/icons/build-module/library/unseen.mjs
+var import_primitives10 = __toESM(require_primitives(), 1);
+var import_jsx_runtime18 = __toESM(require_jsx_runtime(), 1);
+var unseen_default = /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_primitives10.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_primitives10.Path, { d: "M20.7 12.7s0-.1-.1-.2c0-.2-.2-.4-.4-.6-.3-.5-.9-1.2-1.6-1.8-.7-.6-1.5-1.3-2.6-1.8l-.6 1.4c.9.4 1.6 1 2.1 1.5.6.6 1.1 1.2 1.4 1.6.1.2.3.4.3.5v.1l.7-.3.7-.3Zm-5.2-9.3-1.8 4c-.5-.1-1.1-.2-1.7-.2-3 0-5.2 1.4-6.6 2.7-.7.7-1.2 1.3-1.6 1.8-.2.3-.3.5-.4.6 0 0 0 .1-.1.2s0 0 .7.3l.7.3V13c0-.1.2-.3.3-.5.3-.4.7-1 1.4-1.6 1.2-1.2 3-2.3 5.5-2.3H13v.3c-.4 0-.8-.1-1.1-.1-1.9 0-3.5 1.6-3.5 3.5s.6 2.3 1.6 2.9l-2 4.4.9.4 7.6-16.2-.9-.4Zm-3 12.6c1.7-.2 3-1.7 3-3.5s-.2-1.4-.6-1.9L12.4 16Z" }) });
+
+// node_modules/@wordpress/ui/build-module/collapsible-card/context.mjs
+var import_element14 = __toESM(require_element(), 1);
+var HeaderDescriptionIdContext = (0, import_element14.createContext)({
+  setDescriptionId: () => {
+  }
+});
+
+// node_modules/@wordpress/ui/build-module/collapsible-card/header.mjs
+var import_jsx_runtime19 = __toESM(require_jsx_runtime(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='718ddb3557']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "718ddb3557");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{.cab17c7a373cb60d__header-content{flex:1;min-width:0}.dd89d27c4f15912d__header-trigger-positioner{align-self:center;flex-shrink:0;max-height:0;overflow:visible}.bcfab5f2448bafef__header-trigger-wrapper{border-radius:var(--wpds-border-radius-sm,2px);display:flex;translate:0 -50%}._3106f8d2b0330faa__header-trigger{@media not (prefers-reduced-motion){transition:rotate .15s ease-out}}._5d2dfcb4085c6d0f__header[data-panel-open] ._3106f8d2b0330faa__header-trigger{rotate:180deg}._5d2dfcb4085c6d0f__header[data-disabled] ._3106f8d2b0330faa__header-trigger{color:var(--wpds-color-fg-interactive-neutral-disabled,#8d8d8d)}.e34cf37ccd0d81e0__content{height:var(--collapsible-panel-height);margin-block-start:var(--wp-ui-card-header-content-margin);overflow:hidden;&[hidden]:not([hidden=until-found]){display:none}&[data-ending-style],&[data-starting-style]{height:0}@media not (prefers-reduced-motion){transition:all .15s ease-out}}}@layer wp-ui-compositions{._41bfdbf7b6c087c2__content-inner{padding-block-start:0}._5d2dfcb4085c6d0f__header{align-items:stretch;display:flex;flex-direction:row;gap:var(--wpds-dimension-gap-sm,8px);outline:none;&:not([data-disabled]){cursor:var(--wpds-cursor-control,pointer)}}}"));
+  document.head.appendChild(style);
+}
+var style_default7 = { "header-content": "cab17c7a373cb60d__header-content", "header-trigger-positioner": "dd89d27c4f15912d__header-trigger-positioner", "header-trigger-wrapper": "bcfab5f2448bafef__header-trigger-wrapper", "header-trigger": "_3106f8d2b0330faa__header-trigger", "header": "_5d2dfcb4085c6d0f__header", "content": "e34cf37ccd0d81e0__content", "content-inner": "_41bfdbf7b6c087c2__content-inner" };
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='2a5ab8f3a7']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "2a5ab8f3a7");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-utilities{._08e8a2e44959f892__outset-ring--focus,._970d04df7376df67__outset-ring--focus-within-except-active,.c5cb3ee4bddaa8e4__outset-ring--focus-within-visible,.cd83dfc2126a0846__outset-ring--focus-within,.d0541bc9dd9dc7b6__outset-ring--focus-visible,.e25b2bdd7aa21721__outset-ring--focus-except-active,.ecadb9e080e2dfa5__outset-ring--focus-parent-visible{@media not (prefers-reduced-motion){--_gcd-a-transition:outline 0.1s ease-out;transition:outline .1s ease-out}outline:0 solid #0000;outline-offset:1px}._08e8a2e44959f892__outset-ring--focus:focus,._970d04df7376df67__outset-ring--focus-within-except-active:focus-within:not(:has(:active)),.c5cb3ee4bddaa8e4__outset-ring--focus-within-visible:focus-within:has(:focus-visible),.cd83dfc2126a0846__outset-ring--focus-within:focus-within,.d0541bc9dd9dc7b6__outset-ring--focus-visible:focus-visible,.e25b2bdd7aa21721__outset-ring--focus-except-active:focus:not(:active),:focus-visible .ecadb9e080e2dfa5__outset-ring--focus-parent-visible{--_gcd-a-outline:var(--wpds-border-width-focus,var(--wp-admin-border-width-focus,2px)) solid var(--wpds-color-stroke-focus-brand,var(--wp-admin-theme-color,#3858e9));--_gcd-div-outline:var(--wpds-border-width-focus,var(--wp-admin-border-width-focus,2px)) solid var(--wpds-color-stroke-focus-brand,var(--wp-admin-theme-color,#3858e9));outline:var(--wpds-border-width-focus,var(--wp-admin-border-width-focus,2px)) solid var(--wpds-color-stroke-focus-brand,var(--wp-admin-theme-color,#3858e9))}}"));
+  document.head.appendChild(style);
+}
+var focus_default = { "outset-ring--focus": "_08e8a2e44959f892__outset-ring--focus", "outset-ring--focus-except-active": "e25b2bdd7aa21721__outset-ring--focus-except-active", "outset-ring--focus-visible": "d0541bc9dd9dc7b6__outset-ring--focus-visible", "outset-ring--focus-within": "cd83dfc2126a0846__outset-ring--focus-within", "outset-ring--focus-within-except-active": "_970d04df7376df67__outset-ring--focus-within-except-active", "outset-ring--focus-within-visible": "c5cb3ee4bddaa8e4__outset-ring--focus-within-visible", "outset-ring--focus-parent-visible": "ecadb9e080e2dfa5__outset-ring--focus-parent-visible" };
+var Header2 = (0, import_element15.forwardRef)(
+  function CollapsibleCardHeader({ children, className, render: render4, ...restProps }, ref) {
+    const [descriptionId, setDescriptionId] = (0, import_element15.useState)();
+    const contextValue = (0, import_element15.useMemo)(
+      () => ({ setDescriptionId }),
+      [setDescriptionId]
+    );
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(HeaderDescriptionIdContext.Provider, { value: contextValue, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(
+      Trigger,
+      {
+        className: clsx_default(style_default7.header, className),
+        render: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          Header,
+          {
+            ref,
+            render: render4,
+            ...restProps
+          }
+        ),
+        nativeButton: false,
+        "aria-describedby": descriptionId,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: style_default7["header-content"], children }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+            "div",
+            {
+              className: clsx_default(
+                style_default7["header-trigger-positioner"]
+              ),
+              children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+                "div",
+                {
+                  className: clsx_default(
+                    style_default7["header-trigger-wrapper"],
+                    // While the interactive trigger element is the whole header,
+                    // the focus ring will be displayed only on the icon to visually
+                    // emulate it being the button.
+                    focus_default["outset-ring--focus-parent-visible"]
+                  ),
+                  children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+                    Icon,
+                    {
+                      icon: chevron_down_default,
+                      className: style_default7["header-trigger"]
+                    }
+                  )
+                }
+              )
+            }
+          )
+        ]
+      }
+    ) });
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/collapsible-card/header-description.mjs
+var import_element16 = __toESM(require_element(), 1);
+var import_jsx_runtime20 = __toESM(require_jsx_runtime(), 1);
+var HeaderDescription = (0, import_element16.forwardRef)(function CollapsibleCardHeaderDescription({ children, className, ...restProps }, ref) {
+  const descriptionId = (0, import_element16.useId)();
+  const { setDescriptionId } = (0, import_element16.useContext)(HeaderDescriptionIdContext);
+  (0, import_element16.useEffect)(() => {
+    setDescriptionId(descriptionId);
+    return () => setDescriptionId(void 0);
+  }, [descriptionId, setDescriptionId]);
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    "div",
+    {
+      ref,
+      id: descriptionId,
+      "aria-hidden": "true",
+      className,
+      ...restProps,
+      children
+    }
+  );
+});
+
+// node_modules/@wordpress/ui/build-module/collapsible-card/content.mjs
+var import_element17 = __toESM(require_element(), 1);
+var import_jsx_runtime21 = __toESM(require_jsx_runtime(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='718ddb3557']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "718ddb3557");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{.cab17c7a373cb60d__header-content{flex:1;min-width:0}.dd89d27c4f15912d__header-trigger-positioner{align-self:center;flex-shrink:0;max-height:0;overflow:visible}.bcfab5f2448bafef__header-trigger-wrapper{border-radius:var(--wpds-border-radius-sm,2px);display:flex;translate:0 -50%}._3106f8d2b0330faa__header-trigger{@media not (prefers-reduced-motion){transition:rotate .15s ease-out}}._5d2dfcb4085c6d0f__header[data-panel-open] ._3106f8d2b0330faa__header-trigger{rotate:180deg}._5d2dfcb4085c6d0f__header[data-disabled] ._3106f8d2b0330faa__header-trigger{color:var(--wpds-color-fg-interactive-neutral-disabled,#8d8d8d)}.e34cf37ccd0d81e0__content{height:var(--collapsible-panel-height);margin-block-start:var(--wp-ui-card-header-content-margin);overflow:hidden;&[hidden]:not([hidden=until-found]){display:none}&[data-ending-style],&[data-starting-style]{height:0}@media not (prefers-reduced-motion){transition:all .15s ease-out}}}@layer wp-ui-compositions{._41bfdbf7b6c087c2__content-inner{padding-block-start:0}._5d2dfcb4085c6d0f__header{align-items:stretch;display:flex;flex-direction:row;gap:var(--wpds-dimension-gap-sm,8px);outline:none;&:not([data-disabled]){cursor:var(--wpds-cursor-control,pointer)}}}"));
+  document.head.appendChild(style);
+}
+var style_default8 = { "header-content": "cab17c7a373cb60d__header-content", "header-trigger-positioner": "dd89d27c4f15912d__header-trigger-positioner", "header-trigger-wrapper": "bcfab5f2448bafef__header-trigger-wrapper", "header-trigger": "_3106f8d2b0330faa__header-trigger", "header": "_5d2dfcb4085c6d0f__header", "content": "e34cf37ccd0d81e0__content", "content-inner": "_41bfdbf7b6c087c2__content-inner" };
+var Content2 = (0, import_element17.forwardRef)(
+  function CollapsibleCardContent({ className, render: render4, children, hiddenUntilFound = true, ...restProps }, ref) {
+    return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+      Panel,
+      {
+        ref,
+        className: clsx_default(style_default8.content, className),
+        hiddenUntilFound,
+        ...restProps,
+        children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+          Content,
+          {
+            className: style_default8["content-inner"],
+            render: render4,
+            children
+          }
+        )
+      }
+    );
+  }
+);
+
+// node_modules/@wordpress/ui/build-module/stack/stack.mjs
+var import_element18 = __toESM(require_element(), 1);
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='b51ff41489']")) {
+  const style = document.createElement("style");
+  style.setAttribute("data-wp-hash", "b51ff41489");
+  style.appendChild(document.createTextNode("@layer wp-ui-utilities, wp-ui-components, wp-ui-compositions, wp-ui-overrides;@layer wp-ui-components{._19ce0419607e1896__stack{display:flex}}"));
+  document.head.appendChild(style);
+}
+var style_default9 = { "stack": "_19ce0419607e1896__stack" };
+var gapTokens = {
+  xs: "var(--wpds-dimension-gap-xs, 4px)",
+  sm: "var(--wpds-dimension-gap-sm, 8px)",
+  md: "var(--wpds-dimension-gap-md, 12px)",
+  lg: "var(--wpds-dimension-gap-lg, 16px)",
+  xl: "var(--wpds-dimension-gap-xl, 24px)",
+  "2xl": "var(--wpds-dimension-gap-2xl, 32px)",
+  "3xl": "var(--wpds-dimension-gap-3xl, 40px)"
+};
+var Stack = (0, import_element18.forwardRef)(function Stack2({ direction, gap, align, justify, wrap, render: render4, ...props }, ref) {
+  const style = {
+    gap: gap && gapTokens[gap],
+    alignItems: align,
+    justifyContent: justify,
+    flexDirection: direction,
+    flexWrap: wrap
+  };
+  const element = useRender({
+    render: render4,
+    ref,
+    props: mergeProps(props, { style, className: style_default9.stack })
+  });
+  return element;
+});
 
 // node_modules/@wordpress/admin-ui/build-module/page/sidebar-toggle-slot.mjs
 var import_components = __toESM(require_components(), 1);
 var { Fill: SidebarToggleFill, Slot: SidebarToggleSlot } = (0, import_components.createSlotFill)("SidebarToggle");
 
 // node_modules/@wordpress/admin-ui/build-module/page/header.mjs
-var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
-function Header({
+var import_jsx_runtime22 = __toESM(require_jsx_runtime(), 1);
+function Header3({
+  headingLevel = 2,
   breadcrumbs,
   badges,
   title,
@@ -315,37 +2702,49 @@ function Header({
   actions,
   showSidebarToggle = true
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_components2.__experimentalVStack, { className: "admin-ui-page__header", as: "header", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_components2.__experimentalHStack, { justify: "space-between", spacing: 2, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_components2.__experimentalHStack, { spacing: 2, justify: "left", children: [
-        showSidebarToggle && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-          SidebarToggleSlot,
-          {
-            bubblesVirtually: true,
-            className: "admin-ui-page__sidebar-toggle-slot"
-          }
-        ),
-        title && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_components2.__experimentalHeading, { as: "h2", level: 3, weight: 500, truncate: true, children: title }),
-        breadcrumbs,
-        badges
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-        import_components2.__experimentalHStack,
-        {
-          style: { width: "auto", flexShrink: 0 },
-          spacing: 2,
-          className: "admin-ui-page__header-actions",
-          children: actions
-        }
-      )
-    ] }),
-    subTitle && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "admin-ui-page__header-subtitle", children: subTitle })
-  ] });
+  const HeadingTag = `h${headingLevel}`;
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+    Stack,
+    {
+      direction: "column",
+      className: "admin-ui-page__header",
+      render: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("header", {}),
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(Stack, { direction: "row", justify: "space-between", gap: "sm", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(Stack, { direction: "row", gap: "sm", align: "center", justify: "start", children: [
+            showSidebarToggle && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+              SidebarToggleSlot,
+              {
+                bubblesVirtually: true,
+                className: "admin-ui-page__sidebar-toggle-slot"
+              }
+            ),
+            title && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(HeadingTag, { className: "admin-ui-page__header-title", children: title }),
+            breadcrumbs,
+            badges
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            Stack,
+            {
+              direction: "row",
+              gap: "sm",
+              style: { width: "auto", flexShrink: 0 },
+              className: "admin-ui-page__header-actions",
+              align: "center",
+              children: actions
+            }
+          )
+        ] }),
+        subTitle && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { className: "admin-ui-page__header-subtitle", children: subTitle })
+      ]
+    }
+  );
 }
 
 // node_modules/@wordpress/admin-ui/build-module/page/index.mjs
-var import_jsx_runtime3 = __toESM(require_jsx_runtime(), 1);
+var import_jsx_runtime23 = __toESM(require_jsx_runtime(), 1);
 function Page({
+  headingLevel,
   breadcrumbs,
   badges,
   title,
@@ -359,10 +2758,11 @@ function Page({
 }) {
   const classes = clsx_default("admin-ui-page", className);
   const effectiveAriaLabel = ariaLabel ?? (typeof title === "string" ? title : "");
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(navigable_region_default, { className: classes, ariaLabel: effectiveAriaLabel, children: [
-    (title || breadcrumbs || badges) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
-      Header,
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(navigable_region_default, { className: classes, ariaLabel: effectiveAriaLabel, children: [
+    (title || breadcrumbs || badges || actions) && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
+      Header3,
       {
+        headingLevel,
         breadcrumbs,
         badges,
         title,
@@ -371,66 +2771,19 @@ function Page({
         showSidebarToggle
       }
     ),
-    hasPadding ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "admin-ui-page__content has-padding", children }) : children
+    hasPadding ? /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { className: "admin-ui-page__content has-padding", children }) : children
   ] });
 }
 Page.SidebarToggleFill = SidebarToggleFill;
 var page_default = Page;
 
 // routes/ai-home/stage.tsx
-var import_components29 = __toESM(require_components());
+var import_components26 = __toESM(require_components());
 var import_core_data = __toESM(require_core_data());
 var import_data = __toESM(require_data());
 
-// node_modules/@wordpress/dataviews/build-module/constants.js
-var import_i18n = __toESM(require_i18n());
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/chevron-down.mjs
-var import_primitives = __toESM(require_primitives(), 1);
-var import_jsx_runtime4 = __toESM(require_jsx_runtime(), 1);
-var chevron_down_default = /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_primitives.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_primitives.Path, { d: "M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z" }) });
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/chevron-up.mjs
-var import_primitives2 = __toESM(require_primitives(), 1);
-var import_jsx_runtime5 = __toESM(require_jsx_runtime(), 1);
-var chevron_up_default = /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_primitives2.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_primitives2.Path, { d: "M6.5 12.4L12 8l5.5 4.4-.9 1.2L12 10l-4.5 3.6-1-1.2z" }) });
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/close-small.mjs
-var import_primitives3 = __toESM(require_primitives(), 1);
-var import_jsx_runtime6 = __toESM(require_jsx_runtime(), 1);
-var close_small_default = /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_primitives3.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_primitives3.Path, { d: "M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z" }) });
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/envelope.mjs
-var import_primitives4 = __toESM(require_primitives(), 1);
-var import_jsx_runtime7 = __toESM(require_jsx_runtime(), 1);
-var envelope_default = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_primitives4.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_primitives4.Path, { fillRule: "evenodd", clipRule: "evenodd", d: "M3 7c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm2-.5h14c.3 0 .5.2.5.5v1L12 13.5 4.5 7.9V7c0-.3.2-.5.5-.5Zm-.5 3.3V17c0 .3.2.5.5.5h14c.3 0 .5-.2.5-.5V9.8L12 15.4 4.5 9.8Z" }) });
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/error.mjs
-var import_primitives5 = __toESM(require_primitives(), 1);
-var import_jsx_runtime8 = __toESM(require_jsx_runtime(), 1);
-var error_default = /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_primitives5.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_primitives5.Path, { fillRule: "evenodd", clipRule: "evenodd", d: "M12.218 5.377a.25.25 0 0 0-.436 0l-7.29 12.96a.25.25 0 0 0 .218.373h14.58a.25.25 0 0 0 .218-.372l-7.29-12.96Zm-1.743-.735c.669-1.19 2.381-1.19 3.05 0l7.29 12.96a1.75 1.75 0 0 1-1.525 2.608H4.71a1.75 1.75 0 0 1-1.525-2.608l7.29-12.96ZM12.75 17.46h-1.5v-1.5h1.5v1.5Zm-1.5-3h1.5v-5h-1.5v5Z" }) });
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/link.mjs
-var import_primitives6 = __toESM(require_primitives(), 1);
-var import_jsx_runtime9 = __toESM(require_jsx_runtime(), 1);
-var link_default = /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_primitives6.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_primitives6.Path, { d: "M10 17.389H8.444A5.194 5.194 0 1 1 8.444 7H10v1.5H8.444a3.694 3.694 0 0 0 0 7.389H10v1.5ZM14 7h1.556a5.194 5.194 0 0 1 0 10.39H14v-1.5h1.556a3.694 3.694 0 0 0 0-7.39H14V7Zm-4.5 6h5v-1.5h-5V13Z" }) });
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/mobile.mjs
-var import_primitives7 = __toESM(require_primitives(), 1);
-var import_jsx_runtime10 = __toESM(require_jsx_runtime(), 1);
-var mobile_default = /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_primitives7.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_primitives7.Path, { d: "M15 4H9c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm.5 14c0 .3-.2.5-.5.5H9c-.3 0-.5-.2-.5-.5V6c0-.3.2-.5.5-.5h6c.3 0 .5.2.5.5v12zm-4.5-.5h2V16h-2v1.5z" }) });
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/seen.mjs
-var import_primitives8 = __toESM(require_primitives(), 1);
-var import_jsx_runtime11 = __toESM(require_jsx_runtime(), 1);
-var seen_default = /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_primitives8.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_primitives8.Path, { d: "M3.99961 13C4.67043 13.3354 4.6703 13.3357 4.67017 13.3359L4.67298 13.3305C4.67621 13.3242 4.68184 13.3135 4.68988 13.2985C4.70595 13.2686 4.7316 13.2218 4.76695 13.1608C4.8377 13.0385 4.94692 12.8592 5.09541 12.6419C5.39312 12.2062 5.84436 11.624 6.45435 11.0431C7.67308 9.88241 9.49719 8.75 11.9996 8.75C14.502 8.75 16.3261 9.88241 17.5449 11.0431C18.1549 11.624 18.6061 12.2062 18.9038 12.6419C19.0523 12.8592 19.1615 13.0385 19.2323 13.1608C19.2676 13.2218 19.2933 13.2686 19.3093 13.2985C19.3174 13.3135 19.323 13.3242 19.3262 13.3305L19.3291 13.3359C19.3289 13.3357 19.3288 13.3354 19.9996 13C20.6704 12.6646 20.6703 12.6643 20.6701 12.664L20.6697 12.6632L20.6688 12.6614L20.6662 12.6563L20.6583 12.6408C20.6517 12.6282 20.6427 12.6108 20.631 12.5892C20.6078 12.5459 20.5744 12.4852 20.5306 12.4096C20.4432 12.2584 20.3141 12.0471 20.1423 11.7956C19.7994 11.2938 19.2819 10.626 18.5794 9.9569C17.1731 8.61759 14.9972 7.25 11.9996 7.25C9.00203 7.25 6.82614 8.61759 5.41987 9.9569C4.71736 10.626 4.19984 11.2938 3.85694 11.7956C3.68511 12.0471 3.55605 12.2584 3.4686 12.4096C3.42484 12.4852 3.39142 12.5459 3.36818 12.5892C3.35656 12.6108 3.34748 12.6282 3.34092 12.6408L3.33297 12.6563L3.33041 12.6614L3.32948 12.6632L3.32911 12.664C3.32894 12.6643 3.32879 12.6646 3.99961 13ZM11.9996 16C13.9326 16 15.4996 14.433 15.4996 12.5C15.4996 10.567 13.9326 9 11.9996 9C10.0666 9 8.49961 10.567 8.49961 12.5C8.49961 14.433 10.0666 16 11.9996 16Z" }) });
-
-// node_modules/@wordpress/dataviews/node_modules/@wordpress/icons/build-module/library/unseen.mjs
-var import_primitives9 = __toESM(require_primitives(), 1);
-var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
-var unseen_default = /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_primitives9.SVG, { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_primitives9.Path, { d: "M20.7 12.7s0-.1-.1-.2c0-.2-.2-.4-.4-.6-.3-.5-.9-1.2-1.6-1.8-.7-.6-1.5-1.3-2.6-1.8l-.6 1.4c.9.4 1.6 1 2.1 1.5.6.6 1.1 1.2 1.4 1.6.1.2.3.4.3.5v.1l.7-.3.7-.3Zm-5.2-9.3-1.8 4c-.5-.1-1.1-.2-1.7-.2-3 0-5.2 1.4-6.6 2.7-.7.7-1.2 1.3-1.6 1.8-.2.3-.3.5-.4.6 0 0 0 .1-.1.2s0 0 .7.3l.7.3V13c0-.1.2-.3.3-.5.3-.4.7-1 1.4-1.6 1.2-1.2 3-2.3 5.5-2.3H13v.3c-.4 0-.8-.1-1.1-.1-1.9 0-3.5 1.6-3.5 3.5s.6 2.3 1.6 2.9l-2 4.4.9.4 7.6-16.2-.9-.4Zm-3 12.6c1.7-.2 3-1.7 3-3.5s-.2-1.4-.6-1.9L12.4 16Z" }) });
-
-// node_modules/@wordpress/dataviews/build-module/constants.js
+// node_modules/@wordpress/dataviews/build-module/constants.mjs
+var import_i18n = __toESM(require_i18n(), 1);
 var OPERATOR_IS_ANY = "isAny";
 var OPERATOR_IS_NONE = "isNone";
 var OPERATOR_IS_ALL = "isAll";
@@ -457,26 +2810,25 @@ var sortLabels = {
   asc: (0, import_i18n.__)("Sort ascending"),
   desc: (0, import_i18n.__)("Sort descending")
 };
-var DAYS_OF_WEEK = [0, 1, 2, 3, 4, 5, 6];
 
-// node_modules/@wordpress/dataviews/build-module/lock-unlock.js
-var import_private_apis = __toESM(require_private_apis());
+// node_modules/@wordpress/dataviews/build-module/lock-unlock.mjs
+var import_private_apis = __toESM(require_private_apis(), 1);
 var { lock, unlock } = (0, import_private_apis.__dangerousOptInToUnstableAPIsOnlyForCoreModules)(
   "I acknowledge private features are not for use in themes or plugins and doing so will break in the next version of WordPress.",
   "@wordpress/dataviews"
 );
 
-// node_modules/@wordpress/dataviews/build-module/hooks/use-elements.js
-var import_element2 = __toESM(require_element());
-var EMPTY_ARRAY = [];
+// node_modules/@wordpress/dataviews/build-module/hooks/use-elements.mjs
+var import_element19 = __toESM(require_element(), 1);
+var EMPTY_ARRAY2 = [];
 function useElements({
   elements,
   getElements
 }) {
-  const staticElements = Array.isArray(elements) && elements.length > 0 ? elements : EMPTY_ARRAY;
-  const [records, setRecords] = (0, import_element2.useState)(staticElements);
-  const [isLoading, setIsLoading] = (0, import_element2.useState)(false);
-  (0, import_element2.useEffect)(() => {
+  const staticElements = Array.isArray(elements) && elements.length > 0 ? elements : EMPTY_ARRAY2;
+  const [records, setRecords] = (0, import_element19.useState)(staticElements);
+  const [isLoading, setIsLoading] = (0, import_element19.useState)(false);
+  (0, import_element19.useEffect)(() => {
     if (!getElements) {
       setRecords(staticElements);
       return;
@@ -506,365 +2858,6 @@ function useElements({
     isLoading
   };
 }
-
-// node_modules/@wordpress/dataviews/build-module/utils/operators.js
-var import_i18n2 = __toESM(require_i18n());
-var import_element3 = __toESM(require_element());
-var import_jsx_runtime13 = __toESM(require_jsx_runtime());
-var filterTextWrappers = {
-  Name: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "dataviews-filters__summary-filter-text-name" }),
-  Value: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "dataviews-filters__summary-filter-text-value" })
-};
-var OPERATORS = [
-  {
-    name: OPERATOR_IS_ANY,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Includes"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is any: Admin, Editor". */
-        (0, import_i18n2.__)("<Name>%1$s includes: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements.map((element) => element.label).join(", ")
-      ),
-      filterTextWrappers
-    ),
-    selection: "multi"
-  },
-  {
-    name: OPERATOR_IS_NONE,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Is none of"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is none of: Admin, Editor". */
-        (0, import_i18n2.__)("<Name>%1$s is none of: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements.map((element) => element.label).join(", ")
-      ),
-      filterTextWrappers
-    ),
-    selection: "multi"
-  },
-  {
-    name: OPERATOR_IS_ALL,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Includes all"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author includes all: Admin, Editor". */
-        (0, import_i18n2.__)("<Name>%1$s includes all: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements.map((element) => element.label).join(", ")
-      ),
-      filterTextWrappers
-    ),
-    selection: "multi"
-  },
-  {
-    name: OPERATOR_IS_NOT_ALL,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Is none of"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is none of: Admin, Editor". */
-        (0, import_i18n2.__)("<Name>%1$s is none of: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements.map((element) => element.label).join(", ")
-      ),
-      filterTextWrappers
-    ),
-    selection: "multi"
-  },
-  {
-    name: OPERATOR_BETWEEN,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Between (inc)"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Item count"). 2: Filter value min. 3: Filter value max. e.g.: "Item count between (inc): 10 and 180". */
-        (0, import_i18n2.__)(
-          "<Name>%1$s between (inc): </Name><Value>%2$s and %3$s</Value>"
-        ),
-        filter.name,
-        activeElements[0].label[0],
-        activeElements[0].label[1]
-      ),
-      filterTextWrappers
-    ),
-    selection: "custom"
-  },
-  {
-    name: OPERATOR_IN_THE_PAST,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("In the past"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "7 days"): "Date is in the past: 7 days". */
-        (0, import_i18n2.__)(
-          "<Name>%1$s is in the past: </Name><Value>%2$s</Value>"
-        ),
-        filter.name,
-        `${activeElements[0].value.value} ${activeElements[0].value.unit}`
-      ),
-      filterTextWrappers
-    ),
-    selection: "custom"
-  },
-  {
-    name: OPERATOR_OVER,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Over"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "7 days"): "Date is over: 7 days". */
-        (0, import_i18n2.__)("<Name>%1$s is over: </Name><Value>%2$s</Value>"),
-        filter.name,
-        `${activeElements[0].value.value} ${activeElements[0].value.unit}`
-      ),
-      filterTextWrappers
-    ),
-    selection: "custom"
-  },
-  {
-    name: OPERATOR_IS,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Is"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is: Admin". */
-        (0, import_i18n2.__)("<Name>%1$s is: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_IS_NOT,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Is not"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is not: Admin". */
-        (0, import_i18n2.__)("<Name>%1$s is not: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_LESS_THAN,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Less than"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Count"). 2: Filter value (e.g. "10"): "Count is less than: 10". */
-        (0, import_i18n2.__)("<Name>%1$s is less than: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_GREATER_THAN,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Greater than"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Count"). 2: Filter value (e.g. "10"): "Count is greater than: 10". */
-        (0, import_i18n2.__)(
-          "<Name>%1$s is greater than: </Name><Value>%2$s</Value>"
-        ),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_LESS_THAN_OR_EQUAL,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Less than or equal"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Count"). 2: Filter value (e.g. "10"): "Count is less than or equal to: 10". */
-        (0, import_i18n2.__)(
-          "<Name>%1$s is less than or equal to: </Name><Value>%2$s</Value>"
-        ),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_GREATER_THAN_OR_EQUAL,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Greater than or equal"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Count"). 2: Filter value (e.g. "10"): "Count is greater than or equal to: 10". */
-        (0, import_i18n2.__)(
-          "<Name>%1$s is greater than or equal to: </Name><Value>%2$s</Value>"
-        ),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_BEFORE,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Before"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is before: 2024-01-01". */
-        (0, import_i18n2.__)("<Name>%1$s is before: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_AFTER,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("After"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is after: 2024-01-01". */
-        (0, import_i18n2.__)("<Name>%1$s is after: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_BEFORE_INC,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Before (inc)"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is on or before: 2024-01-01". */
-        (0, import_i18n2.__)(
-          "<Name>%1$s is on or before: </Name><Value>%2$s</Value>"
-        ),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_AFTER_INC,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("After (inc)"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is on or after: 2024-01-01". */
-        (0, import_i18n2.__)(
-          "<Name>%1$s is on or after: </Name><Value>%2$s</Value>"
-        ),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_CONTAINS,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Contains"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Title"). 2: Filter value (e.g. "Hello"): "Title contains: Hello". */
-        (0, import_i18n2.__)("<Name>%1$s contains: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_NOT_CONTAINS,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Doesn't contain"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Title"). 2: Filter value (e.g. "Hello"): "Title doesn't contain: Hello". */
-        (0, import_i18n2.__)(
-          "<Name>%1$s doesn't contain: </Name><Value>%2$s</Value>"
-        ),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_STARTS_WITH,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Starts with"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Title"). 2: Filter value (e.g. "Hello"): "Title starts with: Hello". */
-        (0, import_i18n2.__)("<Name>%1$s starts with: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_ON,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("On"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is: 2024-01-01". */
-        (0, import_i18n2.__)("<Name>%1$s is: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  },
-  {
-    name: OPERATOR_NOT_ON,
-    /* translators: DataViews operator name */
-    label: (0, import_i18n2.__)("Not on"),
-    filterText: (filter, activeElements) => (0, import_element3.createInterpolateElement)(
-      (0, import_i18n2.sprintf)(
-        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is not: 2024-01-01". */
-        (0, import_i18n2.__)("<Name>%1$s is not: </Name><Value>%2$s</Value>"),
-        filter.name,
-        activeElements[0].label
-      ),
-      filterTextWrappers
-    ),
-    selection: "single"
-  }
-];
-var getAllOperatorNames = () => OPERATORS.map((op) => op.name);
 
 // node_modules/@wordpress/dataviews/node_modules/date-fns/constants.js
 var daysInYear = 365.2425;
@@ -1027,6 +3020,11 @@ function startOfISOWeekYear(date, options) {
   return startOfISOWeek(fourthOfJanuary);
 }
 
+// node_modules/@wordpress/dataviews/node_modules/date-fns/addWeeks.js
+function addWeeks(date, amount, options) {
+  return addDays(date, amount * 7, options);
+}
+
 // node_modules/@wordpress/dataviews/node_modules/date-fns/addYears.js
 function addYears(date, amount, options) {
   return addMonths(date, amount * 12, options);
@@ -1146,8 +3144,8 @@ var formatDistance = (token, count, options) => {
 function buildFormatLongFn(args) {
   return (options = {}) => {
     const width = options.width ? String(options.width) : args.defaultWidth;
-    const format2 = args.formats[width] || args.formats[args.defaultWidth];
-    return format2;
+    const format6 = args.formats[width] || args.formats[args.defaultWidth];
+    return format6;
   };
 }
 
@@ -2404,14 +4402,14 @@ function isProtectedDayOfYearToken(token) {
 function isProtectedWeekYearToken(token) {
   return weekYearTokenRE.test(token);
 }
-function warnOrThrowProtectedError(token, format2, input) {
-  const _message = message(token, format2, input);
+function warnOrThrowProtectedError(token, format6, input) {
+  const _message = message(token, format6, input);
   console.warn(_message);
   if (throwTokens.includes(token)) throw new RangeError(_message);
 }
-function message(token, format2, input) {
+function message(token, format6, input) {
   const subject = token[0] === "Y" ? "years" : "days of the month";
-  return `Use \`${token.toLowerCase()}\` instead of \`${token}\` (in \`${format2}\`) for formatting ${subject} to the input \`${input}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
+  return `Use \`${token.toLowerCase()}\` instead of \`${token}\` (in \`${format6}\`) for formatting ${subject} to the input \`${input}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
 }
 
 // node_modules/@wordpress/dataviews/node_modules/date-fns/format.js
@@ -2490,268 +4488,559 @@ function subMonths(date, amount, options) {
   return addMonths(date, -amount, options);
 }
 
+// node_modules/@wordpress/dataviews/node_modules/date-fns/subWeeks.js
+function subWeeks(date, amount, options) {
+  return addWeeks(date, -amount, options);
+}
+
 // node_modules/@wordpress/dataviews/node_modules/date-fns/subYears.js
 function subYears(date, amount, options) {
   return addYears(date, -amount, options);
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/parse-date-time.js
-var import_date = __toESM(require_date());
-function parseDateTime(dateTimeString) {
-  if (!dateTimeString) {
-    return null;
-  }
-  const parsed = (0, import_date.getDate)(dateTimeString);
-  return parsed && isValid(parsed) ? parsed : null;
-}
-
-// node_modules/@wordpress/dataviews/build-module/field-types/number.js
-var import_i18n3 = __toESM(require_i18n());
-
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/render-from-elements.js
-function RenderFromElements({
-  item,
-  field
-}) {
-  const { elements, isLoading } = useElements({
-    elements: field.elements,
-    getElements: field.getElements
-  });
-  const value = field.getValue({ item });
-  if (isLoading) {
-    return value;
-  }
-  if (elements.length === 0) {
-    return value;
-  }
-  return elements?.find((element) => element.value === value)?.label || field.getValue({ item });
-}
-
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/sort-number.js
-var sort_number_default = (a2, b2, direction) => {
-  return direction === "asc" ? a2 - b2 : b2 - a2;
+// node_modules/@wordpress/dataviews/build-module/utils/operators.mjs
+var import_i18n2 = __toESM(require_i18n(), 1);
+var import_element20 = __toESM(require_element(), 1);
+var import_date = __toESM(require_date(), 1);
+var import_jsx_runtime24 = __toESM(require_jsx_runtime(), 1);
+var filterTextWrappers = {
+  Name: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "dataviews-filters__summary-filter-text-name" }),
+  Value: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { className: "dataviews-filters__summary-filter-text-value" })
 };
-
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-required.js
-function isValidRequired(item, field) {
-  const value = field.getValue({ item });
-  return ![void 0, "", null].includes(value);
+function getRelativeDate(value, unit) {
+  switch (unit) {
+    case "days":
+      return subDays(/* @__PURE__ */ new Date(), value);
+    case "weeks":
+      return subWeeks(/* @__PURE__ */ new Date(), value);
+    case "months":
+      return subMonths(/* @__PURE__ */ new Date(), value);
+    case "years":
+      return subYears(/* @__PURE__ */ new Date(), value);
+    default:
+      return /* @__PURE__ */ new Date();
+  }
 }
-
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-min.js
-function isValidMin(item, field) {
-  if (typeof field.isValid.min?.constraint !== "number") {
+var isNoneOperatorDefinition = {
+  /* translators: DataViews operator name */
+  label: (0, import_i18n2.__)("Is none of"),
+  filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+    (0, import_i18n2.sprintf)(
+      /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is none of: Admin, Editor". */
+      (0, import_i18n2.__)("<Name>%1$s is none of: </Name><Value>%2$s</Value>"),
+      filter.name,
+      activeElements.map((element) => element.label).join(", ")
+    ),
+    filterTextWrappers
+  ),
+  filter: ((item, field, filterValue) => {
+    if (!filterValue?.length) {
+      return true;
+    }
+    const fieldValue = field.getValue({ item });
+    if (Array.isArray(fieldValue)) {
+      return !filterValue.some(
+        (fv) => fieldValue.includes(fv)
+      );
+    } else if (typeof fieldValue === "string") {
+      return !filterValue.includes(fieldValue);
+    }
     return false;
-  }
-  const value = field.getValue({ item });
-  if ([void 0, "", null].includes(value)) {
-    return true;
-  }
-  return Number(value) >= field.isValid.min.constraint;
-}
-
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-max.js
-function isValidMax(item, field) {
-  if (typeof field.isValid.max?.constraint !== "number") {
-    return false;
-  }
-  const value = field.getValue({ item });
-  if ([void 0, "", null].includes(value)) {
-    return true;
-  }
-  return Number(value) <= field.isValid.max.constraint;
-}
-
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-elements.js
-function isValidElements(item, field) {
-  const elements = field.elements ?? [];
-  const validValues = elements.map((el) => el.value);
-  if (validValues.length === 0) {
-    return true;
-  }
-  const value = field.getValue({ item });
-  return [].concat(value).every((v2) => validValues.includes(v2));
-}
-
-// node_modules/@wordpress/dataviews/build-module/field-types/number.js
-var import_jsx_runtime14 = __toESM(require_jsx_runtime());
-function getFormat(field) {
-  const fieldFormat = field.format;
-  return {
-    separatorThousand: fieldFormat?.separatorThousand !== void 0 && typeof fieldFormat.separatorThousand === "string" ? fieldFormat.separatorThousand : ",",
-    separatorDecimal: fieldFormat?.separatorDecimal !== void 0 && typeof fieldFormat.separatorDecimal === "string" ? fieldFormat.separatorDecimal : ".",
-    decimals: fieldFormat?.decimals !== void 0 && typeof fieldFormat.decimals === "number" && fieldFormat.decimals >= 0 && fieldFormat.decimals <= 100 && Number.isInteger(fieldFormat.decimals) ? fieldFormat.decimals : 2
-  };
-}
-function formatNumber(value, format2) {
-  if (!Number.isFinite(value)) {
-    return String(value);
-  }
-  const { separatorThousand, separatorDecimal, decimals } = format2;
-  const fixedValue = value.toFixed(decimals);
-  const [integerPart, decimalPart] = fixedValue.split(".");
-  const formattedInteger = separatorThousand ? integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separatorThousand) : integerPart;
-  return decimals === 0 ? formattedInteger : formattedInteger + separatorDecimal + decimalPart;
-}
-function isEmpty(value) {
-  return value === "" || value === void 0 || value === null;
-}
-function render({ item, field }) {
-  if (field.hasElements) {
-    return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(RenderFromElements, { item, field });
-  }
-  const value = field.getValue({ item });
-  if ([null, void 0].includes(value)) {
-    return "";
-  }
-  let format2;
-  if (field.type !== "number") {
-    format2 = getFormat(field);
-  } else {
-    format2 = field.format;
-  }
-  return formatNumber(Number(value), format2);
-}
-function isValidCustom(item, field) {
-  const value = field.getValue({ item });
-  if (!isEmpty(value) && !Number.isFinite(value)) {
-    return (0, import_i18n3.__)("Value must be a number.");
-  }
-  return null;
-}
-var number_default = {
-  type: "number",
-  render,
-  Edit: "number",
-  sort: sort_number_default,
-  enableSorting: true,
-  enableGlobalSearch: false,
-  defaultOperators: [
-    OPERATOR_IS,
-    OPERATOR_IS_NOT,
-    OPERATOR_LESS_THAN,
-    OPERATOR_GREATER_THAN,
-    OPERATOR_LESS_THAN_OR_EQUAL,
-    OPERATOR_GREATER_THAN_OR_EQUAL,
-    OPERATOR_BETWEEN
-  ],
-  validOperators: [
-    // Single-selection
-    OPERATOR_IS,
-    OPERATOR_IS_NOT,
-    OPERATOR_LESS_THAN,
-    OPERATOR_GREATER_THAN,
-    OPERATOR_LESS_THAN_OR_EQUAL,
-    OPERATOR_GREATER_THAN_OR_EQUAL,
-    OPERATOR_BETWEEN,
-    // Multiple-selection
-    OPERATOR_IS_ANY,
-    OPERATOR_IS_NONE,
-    OPERATOR_IS_ALL,
-    OPERATOR_IS_NOT_ALL
-  ],
-  getFormat,
-  validate: {
-    required: isValidRequired,
-    min: isValidMin,
-    max: isValidMax,
-    elements: isValidElements,
-    custom: isValidCustom
-  }
+  }),
+  selection: "multi"
 };
+var OPERATORS = [
+  {
+    name: OPERATOR_IS_ANY,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Includes"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is any: Admin, Editor". */
+        (0, import_i18n2.__)("<Name>%1$s includes: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements.map((element) => element.label).join(", ")
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (!filterValue?.length) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      if (Array.isArray(fieldValue)) {
+        return filterValue.some(
+          (fv) => fieldValue.includes(fv)
+        );
+      } else if (typeof fieldValue === "string") {
+        return filterValue.includes(fieldValue);
+      }
+      return false;
+    },
+    selection: "multi"
+  },
+  {
+    name: OPERATOR_IS_NONE,
+    ...isNoneOperatorDefinition
+  },
+  {
+    name: OPERATOR_IS_ALL,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Includes all"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author includes all: Admin, Editor". */
+        (0, import_i18n2.__)("<Name>%1$s includes all: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements.map((element) => element.label).join(", ")
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (!filterValue?.length) {
+        return true;
+      }
+      return filterValue.every((value) => {
+        return field.getValue({ item })?.includes(value);
+      });
+    },
+    selection: "multi"
+  },
+  {
+    name: OPERATOR_IS_NOT_ALL,
+    ...isNoneOperatorDefinition
+  },
+  {
+    name: OPERATOR_BETWEEN,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Between (inc)"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Item count"). 2: Filter value min. 3: Filter value max. e.g.: "Item count between (inc): 10 and 180". */
+        (0, import_i18n2.__)(
+          "<Name>%1$s between (inc): </Name><Value>%2$s and %3$s</Value>"
+        ),
+        filter.name,
+        activeElements[0].label[0],
+        activeElements[0].label[1]
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (!Array.isArray(filterValue) || filterValue.length !== 2 || filterValue[0] === void 0 || filterValue[1] === void 0) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      if (typeof fieldValue === "number" || fieldValue instanceof Date || typeof fieldValue === "string") {
+        return fieldValue >= filterValue[0] && fieldValue <= filterValue[1];
+      }
+      return false;
+    },
+    selection: "custom"
+  },
+  {
+    name: OPERATOR_IN_THE_PAST,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("In the past"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "7 days"): "Date is in the past: 7 days". */
+        (0, import_i18n2.__)(
+          "<Name>%1$s is in the past: </Name><Value>%2$s</Value>"
+        ),
+        filter.name,
+        `${activeElements[0].value.value} ${activeElements[0].value.unit}`
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue?.value === void 0 || filterValue?.unit === void 0) {
+        return true;
+      }
+      const targetDate = getRelativeDate(
+        filterValue.value,
+        filterValue.unit
+      );
+      const fieldValue = (0, import_date.getDate)(field.getValue({ item }));
+      return fieldValue >= targetDate && fieldValue <= /* @__PURE__ */ new Date();
+    },
+    selection: "custom"
+  },
+  {
+    name: OPERATOR_OVER,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Over"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "7 days"): "Date is over: 7 days". */
+        (0, import_i18n2.__)("<Name>%1$s is over: </Name><Value>%2$s</Value>"),
+        filter.name,
+        `${activeElements[0].value.value} ${activeElements[0].value.unit}`
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue?.value === void 0 || filterValue?.unit === void 0) {
+        return true;
+      }
+      const targetDate = getRelativeDate(
+        filterValue.value,
+        filterValue.unit
+      );
+      const fieldValue = (0, import_date.getDate)(field.getValue({ item }));
+      return fieldValue < targetDate;
+    },
+    selection: "custom"
+  },
+  {
+    name: OPERATOR_IS,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Is"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is: Admin". */
+        (0, import_i18n2.__)("<Name>%1$s is: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      return filterValue === field.getValue({ item }) || filterValue === void 0;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_IS_NOT,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Is not"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Author"). 2: Filter value (e.g. "Admin"): "Author is not: Admin". */
+        (0, import_i18n2.__)("<Name>%1$s is not: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      return filterValue !== field.getValue({ item });
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_LESS_THAN,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Less than"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Count"). 2: Filter value (e.g. "10"): "Count is less than: 10". */
+        (0, import_i18n2.__)("<Name>%1$s is less than: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      return fieldValue < filterValue;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_GREATER_THAN,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Greater than"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Count"). 2: Filter value (e.g. "10"): "Count is greater than: 10". */
+        (0, import_i18n2.__)(
+          "<Name>%1$s is greater than: </Name><Value>%2$s</Value>"
+        ),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      return fieldValue > filterValue;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_LESS_THAN_OR_EQUAL,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Less than or equal"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Count"). 2: Filter value (e.g. "10"): "Count is less than or equal to: 10". */
+        (0, import_i18n2.__)(
+          "<Name>%1$s is less than or equal to: </Name><Value>%2$s</Value>"
+        ),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      return fieldValue <= filterValue;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_GREATER_THAN_OR_EQUAL,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Greater than or equal"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Count"). 2: Filter value (e.g. "10"): "Count is greater than or equal to: 10". */
+        (0, import_i18n2.__)(
+          "<Name>%1$s is greater than or equal to: </Name><Value>%2$s</Value>"
+        ),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      return fieldValue >= filterValue;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_BEFORE,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Before"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is before: 2024-01-01". */
+        (0, import_i18n2.__)("<Name>%1$s is before: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const filterDate = (0, import_date.getDate)(filterValue);
+      const fieldDate = (0, import_date.getDate)(field.getValue({ item }));
+      return fieldDate < filterDate;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_AFTER,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("After"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is after: 2024-01-01". */
+        (0, import_i18n2.__)("<Name>%1$s is after: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const filterDate = (0, import_date.getDate)(filterValue);
+      const fieldDate = (0, import_date.getDate)(field.getValue({ item }));
+      return fieldDate > filterDate;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_BEFORE_INC,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Before (inc)"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is on or before: 2024-01-01". */
+        (0, import_i18n2.__)(
+          "<Name>%1$s is on or before: </Name><Value>%2$s</Value>"
+        ),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const filterDate = (0, import_date.getDate)(filterValue);
+      const fieldDate = (0, import_date.getDate)(field.getValue({ item }));
+      return fieldDate <= filterDate;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_AFTER_INC,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("After (inc)"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is on or after: 2024-01-01". */
+        (0, import_i18n2.__)(
+          "<Name>%1$s is on or after: </Name><Value>%2$s</Value>"
+        ),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const filterDate = (0, import_date.getDate)(filterValue);
+      const fieldDate = (0, import_date.getDate)(field.getValue({ item }));
+      return fieldDate >= filterDate;
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_CONTAINS,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Contains"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Title"). 2: Filter value (e.g. "Hello"): "Title contains: Hello". */
+        (0, import_i18n2.__)("<Name>%1$s contains: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      return typeof fieldValue === "string" && filterValue && fieldValue.toLowerCase().includes(String(filterValue).toLowerCase());
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_NOT_CONTAINS,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Doesn't contain"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Title"). 2: Filter value (e.g. "Hello"): "Title doesn't contain: Hello". */
+        (0, import_i18n2.__)(
+          "<Name>%1$s doesn't contain: </Name><Value>%2$s</Value>"
+        ),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      return typeof fieldValue === "string" && filterValue && !fieldValue.toLowerCase().includes(String(filterValue).toLowerCase());
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_STARTS_WITH,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Starts with"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Title"). 2: Filter value (e.g. "Hello"): "Title starts with: Hello". */
+        (0, import_i18n2.__)("<Name>%1$s starts with: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const fieldValue = field.getValue({ item });
+      return typeof fieldValue === "string" && filterValue && fieldValue.toLowerCase().startsWith(String(filterValue).toLowerCase());
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_ON,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("On"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is: 2024-01-01". */
+        (0, import_i18n2.__)("<Name>%1$s is: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const filterDate = (0, import_date.getDate)(filterValue);
+      const fieldDate = (0, import_date.getDate)(field.getValue({ item }));
+      return filterDate.getTime() === fieldDate.getTime();
+    },
+    selection: "single"
+  },
+  {
+    name: OPERATOR_NOT_ON,
+    /* translators: DataViews operator name */
+    label: (0, import_i18n2.__)("Not on"),
+    filterText: (filter, activeElements) => (0, import_element20.createInterpolateElement)(
+      (0, import_i18n2.sprintf)(
+        /* translators: 1: Filter name (e.g. "Date"). 2: Filter value (e.g. "2024-01-01"): "Date is not: 2024-01-01". */
+        (0, import_i18n2.__)("<Name>%1$s is not: </Name><Value>%2$s</Value>"),
+        filter.name,
+        activeElements[0].label
+      ),
+      filterTextWrappers
+    ),
+    filter(item, field, filterValue) {
+      if (filterValue === void 0) {
+        return true;
+      }
+      const filterDate = (0, import_date.getDate)(filterValue);
+      const fieldDate = (0, import_date.getDate)(field.getValue({ item }));
+      return filterDate.getTime() !== fieldDate.getTime();
+    },
+    selection: "single"
+  }
+];
+var getOperatorByName = (name) => OPERATORS.find((op) => op.name === name);
+var getAllOperatorNames = () => OPERATORS.map((op) => op.name);
 
-// node_modules/@wordpress/dataviews/build-module/field-types/integer.js
-var import_i18n4 = __toESM(require_i18n());
-var import_jsx_runtime15 = __toESM(require_jsx_runtime());
-function getFormat2(field) {
-  const fieldFormat = field.format;
-  return {
-    separatorThousand: fieldFormat?.separatorThousand !== void 0 && typeof fieldFormat.separatorThousand === "string" ? fieldFormat.separatorThousand : ","
-  };
-}
-function formatInteger(value, format2) {
-  if (!Number.isFinite(value)) {
-    return String(value);
-  }
-  const { separatorThousand } = format2;
-  const integerValue = Math.trunc(value);
-  if (!separatorThousand) {
-    return String(integerValue);
-  }
-  return String(integerValue).replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    separatorThousand
-  );
-}
-function render2({ item, field }) {
-  if (field.hasElements) {
-    return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(RenderFromElements, { item, field });
-  }
-  const value = field.getValue({ item });
-  if ([null, void 0].includes(value)) {
-    return "";
-  }
-  let format2;
-  if (field.type !== "integer") {
-    format2 = getFormat2(field);
-  } else {
-    format2 = field.format;
-  }
-  return formatInteger(Number(value), format2);
-}
-function isValidCustom2(item, field) {
-  const value = field.getValue({ item });
-  if (![void 0, "", null].includes(value) && !Number.isInteger(value)) {
-    return (0, import_i18n4.__)("Value must be an integer.");
-  }
-  return null;
-}
-var integer_default = {
-  type: "integer",
-  render: render2,
-  Edit: "integer",
-  sort: sort_number_default,
-  enableSorting: true,
-  enableGlobalSearch: false,
-  defaultOperators: [
-    OPERATOR_IS,
-    OPERATOR_IS_NOT,
-    OPERATOR_LESS_THAN,
-    OPERATOR_GREATER_THAN,
-    OPERATOR_LESS_THAN_OR_EQUAL,
-    OPERATOR_GREATER_THAN_OR_EQUAL,
-    OPERATOR_BETWEEN
-  ],
-  validOperators: [
-    // Single-selection
-    OPERATOR_IS,
-    OPERATOR_IS_NOT,
-    OPERATOR_LESS_THAN,
-    OPERATOR_GREATER_THAN,
-    OPERATOR_LESS_THAN_OR_EQUAL,
-    OPERATOR_GREATER_THAN_OR_EQUAL,
-    OPERATOR_BETWEEN,
-    // Multiple-selection
-    OPERATOR_IS_ANY,
-    OPERATOR_IS_NONE,
-    OPERATOR_IS_ALL,
-    OPERATOR_IS_NOT_ALL
-  ],
-  getFormat: getFormat2,
-  validate: {
-    required: isValidRequired,
-    min: isValidMin,
-    max: isValidMax,
-    elements: isValidElements,
-    custom: isValidCustom2
-  }
-};
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/checkbox.mjs
+var import_components2 = __toESM(require_components(), 1);
+var import_element21 = __toESM(require_element(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/checkbox.js
-var import_components3 = __toESM(require_components());
-var import_element4 = __toESM(require_element());
-
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/utils/get-custom-validity.js
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/utils/get-custom-validity.mjs
 function getCustomValidity(isValid2, validity) {
   let customValidity;
   if (isValid2?.required && validity?.required) {
@@ -2774,59 +5063,106 @@ function getCustomValidity(isValid2, validity) {
   return customValidity;
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/checkbox.js
-var import_jsx_runtime16 = __toESM(require_jsx_runtime());
-var { ValidatedCheckboxControl } = unlock(import_components3.privateApis);
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/checkbox.mjs
+var import_jsx_runtime25 = __toESM(require_jsx_runtime(), 1);
+var { ValidatedCheckboxControl } = unlock(import_components2.privateApis);
 function Checkbox({
   field,
   onChange,
   data,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
   const { getValue, setValue, label, description, isValid: isValid2 } = field;
-  const onChangeControl = (0, import_element4.useCallback)(() => {
+  const disabled2 = field.isDisabled({ item: data, field });
+  const onChangeControl = (0, import_element21.useCallback)(() => {
     onChange(
       setValue({ item: data, value: !getValue({ item: data }) })
     );
   }, [data, getValue, onChange, setValue]);
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
     ValidatedCheckboxControl,
     {
       required: !!field.isValid?.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       hidden: hideLabelFromVision,
       label,
       help: description,
       checked: getValue({ item: data }),
-      onChange: onChangeControl
+      onChange: onChangeControl,
+      disabled: disabled2
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/datetime.js
-var import_components5 = __toESM(require_components());
-var import_element6 = __toESM(require_element());
-var import_i18n6 = __toESM(require_i18n());
-var import_date2 = __toESM(require_date());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/combobox.mjs
+var import_components3 = __toESM(require_components(), 1);
+var import_element22 = __toESM(require_element(), 1);
+var import_jsx_runtime26 = __toESM(require_jsx_runtime(), 1);
+var { ValidatedComboboxControl } = unlock(import_components3.privateApis);
+function Combobox({
+  data,
+  field,
+  onChange,
+  hideLabelFromVision,
+  validity
+}) {
+  const { label, description, placeholder, getValue, setValue, isValid: isValid2 } = field;
+  const value = getValue({ item: data }) ?? "";
+  const onChangeControl = (0, import_element22.useCallback)(
+    (newValue) => onChange(setValue({ item: data, value: newValue ?? "" })),
+    [data, onChange, setValue]
+  );
+  const { elements, isLoading } = useElements({
+    elements: field.elements,
+    getElements: field.getElements
+  });
+  if (isLoading) {
+    return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_components3.Spinner, {});
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+    ValidatedComboboxControl,
+    {
+      required: !!field.isValid?.required,
+      customValidity: getCustomValidity(isValid2, validity),
+      label,
+      value,
+      help: description,
+      placeholder,
+      options: elements,
+      onChange: onChangeControl,
+      hideLabelFromVision,
+      allowReset: true,
+      expandOnFocus: true
+    }
+  );
+}
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/utils/relative-date-control.js
-var import_components4 = __toESM(require_components());
-var import_element5 = __toESM(require_element());
-var import_i18n5 = __toESM(require_i18n());
-var import_jsx_runtime17 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/datetime.mjs
+var import_components5 = __toESM(require_components(), 1);
+var import_element25 = __toESM(require_element(), 1);
+var import_i18n4 = __toESM(require_i18n(), 1);
+var import_date3 = __toESM(require_date(), 1);
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/utils/relative-date-control.mjs
+var import_components4 = __toESM(require_components(), 1);
+var import_element23 = __toESM(require_element(), 1);
+var import_i18n3 = __toESM(require_i18n(), 1);
+var import_jsx_runtime27 = __toESM(require_jsx_runtime(), 1);
 var TIME_UNITS_OPTIONS = {
   [OPERATOR_IN_THE_PAST]: [
-    { value: "days", label: (0, import_i18n5.__)("Days") },
-    { value: "weeks", label: (0, import_i18n5.__)("Weeks") },
-    { value: "months", label: (0, import_i18n5.__)("Months") },
-    { value: "years", label: (0, import_i18n5.__)("Years") }
+    { value: "days", label: (0, import_i18n3.__)("Days") },
+    { value: "weeks", label: (0, import_i18n3.__)("Weeks") },
+    { value: "months", label: (0, import_i18n3.__)("Months") },
+    { value: "years", label: (0, import_i18n3.__)("Years") }
   ],
   [OPERATOR_OVER]: [
-    { value: "days", label: (0, import_i18n5.__)("Days ago") },
-    { value: "weeks", label: (0, import_i18n5.__)("Weeks ago") },
-    { value: "months", label: (0, import_i18n5.__)("Months ago") },
-    { value: "years", label: (0, import_i18n5.__)("Years ago") }
+    { value: "days", label: (0, import_i18n3.__)("Days ago") },
+    { value: "weeks", label: (0, import_i18n3.__)("Weeks ago") },
+    { value: "months", label: (0, import_i18n3.__)("Months ago") },
+    { value: "years", label: (0, import_i18n3.__)("Years ago") }
   ]
 };
 function RelativeDateControl({
@@ -2838,10 +5174,11 @@ function RelativeDateControl({
   operator
 }) {
   const options = TIME_UNITS_OPTIONS[operator === OPERATOR_IN_THE_PAST ? "inThePast" : "over"];
-  const { id, label, getValue, setValue } = field;
+  const { id, label, description, getValue, setValue } = field;
+  const disabled2 = field.isDisabled({ item: data, field });
   const fieldValue = getValue({ item: data });
   const { value: relValue = "", unit = options[0].value } = fieldValue && typeof fieldValue === "object" ? fieldValue : {};
-  const onChangeValue = (0, import_element5.useCallback)(
+  const onChangeValue = (0, import_element23.useCallback)(
     (newValue) => onChange(
       setValue({
         item: data,
@@ -2850,7 +5187,7 @@ function RelativeDateControl({
     ),
     [onChange, setValue, data, unit]
   );
-  const onChangeUnit = (0, import_element5.useCallback)(
+  const onChangeUnit = (0, import_element23.useCallback)(
     (newUnit) => onChange(
       setValue({
         item: data,
@@ -2859,16 +5196,16 @@ function RelativeDateControl({
     ),
     [onChange, setValue, data, relValue]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
     import_components4.BaseControl,
     {
       id,
-      __nextHasNoMarginBottom: true,
       className: clsx_default(className, "dataviews-controls__relative-date"),
       label,
       hideLabelFromVision,
-      children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_components4.__experimentalHStack, { spacing: 2.5, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+      help: description,
+      children: /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(Stack, { direction: "row", gap: "sm", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
           import_components4.__experimentalNumberControl,
           {
             __next40pxDefaultSize: true,
@@ -2877,20 +5214,21 @@ function RelativeDateControl({
             min: 1,
             step: 1,
             value: relValue,
-            onChange: onChangeValue
+            onChange: onChangeValue,
+            disabled: disabled2
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
           import_components4.SelectControl,
           {
             className: "dataviews-controls__relative-date-unit",
             __next40pxDefaultSize: true,
-            __nextHasNoMarginBottom: true,
-            label: (0, import_i18n5.__)("Unit"),
+            label: (0, import_i18n3.__)("Unit"),
             value: unit,
             options,
             onChange: onChangeUnit,
-            hideLabelFromVision: true
+            hideLabelFromVision: true,
+            disabled: disabled2
           }
         )
       ] })
@@ -2898,61 +5236,94 @@ function RelativeDateControl({
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/datetime.js
-var import_jsx_runtime18 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/utils/use-disabled-date-matchers.mjs
+var import_element24 = __toESM(require_element(), 1);
+function useDisabledDateMatchers(isValid2, parseDateFn) {
+  const minConstraint = typeof isValid2.min?.constraint === "string" ? isValid2.min.constraint : void 0;
+  const maxConstraint = typeof isValid2.max?.constraint === "string" ? isValid2.max.constraint : void 0;
+  const disabledMatchers = (0, import_element24.useMemo)(() => {
+    const matchers = [];
+    if (minConstraint) {
+      const minDate = parseDateFn(minConstraint);
+      if (minDate) {
+        matchers.push({ before: minDate });
+      }
+    }
+    if (maxConstraint) {
+      const maxDate = parseDateFn(maxConstraint);
+      if (maxDate) {
+        matchers.push({ after: maxDate });
+      }
+    }
+    return matchers.length > 0 ? matchers : void 0;
+  }, [minConstraint, maxConstraint, parseDateFn]);
+  return { minConstraint, maxConstraint, disabledMatchers };
+}
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/parse-date-time.mjs
+var import_date2 = __toESM(require_date(), 1);
+function parseDateTime(dateTimeString) {
+  if (!dateTimeString) {
+    return null;
+  }
+  const parsed = (0, import_date2.getDate)(dateTimeString);
+  return parsed && isValid(parsed) ? parsed : null;
+}
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/datetime.mjs
+var import_jsx_runtime28 = __toESM(require_jsx_runtime(), 1);
 var { DateCalendar, ValidatedInputControl } = unlock(import_components5.privateApis);
-var formatDateTime = (date) => {
-  if (!date) {
+var formatDateTime = (value) => {
+  if (!value) {
     return "";
   }
-  if (typeof date === "string") {
-    return date;
-  }
-  return format(date, "yyyy-MM-dd'T'HH:mm");
+  return (0, import_date3.dateI18n)("Y-m-d\\TH:i", (0, import_date3.getDate)(value));
 };
 function CalendarDateTimeControl({
   data,
   field,
   onChange,
   hideLabelFromVision,
-  validity
+  markWhenOptional,
+  validity,
+  config
 }) {
+  const { compact } = config || {};
   const { id, label, description, setValue, getValue, isValid: isValid2 } = field;
+  const disabled2 = field.isDisabled({ item: data, field });
   const fieldValue = getValue({ item: data });
   const value = typeof fieldValue === "string" ? fieldValue : void 0;
-  const [calendarMonth, setCalendarMonth] = (0, import_element6.useState)(() => {
+  const [calendarMonth, setCalendarMonth] = (0, import_element25.useState)(() => {
     const parsedDate = parseDateTime(value);
     return parsedDate || /* @__PURE__ */ new Date();
   });
-  const inputControlRef = (0, import_element6.useRef)(null);
-  const validationTimeoutRef = (0, import_element6.useRef)();
-  const previousFocusRef = (0, import_element6.useRef)(null);
-  const onChangeCallback = (0, import_element6.useCallback)(
+  const inputControlRef = (0, import_element25.useRef)(null);
+  const validationTimeoutRef = (0, import_element25.useRef)(void 0);
+  const previousFocusRef = (0, import_element25.useRef)(null);
+  const { minConstraint, maxConstraint, disabledMatchers } = useDisabledDateMatchers(isValid2, parseDateTime);
+  const onChangeCallback = (0, import_element25.useCallback)(
     (newValue) => onChange(setValue({ item: data, value: newValue })),
     [data, onChange, setValue]
   );
-  (0, import_element6.useEffect)(() => {
+  (0, import_element25.useEffect)(() => {
     return () => {
       if (validationTimeoutRef.current) {
         clearTimeout(validationTimeoutRef.current);
       }
     };
   }, []);
-  const onSelectDate = (0, import_element6.useCallback)(
+  const onSelectDate = (0, import_element25.useCallback)(
     (newDate) => {
       let dateTimeValue;
       if (newDate) {
-        let finalDateTime = newDate;
+        const wpDate = (0, import_date3.dateI18n)("Y-m-d", newDate);
+        let wpTime;
         if (value) {
-          const currentDateTime = parseDateTime(value);
-          if (currentDateTime) {
-            finalDateTime = new Date(newDate);
-            finalDateTime.setHours(currentDateTime.getHours());
-            finalDateTime.setMinutes(
-              currentDateTime.getMinutes()
-            );
-          }
+          wpTime = (0, import_date3.dateI18n)("H:i", (0, import_date3.getDate)(value));
+        } else {
+          wpTime = (0, import_date3.dateI18n)("H:i", newDate);
         }
+        const finalDateTime = (0, import_date3.getDate)(`${wpDate}T${wpTime}`);
         dateTimeValue = finalDateTime.toISOString();
         onChangeCallback(dateTimeValue);
         if (validationTimeoutRef.current) {
@@ -2975,10 +5346,10 @@ function CalendarDateTimeControl({
     },
     [onChangeCallback, value]
   );
-  const handleManualDateTimeChange = (0, import_element6.useCallback)(
+  const handleManualDateTimeChange = (0, import_element25.useCallback)(
     (newValue) => {
       if (newValue) {
-        const dateTime = new Date(newValue);
+        const dateTime = (0, import_date3.getDate)(newValue);
         onChangeCallback(dateTime.toISOString());
         const parsedDate = parseDateTime(dateTime.toISOString());
         if (parsedDate) {
@@ -2990,21 +5361,43 @@ function CalendarDateTimeControl({
     },
     [onChangeCallback]
   );
+  const { format: fieldFormat } = field;
+  const weekStartsOn = fieldFormat.weekStartsOn ?? (0, import_date3.getSettings)().l10n.startOfWeek;
   const {
-    timezone: { string: timezoneString },
-    l10n: { startOfWeek: startOfWeek2 }
-  } = (0, import_date2.getSettings)();
-  const displayLabel = isValid2?.required && !hideLabelFromVision ? `${label} (${(0, import_i18n6.__)("Required")})` : label;
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+    timezone: { string: timezoneString }
+  } = (0, import_date3.getSettings)();
+  let displayLabel = label;
+  if (isValid2?.required && !markWhenOptional && !hideLabelFromVision) {
+    displayLabel = `${label} (${(0, import_i18n4.__)("Required")})`;
+  } else if (!isValid2?.required && markWhenOptional && !hideLabelFromVision) {
+    displayLabel = `${label} (${(0, import_i18n4.__)("Optional")})`;
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
     import_components5.BaseControl,
     {
-      __nextHasNoMarginBottom: true,
       id,
       label: displayLabel,
       help: description,
       hideLabelFromVision,
-      children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_components5.__experimentalVStack, { spacing: 4, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+      children: /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(Stack, { direction: "column", gap: "lg", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
+          ValidatedInputControl,
+          {
+            ref: inputControlRef,
+            __next40pxDefaultSize: true,
+            required: !!isValid2?.required,
+            customValidity: getCustomValidity(isValid2, validity),
+            type: "datetime-local",
+            label: (0, import_i18n4.__)("Date time"),
+            hideLabelFromVision: true,
+            value: formatDateTime(value),
+            onChange: handleManualDateTimeChange,
+            disabled: disabled2,
+            min: minConstraint ? formatDateTime(minConstraint) : void 0,
+            max: maxConstraint ? formatDateTime(maxConstraint) : void 0
+          }
+        ),
+        !compact && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
           DateCalendar,
           {
             style: { width: "100%" },
@@ -3013,23 +5406,8 @@ function CalendarDateTimeControl({
             month: calendarMonth,
             onMonthChange: setCalendarMonth,
             timeZone: timezoneString || void 0,
-            weekStartsOn: startOfWeek2
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          ValidatedInputControl,
-          {
-            ref: inputControlRef,
-            __next40pxDefaultSize: true,
-            required: !!isValid2?.required,
-            customValidity: getCustomValidity(isValid2, validity),
-            type: "datetime-local",
-            label: (0, import_i18n6.__)("Date time"),
-            hideLabelFromVision: true,
-            value: value ? formatDateTime(
-              parseDateTime(value) || void 0
-            ) : "",
-            onChange: handleManualDateTimeChange
+            weekStartsOn,
+            disabled: disabled2 || disabledMatchers
           }
         )
       ] })
@@ -3041,11 +5419,13 @@ function DateTime({
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   operator,
-  validity
+  validity,
+  config
 }) {
   if (operator === OPERATOR_IN_THE_PAST || operator === OPERATOR_OVER) {
-    return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
       RelativeDateControl,
       {
         className: "dataviews-controls__datetime",
@@ -3057,52 +5437,54 @@ function DateTime({
       }
     );
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
     CalendarDateTimeControl,
     {
       data,
       field,
       onChange,
       hideLabelFromVision,
-      validity
+      markWhenOptional,
+      validity,
+      config
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/date.js
-var import_components6 = __toESM(require_components());
-var import_element7 = __toESM(require_element());
-var import_i18n7 = __toESM(require_i18n());
-var import_date3 = __toESM(require_date());
-var import_jsx_runtime19 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/date.mjs
+var import_components6 = __toESM(require_components(), 1);
+var import_element26 = __toESM(require_element(), 1);
+var import_i18n5 = __toESM(require_i18n(), 1);
+var import_date4 = __toESM(require_date(), 1);
+var import_jsx_runtime29 = __toESM(require_jsx_runtime(), 1);
 var { DateCalendar: DateCalendar2, DateRangeCalendar } = unlock(import_components6.privateApis);
 var DATE_PRESETS = [
   {
     id: "today",
-    label: (0, import_i18n7.__)("Today"),
-    getValue: () => (0, import_date3.getDate)(null)
+    label: (0, import_i18n5.__)("Today"),
+    getValue: () => (0, import_date4.getDate)(null)
   },
   {
     id: "yesterday",
-    label: (0, import_i18n7.__)("Yesterday"),
+    label: (0, import_i18n5.__)("Yesterday"),
     getValue: () => {
-      const today = (0, import_date3.getDate)(null);
+      const today = (0, import_date4.getDate)(null);
       return subDays(today, 1);
     }
   },
   {
     id: "past-week",
-    label: (0, import_i18n7.__)("Past week"),
+    label: (0, import_i18n5.__)("Past week"),
     getValue: () => {
-      const today = (0, import_date3.getDate)(null);
+      const today = (0, import_date4.getDate)(null);
       return subDays(today, 7);
     }
   },
   {
     id: "past-month",
-    label: (0, import_i18n7.__)("Past month"),
+    label: (0, import_i18n5.__)("Past month"),
     getValue: () => {
-      const today = (0, import_date3.getDate)(null);
+      const today = (0, import_date4.getDate)(null);
       return subMonths(today, 1);
     }
   }
@@ -3110,41 +5492,41 @@ var DATE_PRESETS = [
 var DATE_RANGE_PRESETS = [
   {
     id: "last-7-days",
-    label: (0, import_i18n7.__)("Last 7 days"),
+    label: (0, import_i18n5.__)("Last 7 days"),
     getValue: () => {
-      const today = (0, import_date3.getDate)(null);
+      const today = (0, import_date4.getDate)(null);
       return [subDays(today, 7), today];
     }
   },
   {
     id: "last-30-days",
-    label: (0, import_i18n7.__)("Last 30 days"),
+    label: (0, import_i18n5.__)("Last 30 days"),
     getValue: () => {
-      const today = (0, import_date3.getDate)(null);
+      const today = (0, import_date4.getDate)(null);
       return [subDays(today, 30), today];
     }
   },
   {
     id: "month-to-date",
-    label: (0, import_i18n7.__)("Month to date"),
+    label: (0, import_i18n5.__)("Month to date"),
     getValue: () => {
-      const today = (0, import_date3.getDate)(null);
+      const today = (0, import_date4.getDate)(null);
       return [startOfMonth(today), today];
     }
   },
   {
     id: "last-year",
-    label: (0, import_i18n7.__)("Last year"),
+    label: (0, import_i18n5.__)("Last year"),
     getValue: () => {
-      const today = (0, import_date3.getDate)(null);
+      const today = (0, import_date4.getDate)(null);
       return [subYears(today, 1), today];
     }
   },
   {
     id: "year-to-date",
-    label: (0, import_i18n7.__)("Year to date"),
+    label: (0, import_i18n5.__)("Year to date"),
     getValue: () => {
-      const today = (0, import_date3.getDate)(null);
+      const today = (0, import_date4.getDate)(null);
       return [startOfYear(today), today];
     }
   }
@@ -3153,7 +5535,7 @@ var parseDate = (dateString) => {
   if (!dateString) {
     return null;
   }
-  const parsed = (0, import_date3.getDate)(dateString);
+  const parsed = (0, import_date4.getDate)(dateString);
   return parsed && isValid(parsed) ? parsed : null;
 };
 var formatDate = (date) => {
@@ -3171,8 +5553,8 @@ function ValidatedDateControl({
   children
 }) {
   const { isValid: isValid2 } = field;
-  const [customValidity, setCustomValidity] = (0, import_element7.useState)(void 0);
-  const validateRefs = (0, import_element7.useCallback)(() => {
+  const [customValidity, setCustomValidity] = (0, import_element26.useState)(void 0);
+  const validateRefs = (0, import_element26.useCallback)(() => {
     const refs = Array.isArray(inputRefs) ? inputRefs : [inputRefs];
     for (const ref of refs) {
       const input = ref.current;
@@ -3186,18 +5568,43 @@ function ValidatedDateControl({
     }
     setCustomValidity(void 0);
   }, [inputRefs]);
-  (0, import_element7.useEffect)(() => {
-    if (isTouched) {
-      const timeoutId = setTimeout(() => {
-        if (validity) {
-          setCustomValidity(getCustomValidity(isValid2, validity));
-        } else {
-          validateRefs();
-        }
-      }, 0);
-      return () => clearTimeout(timeoutId);
+  (0, import_element26.useEffect)(() => {
+    const refs = Array.isArray(inputRefs) ? inputRefs : [inputRefs];
+    const result = validity ? getCustomValidity(isValid2, validity) : void 0;
+    for (const ref of refs) {
+      const input = ref.current;
+      if (input) {
+        input.setCustomValidity(
+          result?.type === "invalid" && result.message ? result.message : ""
+        );
+      }
     }
-    return void 0;
+  }, [inputRefs, isValid2, validity]);
+  (0, import_element26.useEffect)(() => {
+    const refs = Array.isArray(inputRefs) ? inputRefs : [inputRefs];
+    const handleInvalid = (event) => {
+      event.preventDefault();
+      setIsTouched(true);
+    };
+    for (const ref of refs) {
+      ref.current?.addEventListener("invalid", handleInvalid);
+    }
+    return () => {
+      for (const ref of refs) {
+        ref.current?.removeEventListener("invalid", handleInvalid);
+      }
+    };
+  }, [inputRefs, setIsTouched]);
+  (0, import_element26.useEffect)(() => {
+    if (!isTouched) {
+      return;
+    }
+    const result = validity ? getCustomValidity(isValid2, validity) : void 0;
+    if (result) {
+      setCustomValidity(result);
+    } else {
+      validateRefs();
+    }
   }, [isTouched, isValid2, validity, validateRefs]);
   const onBlur = (event) => {
     if (isTouched) {
@@ -3207,18 +5614,17 @@ function ValidatedDateControl({
       setIsTouched(true);
     }
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { onBlur, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { onBlur, children: [
     children,
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { "aria-live": "polite", children: customValidity && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { "aria-live": "polite", children: customValidity && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
       "p",
       {
         className: clsx_default(
           "components-validated-control__indicator",
-          customValidity.type === "invalid" ? "is-invalid" : void 0,
-          customValidity.type === "valid" ? "is-valid" : void 0
+          customValidity.type === "invalid" ? "is-invalid" : void 0
         ),
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
             import_components6.Icon,
             {
               className: "components-validated-control__indicator-icon",
@@ -3238,37 +5644,37 @@ function CalendarDateControl({
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
   const {
     id,
-    type,
     label,
+    description,
     setValue,
     getValue,
     isValid: isValid2,
     format: fieldFormat
   } = field;
-  const [selectedPresetId, setSelectedPresetId] = (0, import_element7.useState)(
+  const disabled2 = field.isDisabled({ item: data, field });
+  const [selectedPresetId, setSelectedPresetId] = (0, import_element26.useState)(
     null
   );
-  let weekStartsOn = (0, import_date3.getSettings)().l10n.startOfWeek;
-  if (type === "date") {
-    weekStartsOn = fieldFormat.weekStartsOn;
-  }
+  const weekStartsOn = fieldFormat.weekStartsOn ?? (0, import_date4.getSettings)().l10n.startOfWeek;
   const fieldValue = getValue({ item: data });
   const value = typeof fieldValue === "string" ? fieldValue : void 0;
-  const [calendarMonth, setCalendarMonth] = (0, import_element7.useState)(() => {
+  const [calendarMonth, setCalendarMonth] = (0, import_element26.useState)(() => {
     const parsedDate = parseDate(value);
     return parsedDate || /* @__PURE__ */ new Date();
   });
-  const [isTouched, setIsTouched] = (0, import_element7.useState)(false);
-  const validityTargetRef = (0, import_element7.useRef)(null);
-  const onChangeCallback = (0, import_element7.useCallback)(
+  const [isTouched, setIsTouched] = (0, import_element26.useState)(false);
+  const validityTargetRef = (0, import_element26.useRef)(null);
+  const { minConstraint, maxConstraint, disabledMatchers } = useDisabledDateMatchers(isValid2, parseDate);
+  const onChangeCallback = (0, import_element26.useCallback)(
     (newValue) => onChange(setValue({ item: data, value: newValue })),
     [data, onChange, setValue]
   );
-  const onSelectDate = (0, import_element7.useCallback)(
+  const onSelectDate = (0, import_element26.useCallback)(
     (newDate) => {
       const dateValue = newDate ? format(newDate, "yyyy-MM-dd") : void 0;
       onChangeCallback(dateValue);
@@ -3277,7 +5683,7 @@ function CalendarDateControl({
     },
     [onChangeCallback]
   );
-  const handlePresetClick = (0, import_element7.useCallback)(
+  const handlePresetClick = (0, import_element26.useCallback)(
     (preset) => {
       const presetDate = preset.getValue();
       const dateValue = formatDate(presetDate);
@@ -3288,7 +5694,7 @@ function CalendarDateControl({
     },
     [onChangeCallback]
   );
-  const handleManualDateChange = (0, import_element7.useCallback)(
+  const handleManualDateChange = (0, import_element26.useCallback)(
     (newValue) => {
       onChangeCallback(newValue);
       if (newValue) {
@@ -3304,9 +5710,14 @@ function CalendarDateControl({
   );
   const {
     timezone: { string: timezoneString }
-  } = (0, import_date3.getSettings)();
-  const displayLabel = isValid2?.required ? `${label} (${(0, import_i18n7.__)("Required")})` : label;
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+  } = (0, import_date4.getSettings)();
+  let displayLabel = label;
+  if (isValid2?.required && !markWhenOptional) {
+    displayLabel = `${label} (${(0, import_i18n5.__)("Required")})`;
+  } else if (!isValid2?.required && markWhenOptional) {
+    displayLabel = `${label} (${(0, import_i18n5.__)("Optional")})`;
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
     ValidatedDateControl,
     {
       field,
@@ -3314,58 +5725,72 @@ function CalendarDateControl({
       inputRefs: validityTargetRef,
       isTouched,
       setIsTouched,
-      children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+      children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
         import_components6.BaseControl,
         {
-          __nextHasNoMarginBottom: true,
           id,
           className: "dataviews-controls__date",
           label: displayLabel,
+          help: description,
           hideLabelFromVision,
-          children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_components6.__experimentalVStack, { spacing: 4, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_components6.__experimentalHStack, { spacing: 2, wrap: true, justify: "flex-start", children: [
-              DATE_PRESETS.map((preset) => {
-                const isSelected = selectedPresetId === preset.id;
-                return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
-                  import_components6.Button,
-                  {
-                    className: "dataviews-controls__date-preset",
-                    variant: "tertiary",
-                    isPressed: isSelected,
-                    size: "small",
-                    onClick: () => handlePresetClick(preset),
-                    children: preset.label
-                  },
-                  preset.id
-                );
-              }),
-              /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
-                import_components6.Button,
-                {
-                  className: "dataviews-controls__date-preset",
-                  variant: "tertiary",
-                  isPressed: !selectedPresetId,
-                  size: "small",
-                  disabled: !!selectedPresetId,
-                  accessibleWhenDisabled: false,
-                  children: (0, import_i18n7.__)("Custom")
-                }
-              )
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { direction: "column", gap: "lg", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
+              Stack,
+              {
+                direction: "row",
+                gap: "sm",
+                wrap: "wrap",
+                justify: "flex-start",
+                children: [
+                  DATE_PRESETS.map((preset) => {
+                    const isSelected = selectedPresetId === preset.id;
+                    return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+                      import_components6.Button,
+                      {
+                        className: "dataviews-controls__date-preset",
+                        variant: "tertiary",
+                        isPressed: isSelected,
+                        size: "small",
+                        disabled: disabled2,
+                        accessibleWhenDisabled: true,
+                        onClick: () => handlePresetClick(preset),
+                        children: preset.label
+                      },
+                      preset.id
+                    );
+                  }),
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+                    import_components6.Button,
+                    {
+                      className: "dataviews-controls__date-preset",
+                      variant: "tertiary",
+                      isPressed: !selectedPresetId,
+                      size: "small",
+                      disabled: !!selectedPresetId || disabled2,
+                      accessibleWhenDisabled: true,
+                      children: (0, import_i18n5.__)("Custom")
+                    }
+                  )
+                ]
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
               import_components6.__experimentalInputControl,
               {
                 __next40pxDefaultSize: true,
                 ref: validityTargetRef,
                 type: "date",
-                label: (0, import_i18n7.__)("Date"),
+                label: (0, import_i18n5.__)("Date"),
                 hideLabelFromVision: true,
                 value,
                 onChange: handleManualDateChange,
-                required: !!field.isValid?.required
+                required: !!field.isValid?.required,
+                disabled: disabled2,
+                min: minConstraint,
+                max: maxConstraint
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
               DateCalendar2,
               {
                 style: { width: "100%" },
@@ -3374,7 +5799,9 @@ function CalendarDateControl({
                 month: calendarMonth,
                 onMonthChange: setCalendarMonth,
                 timeZone: timezoneString || void 0,
-                weekStartsOn
+                weekStartsOn,
+                disabled: disabled2 || disabledMatchers,
+                disableNavigation: disabled2
               }
             )
           ] })
@@ -3388,19 +5815,27 @@ function CalendarDateRangeControl({
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
-  const { id, type, label, getValue, setValue, format: fieldFormat } = field;
+  const {
+    id,
+    label,
+    description,
+    getValue,
+    setValue,
+    isValid: isValid2,
+    format: fieldFormat
+  } = field;
+  const disabled2 = field.isDisabled({ item: data, field });
   let value;
   const fieldValue = getValue({ item: data });
   if (Array.isArray(fieldValue) && fieldValue.length === 2 && fieldValue.every((date) => typeof date === "string")) {
     value = fieldValue;
   }
-  let weekStartsOn;
-  if (type === "date") {
-    weekStartsOn = fieldFormat.weekStartsOn;
-  }
-  const onChangeCallback = (0, import_element7.useCallback)(
+  const weekStartsOn = fieldFormat.weekStartsOn ?? (0, import_date4.getSettings)().l10n.startOfWeek;
+  const { minConstraint, maxConstraint, disabledMatchers } = useDisabledDateMatchers(isValid2, parseDate);
+  const onChangeCallback = (0, import_element26.useCallback)(
     (newValue) => {
       onChange(
         setValue({
@@ -3411,10 +5846,10 @@ function CalendarDateRangeControl({
     },
     [data, onChange, setValue]
   );
-  const [selectedPresetId, setSelectedPresetId] = (0, import_element7.useState)(
+  const [selectedPresetId, setSelectedPresetId] = (0, import_element26.useState)(
     null
   );
-  const selectedRange = (0, import_element7.useMemo)(() => {
+  const selectedRange = (0, import_element26.useMemo)(() => {
     if (!value) {
       return { from: void 0, to: void 0 };
     }
@@ -3424,13 +5859,13 @@ function CalendarDateRangeControl({
       to: parseDate(to) || void 0
     };
   }, [value]);
-  const [calendarMonth, setCalendarMonth] = (0, import_element7.useState)(() => {
+  const [calendarMonth, setCalendarMonth] = (0, import_element26.useState)(() => {
     return selectedRange.from || /* @__PURE__ */ new Date();
   });
-  const [isTouched, setIsTouched] = (0, import_element7.useState)(false);
-  const fromInputRef = (0, import_element7.useRef)(null);
-  const toInputRef = (0, import_element7.useRef)(null);
-  const updateDateRange = (0, import_element7.useCallback)(
+  const [isTouched, setIsTouched] = (0, import_element26.useState)(false);
+  const fromInputRef = (0, import_element26.useRef)(null);
+  const toInputRef = (0, import_element26.useRef)(null);
+  const updateDateRange = (0, import_element26.useCallback)(
     (fromDate, toDate2) => {
       if (fromDate && toDate2) {
         onChangeCallback([
@@ -3443,7 +5878,7 @@ function CalendarDateRangeControl({
     },
     [onChangeCallback]
   );
-  const onSelectCalendarRange = (0, import_element7.useCallback)(
+  const onSelectCalendarRange = (0, import_element26.useCallback)(
     (newRange) => {
       updateDateRange(newRange?.from, newRange?.to);
       setSelectedPresetId(null);
@@ -3451,7 +5886,7 @@ function CalendarDateRangeControl({
     },
     [updateDateRange]
   );
-  const handlePresetClick = (0, import_element7.useCallback)(
+  const handlePresetClick = (0, import_element26.useCallback)(
     (preset) => {
       const [startDate, endDate] = preset.getValue();
       setCalendarMonth(startDate);
@@ -3461,7 +5896,7 @@ function CalendarDateRangeControl({
     },
     [updateDateRange]
   );
-  const handleManualDateChange = (0, import_element7.useCallback)(
+  const handleManualDateChange = (0, import_element26.useCallback)(
     (fromOrTo, newValue) => {
       const [currentFrom, currentTo] = value || [
         void 0,
@@ -3481,9 +5916,14 @@ function CalendarDateRangeControl({
     },
     [value, updateDateRange]
   );
-  const { timezone } = (0, import_date3.getSettings)();
-  const displayLabel = field.isValid?.required ? `${label} (${(0, import_i18n7.__)("Required")})` : label;
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+  const { timezone } = (0, import_date4.getSettings)();
+  let displayLabel = label;
+  if (field.isValid?.required && !markWhenOptional) {
+    displayLabel = `${label} (${(0, import_i18n5.__)("Required")})`;
+  } else if (!field.isValid?.required && markWhenOptional) {
+    displayLabel = `${label} (${(0, import_i18n5.__)("Optional")})`;
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
     ValidatedDateControl,
     {
       field,
@@ -3491,73 +5931,99 @@ function CalendarDateRangeControl({
       inputRefs: [fromInputRef, toInputRef],
       isTouched,
       setIsTouched,
-      children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+      children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
         import_components6.BaseControl,
         {
-          __nextHasNoMarginBottom: true,
           id,
           className: "dataviews-controls__date",
           label: displayLabel,
+          help: description,
           hideLabelFromVision,
-          children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_components6.__experimentalVStack, { spacing: 4, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_components6.__experimentalHStack, { spacing: 2, wrap: true, justify: "flex-start", children: [
-              DATE_RANGE_PRESETS.map((preset) => {
-                const isSelected = selectedPresetId === preset.id;
-                return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
-                  import_components6.Button,
-                  {
-                    className: "dataviews-controls__date-preset",
-                    variant: "tertiary",
-                    isPressed: isSelected,
-                    size: "small",
-                    onClick: () => handlePresetClick(preset),
-                    children: preset.label
-                  },
-                  preset.id
-                );
-              }),
-              /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
-                import_components6.Button,
-                {
-                  className: "dataviews-controls__date-preset",
-                  variant: "tertiary",
-                  isPressed: !selectedPresetId,
-                  size: "small",
-                  accessibleWhenDisabled: false,
-                  disabled: !!selectedPresetId,
-                  children: (0, import_i18n7.__)("Custom")
-                }
-              )
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_components6.__experimentalHStack, { spacing: 2, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
-                import_components6.__experimentalInputControl,
-                {
-                  __next40pxDefaultSize: true,
-                  ref: fromInputRef,
-                  type: "date",
-                  label: (0, import_i18n7.__)("From"),
-                  hideLabelFromVision: true,
-                  value: value?.[0],
-                  onChange: (newValue) => handleManualDateChange("from", newValue),
-                  required: !!field.isValid?.required
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
-                import_components6.__experimentalInputControl,
-                {
-                  __next40pxDefaultSize: true,
-                  ref: toInputRef,
-                  type: "date",
-                  label: (0, import_i18n7.__)("To"),
-                  hideLabelFromVision: true,
-                  value: value?.[1],
-                  onChange: (newValue) => handleManualDateChange("to", newValue),
-                  required: !!field.isValid?.required
-                }
-              )
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { direction: "column", gap: "lg", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
+              Stack,
+              {
+                direction: "row",
+                gap: "sm",
+                wrap: "wrap",
+                justify: "flex-start",
+                children: [
+                  DATE_RANGE_PRESETS.map((preset) => {
+                    const isSelected = selectedPresetId === preset.id;
+                    return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+                      import_components6.Button,
+                      {
+                        className: "dataviews-controls__date-preset",
+                        variant: "tertiary",
+                        isPressed: isSelected,
+                        size: "small",
+                        disabled: disabled2,
+                        accessibleWhenDisabled: true,
+                        onClick: () => handlePresetClick(preset),
+                        children: preset.label
+                      },
+                      preset.id
+                    );
+                  }),
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+                    import_components6.Button,
+                    {
+                      className: "dataviews-controls__date-preset",
+                      variant: "tertiary",
+                      isPressed: !selectedPresetId,
+                      size: "small",
+                      accessibleWhenDisabled: true,
+                      disabled: !!selectedPresetId || disabled2,
+                      children: (0, import_i18n5.__)("Custom")
+                    }
+                  )
+                ]
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
+              Stack,
+              {
+                direction: "row",
+                gap: "sm",
+                justify: "space-between",
+                className: "dataviews-controls__date-range-inputs",
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+                    import_components6.__experimentalInputControl,
+                    {
+                      __next40pxDefaultSize: true,
+                      ref: fromInputRef,
+                      type: "date",
+                      label: (0, import_i18n5.__)("From"),
+                      hideLabelFromVision: true,
+                      value: value?.[0],
+                      onChange: (newValue) => handleManualDateChange("from", newValue),
+                      required: !!field.isValid?.required,
+                      disabled: disabled2,
+                      min: minConstraint,
+                      max: maxConstraint
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+                    import_components6.__experimentalInputControl,
+                    {
+                      __next40pxDefaultSize: true,
+                      ref: toInputRef,
+                      type: "date",
+                      label: (0, import_i18n5.__)("To"),
+                      hideLabelFromVision: true,
+                      value: value?.[1],
+                      onChange: (newValue) => handleManualDateChange("to", newValue),
+                      required: !!field.isValid?.required,
+                      disabled: disabled2,
+                      min: minConstraint,
+                      max: maxConstraint
+                    }
+                  )
+                ]
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
               DateRangeCalendar,
               {
                 style: { width: "100%" },
@@ -3566,7 +6032,8 @@ function CalendarDateRangeControl({
                 month: calendarMonth,
                 onMonthChange: setCalendarMonth,
                 timeZone: timezone.string || void 0,
-                weekStartsOn
+                weekStartsOn,
+                disabled: disabled2 || disabledMatchers
               }
             )
           ] })
@@ -3580,11 +6047,12 @@ function DateControl({
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   operator,
   validity
 }) {
   if (operator === OPERATOR_IN_THE_PAST || operator === OPERATOR_OVER) {
-    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
       RelativeDateControl,
       {
         className: "dataviews-controls__date",
@@ -3597,42 +6065,107 @@ function DateControl({
     );
   }
   if (operator === OPERATOR_BETWEEN) {
-    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
       CalendarDateRangeControl,
       {
         data,
         field,
         onChange,
         hideLabelFromVision,
+        markWhenOptional,
         validity
       }
     );
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
     CalendarDateControl,
     {
       data,
       field,
       onChange,
       hideLabelFromVision,
+      markWhenOptional,
       validity
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/email.js
-var import_components8 = __toESM(require_components());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/select.mjs
+var import_components7 = __toESM(require_components(), 1);
+var import_element27 = __toESM(require_element(), 1);
+var import_jsx_runtime30 = __toESM(require_jsx_runtime(), 1);
+var { ValidatedSelectControl } = unlock(import_components7.privateApis);
+function Select({
+  data,
+  field,
+  onChange,
+  hideLabelFromVision,
+  markWhenOptional,
+  validity
+}) {
+  const { type, label, description, getValue, setValue, isValid: isValid2 } = field;
+  const disabled2 = field.isDisabled({ item: data, field });
+  const isMultiple = type === "array";
+  const value = getValue({ item: data }) ?? (isMultiple ? [] : "");
+  const onChangeControl = (0, import_element27.useCallback)(
+    (newValue) => onChange(setValue({ item: data, value: newValue })),
+    [data, onChange, setValue]
+  );
+  const { elements, isLoading } = useElements({
+    elements: field.elements,
+    getElements: field.getElements
+  });
+  if (isLoading) {
+    return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_components7.Spinner, {});
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+    ValidatedSelectControl,
+    {
+      required: !!field.isValid?.required,
+      markWhenOptional,
+      customValidity: getCustomValidity(isValid2, validity),
+      label,
+      value,
+      help: description,
+      options: elements,
+      onChange: onChangeControl,
+      __next40pxDefaultSize: true,
+      hideLabelFromVision,
+      multiple: isMultiple,
+      disabled: disabled2
+    }
+  );
+}
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/utils/validated-input.js
-var import_components7 = __toESM(require_components());
-var import_element8 = __toESM(require_element());
-var import_jsx_runtime20 = __toESM(require_jsx_runtime());
-var { ValidatedInputControl: ValidatedInputControl2 } = unlock(import_components7.privateApis);
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/adaptive-select.mjs
+var import_jsx_runtime31 = __toESM(require_jsx_runtime(), 1);
+var ELEMENTS_THRESHOLD = 10;
+function AdaptiveSelect(props) {
+  const { field } = props;
+  const { elements } = useElements({
+    elements: field.elements,
+    getElements: field.getElements
+  });
+  if (elements.length >= ELEMENTS_THRESHOLD) {
+    return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Combobox, { ...props });
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Select, { ...props });
+}
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/email.mjs
+var import_components9 = __toESM(require_components(), 1);
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/utils/validated-input.mjs
+var import_components8 = __toESM(require_components(), 1);
+var import_element28 = __toESM(require_element(), 1);
+var import_jsx_runtime32 = __toESM(require_jsx_runtime(), 1);
+var { ValidatedInputControl: ValidatedInputControl2 } = unlock(import_components8.privateApis);
 function ValidatedText({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   type,
   prefix,
   suffix,
@@ -3640,7 +6173,8 @@ function ValidatedText({
 }) {
   const { label, placeholder, description, getValue, setValue, isValid: isValid2 } = field;
   const value = getValue({ item: data });
-  const onChangeControl = (0, import_element8.useCallback)(
+  const disabled2 = field.isDisabled({ item: data, field });
+  const onChangeControl = (0, import_element28.useCallback)(
     (newValue) => onChange(
       setValue({
         item: data,
@@ -3649,10 +6183,11 @@ function ValidatedText({
     ),
     [data, setValue, onChange]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
     ValidatedInputControl2,
     {
       required: !!isValid2.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       label,
       placeholder,
@@ -3663,6 +6198,7 @@ function ValidatedText({
       type,
       prefix,
       suffix,
+      disabled: disabled2,
       pattern: isValid2.pattern ? isValid2.pattern.constraint : void 0,
       minLength: isValid2.minLength ? isValid2.minLength.constraint : void 0,
       maxLength: isValid2.maxLength ? isValid2.maxLength.constraint : void 0,
@@ -3671,16 +6207,17 @@ function ValidatedText({
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/email.js
-var import_jsx_runtime21 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/email.mjs
+var import_jsx_runtime33 = __toESM(require_jsx_runtime(), 1);
 function Email({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
     ValidatedText,
     {
       ...{
@@ -3688,25 +6225,27 @@ function Email({
         field,
         onChange,
         hideLabelFromVision,
+        markWhenOptional,
         validity,
         type: "email",
-        prefix: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_components8.__experimentalInputControlPrefixWrapper, { variant: "icon", children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_components8.Icon, { icon: envelope_default }) })
+        prefix: /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_components9.__experimentalInputControlPrefixWrapper, { variant: "icon", children: /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_components9.Icon, { icon: envelope_default }) })
       }
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/telephone.js
-var import_components9 = __toESM(require_components());
-var import_jsx_runtime22 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/telephone.mjs
+var import_components10 = __toESM(require_components(), 1);
+var import_jsx_runtime34 = __toESM(require_jsx_runtime(), 1);
 function Telephone({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
     ValidatedText,
     {
       ...{
@@ -3714,25 +6253,27 @@ function Telephone({
         field,
         onChange,
         hideLabelFromVision,
+        markWhenOptional,
         validity,
         type: "tel",
-        prefix: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_components9.__experimentalInputControlPrefixWrapper, { variant: "icon", children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_components9.Icon, { icon: mobile_default }) })
+        prefix: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_components10.__experimentalInputControlPrefixWrapper, { variant: "icon", children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_components10.Icon, { icon: mobile_default }) })
       }
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/url.js
-var import_components10 = __toESM(require_components());
-var import_jsx_runtime23 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/url.mjs
+var import_components11 = __toESM(require_components(), 1);
+var import_jsx_runtime35 = __toESM(require_jsx_runtime(), 1);
 function Url({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
     ValidatedText,
     {
       ...{
@@ -3740,20 +6281,21 @@ function Url({
         field,
         onChange,
         hideLabelFromVision,
+        markWhenOptional,
         validity,
         type: "url",
-        prefix: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_components10.__experimentalInputControlPrefixWrapper, { variant: "icon", children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_components10.Icon, { icon: link_default }) })
+        prefix: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(import_components11.__experimentalInputControlPrefixWrapper, { variant: "icon", children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(import_components11.Icon, { icon: link_default }) })
       }
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/utils/validated-number.js
-var import_components11 = __toESM(require_components());
-var import_element9 = __toESM(require_element());
-var import_i18n8 = __toESM(require_i18n());
-var import_jsx_runtime24 = __toESM(require_jsx_runtime());
-var { ValidatedNumberControl } = unlock(import_components11.privateApis);
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/utils/validated-number.mjs
+var import_components12 = __toESM(require_components(), 1);
+var import_element29 = __toESM(require_element(), 1);
+var import_i18n6 = __toESM(require_i18n(), 1);
+var import_jsx_runtime36 = __toESM(require_jsx_runtime(), 1);
+var { ValidatedNumberControl } = unlock(import_components12.privateApis);
 function toNumberOrEmpty(value) {
   if (value === "" || value === void 0) {
     return "";
@@ -3768,24 +6310,23 @@ function BetweenControls({
   step
 }) {
   const [min = "", max = ""] = value;
-  const onChangeMin = (0, import_element9.useCallback)(
+  const onChangeMin = (0, import_element29.useCallback)(
     (newValue) => onChange([toNumberOrEmpty(newValue), max]),
     [onChange, max]
   );
-  const onChangeMax = (0, import_element9.useCallback)(
+  const onChangeMax = (0, import_element29.useCallback)(
     (newValue) => onChange([min, toNumberOrEmpty(newValue)]),
     [onChange, min]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
-    import_components11.BaseControl,
+  return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
+    import_components12.BaseControl,
     {
-      __nextHasNoMarginBottom: true,
-      help: (0, import_i18n8.__)("The max. value must be greater than the min. value."),
-      children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_components11.Flex, { direction: "row", gap: 4, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
-          import_components11.__experimentalNumberControl,
+      help: (0, import_i18n6.__)("The max. value must be greater than the min. value."),
+      children: /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)(import_components12.Flex, { direction: "row", gap: 4, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
+          import_components12.__experimentalNumberControl,
           {
-            label: (0, import_i18n8.__)("Min."),
+            label: (0, import_i18n6.__)("Min."),
             value: min,
             max: max ? Number(max) - step : void 0,
             onChange: onChangeMin,
@@ -3794,10 +6335,10 @@ function BetweenControls({
             step
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
-          import_components11.__experimentalNumberControl,
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
+          import_components12.__experimentalNumberControl,
           {
-            label: (0, import_i18n8.__)("Max."),
+            label: (0, import_i18n6.__)("Max."),
             value: max,
             min: min ? Number(min) + step : void 0,
             onChange: onChangeMax,
@@ -3815,14 +6356,16 @@ function ValidatedNumber({
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   operator,
-  decimals,
   validity
 }) {
+  const decimals = field.format?.decimals ?? 0;
   const step = Math.pow(10, Math.abs(decimals) * -1);
   const { label, description, getValue, setValue, isValid: isValid2 } = field;
   const value = getValue({ item: data }) ?? "";
-  const onChangeControl = (0, import_element9.useCallback)(
+  const disabled2 = field.isDisabled({ item: data, field });
+  const onChangeControl = (0, import_element29.useCallback)(
     (newValue) => {
       onChange(
         setValue({
@@ -3836,7 +6379,7 @@ function ValidatedNumber({
     },
     [data, onChange, setValue]
   );
-  const onChangeBetweenControls = (0, import_element9.useCallback)(
+  const onChangeBetweenControls = (0, import_element29.useCallback)(
     (newValue) => {
       onChange(
         setValue({
@@ -3854,7 +6397,7 @@ function ValidatedNumber({
     )) {
       valueBetween = value;
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
       BetweenControls,
       {
         value: valueBetween,
@@ -3864,10 +6407,11 @@ function ValidatedNumber({
       }
     );
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
     ValidatedNumberControl,
     {
       required: !!isValid2.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       label,
       help: description,
@@ -3877,121 +6421,82 @@ function ValidatedNumber({
       hideLabelFromVision,
       step,
       min: isValid2.min ? isValid2.min.constraint : void 0,
-      max: isValid2.max ? isValid2.max.constraint : void 0
+      max: isValid2.max ? isValid2.max.constraint : void 0,
+      disabled: disabled2
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/integer.js
-var import_jsx_runtime25 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/integer.mjs
+var import_jsx_runtime37 = __toESM(require_jsx_runtime(), 1);
+function Integer(props) {
+  return /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(ValidatedNumber, { ...props });
+}
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/number.mjs
+var import_jsx_runtime38 = __toESM(require_jsx_runtime(), 1);
 function Number2(props) {
-  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(ValidatedNumber, { ...props, decimals: 0 });
+  return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(ValidatedNumber, { ...props });
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/number.js
-var import_jsx_runtime26 = __toESM(require_jsx_runtime());
-function Number3(props) {
-  const decimals = props.field.format?.decimals ?? 2;
-  return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(ValidatedNumber, { ...props, decimals });
-}
-
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/radio.js
-var import_components12 = __toESM(require_components());
-var import_element10 = __toESM(require_element());
-var import_jsx_runtime27 = __toESM(require_jsx_runtime());
-var { ValidatedRadioControl } = unlock(import_components12.privateApis);
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/radio.mjs
+var import_components13 = __toESM(require_components(), 1);
+var import_element30 = __toESM(require_element(), 1);
+var import_jsx_runtime39 = __toESM(require_jsx_runtime(), 1);
+var { ValidatedRadioControl } = unlock(import_components13.privateApis);
 function Radio({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
   const { label, description, getValue, setValue, isValid: isValid2 } = field;
+  const disabled2 = field.isDisabled({ item: data, field });
   const { elements, isLoading } = useElements({
     elements: field.elements,
     getElements: field.getElements
   });
   const value = getValue({ item: data });
-  const onChangeControl = (0, import_element10.useCallback)(
+  const onChangeControl = (0, import_element30.useCallback)(
     (newValue) => onChange(setValue({ item: data, value: newValue })),
     [data, onChange, setValue]
   );
   if (isLoading) {
-    return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_components12.Spinner, {});
+    return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(import_components13.Spinner, {});
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(
     ValidatedRadioControl,
     {
       required: !!field.isValid?.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       label,
       help: description,
       onChange: onChangeControl,
       options: elements,
       selected: value,
-      hideLabelFromVision
-    }
-  );
-}
-
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/select.js
-var import_components13 = __toESM(require_components());
-var import_element11 = __toESM(require_element());
-var import_jsx_runtime28 = __toESM(require_jsx_runtime());
-var { ValidatedSelectControl } = unlock(import_components13.privateApis);
-function Select({
-  data,
-  field,
-  onChange,
-  hideLabelFromVision,
-  validity
-}) {
-  const { type, label, description, getValue, setValue, isValid: isValid2 } = field;
-  const isMultiple = type === "array";
-  const value = getValue({ item: data }) ?? (isMultiple ? [] : "");
-  const onChangeControl = (0, import_element11.useCallback)(
-    (newValue) => onChange(setValue({ item: data, value: newValue })),
-    [data, onChange, setValue]
-  );
-  const { elements, isLoading } = useElements({
-    elements: field.elements,
-    getElements: field.getElements
-  });
-  if (isLoading) {
-    return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_components13.Spinner, {});
-  }
-  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-    ValidatedSelectControl,
-    {
-      required: !!field.isValid?.required,
-      customValidity: getCustomValidity(isValid2, validity),
-      label,
-      value,
-      help: description,
-      options: elements,
-      onChange: onChangeControl,
-      __next40pxDefaultSize: true,
-      __nextHasNoMarginBottom: true,
       hideLabelFromVision,
-      multiple: isMultiple
+      disabled: disabled2
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/text.js
-var import_element12 = __toESM(require_element());
-var import_jsx_runtime29 = __toESM(require_jsx_runtime());
-function Text({
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/text.mjs
+var import_element31 = __toESM(require_element(), 1);
+var import_jsx_runtime40 = __toESM(require_jsx_runtime(), 1);
+function Text3({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   config,
   validity
 }) {
   const { prefix, suffix } = config || {};
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(
     ValidatedText,
     {
       ...{
@@ -3999,71 +6504,78 @@ function Text({
         field,
         onChange,
         hideLabelFromVision,
+        markWhenOptional,
         validity,
-        prefix: prefix ? (0, import_element12.createElement)(prefix) : void 0,
-        suffix: suffix ? (0, import_element12.createElement)(suffix) : void 0
+        prefix: prefix ? (0, import_element31.createElement)(prefix) : void 0,
+        suffix: suffix ? (0, import_element31.createElement)(suffix) : void 0
       }
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/toggle.js
-var import_components14 = __toESM(require_components());
-var import_element13 = __toESM(require_element());
-var import_jsx_runtime30 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/toggle.mjs
+var import_components14 = __toESM(require_components(), 1);
+var import_element32 = __toESM(require_element(), 1);
+var import_jsx_runtime41 = __toESM(require_jsx_runtime(), 1);
 var { ValidatedToggleControl } = unlock(import_components14.privateApis);
 function Toggle({
   field,
   onChange,
   data,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
   const { label, description, getValue, setValue, isValid: isValid2 } = field;
-  const onChangeControl = (0, import_element13.useCallback)(() => {
+  const disabled2 = field.isDisabled({ item: data, field });
+  const onChangeControl = (0, import_element32.useCallback)(() => {
     onChange(
       setValue({ item: data, value: !getValue({ item: data }) })
     );
   }, [onChange, setValue, data, getValue]);
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime41.jsx)(
     ValidatedToggleControl,
     {
       required: !!isValid2.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       hidden: hideLabelFromVision,
-      __nextHasNoMarginBottom: true,
       label,
       help: description,
       checked: getValue({ item: data }),
-      onChange: onChangeControl
+      onChange: onChangeControl,
+      disabled: disabled2
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/textarea.js
-var import_components15 = __toESM(require_components());
-var import_element14 = __toESM(require_element());
-var import_jsx_runtime31 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/textarea.mjs
+var import_components15 = __toESM(require_components(), 1);
+var import_element33 = __toESM(require_element(), 1);
+var import_jsx_runtime42 = __toESM(require_jsx_runtime(), 1);
 var { ValidatedTextareaControl } = unlock(import_components15.privateApis);
 function Textarea({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   config,
   validity
 }) {
   const { rows = 4 } = config || {};
+  const disabled2 = field.isDisabled({ item: data, field });
   const { label, placeholder, description, setValue, isValid: isValid2 } = field;
   const value = field.getValue({ item: data });
-  const onChangeControl = (0, import_element14.useCallback)(
+  const onChangeControl = (0, import_element33.useCallback)(
     (newValue) => onChange(setValue({ item: data, value: newValue })),
     [data, onChange, setValue]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(
     ValidatedTextareaControl,
     {
       required: !!isValid2.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       label,
       placeholder,
@@ -4071,30 +6583,32 @@ function Textarea({
       help: description,
       onChange: onChangeControl,
       rows,
+      disabled: disabled2,
       minLength: isValid2.minLength ? isValid2.minLength.constraint : void 0,
       maxLength: isValid2.maxLength ? isValid2.maxLength.constraint : void 0,
       __next40pxDefaultSize: true,
-      __nextHasNoMarginBottom: true,
       hideLabelFromVision
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/toggle-group.js
-var import_components16 = __toESM(require_components());
-var import_element15 = __toESM(require_element());
-var import_jsx_runtime32 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/toggle-group.mjs
+var import_components16 = __toESM(require_components(), 1);
+var import_element34 = __toESM(require_element(), 1);
+var import_jsx_runtime43 = __toESM(require_jsx_runtime(), 1);
 var { ValidatedToggleGroupControl } = unlock(import_components16.privateApis);
 function ToggleGroup({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
   const { getValue, setValue, isValid: isValid2 } = field;
+  const disabled2 = field.isDisabled({ item: data, field });
   const value = getValue({ item: data });
-  const onChangeControl = (0, import_element15.useCallback)(
+  const onChangeControl = (0, import_element34.useCallback)(
     (newValue) => onChange(setValue({ item: data, value: newValue })),
     [data, onChange, setValue]
   );
@@ -4103,30 +6617,31 @@ function ToggleGroup({
     getElements: field.getElements
   });
   if (isLoading) {
-    return /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_components16.Spinner, {});
+    return /* @__PURE__ */ (0, import_jsx_runtime43.jsx)(import_components16.Spinner, {});
   }
   if (elements.length === 0) {
     return null;
   }
   const selectedOption = elements.find((el) => el.value === value);
-  return /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime43.jsx)(
     ValidatedToggleGroupControl,
     {
       required: !!field.isValid?.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       __next40pxDefaultSize: true,
-      __nextHasNoMarginBottom: true,
       isBlock: true,
       label: field.label,
       help: selectedOption?.description || field.description,
       onChange: onChangeControl,
       value,
       hideLabelFromVision,
-      children: elements.map((el) => /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+      children: elements.map((el) => /* @__PURE__ */ (0, import_jsx_runtime43.jsx)(
         import_components16.__experimentalToggleGroupControlOption,
         {
           label: el.label,
-          value: el.value
+          value: el.value,
+          disabled: disabled2
         },
         el.value
       ))
@@ -4134,25 +6649,27 @@ function ToggleGroup({
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/array.js
-var import_components17 = __toESM(require_components());
-var import_element16 = __toESM(require_element());
-var import_jsx_runtime33 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/array.mjs
+var import_components17 = __toESM(require_components(), 1);
+var import_element35 = __toESM(require_element(), 1);
+var import_jsx_runtime44 = __toESM(require_jsx_runtime(), 1);
 var { ValidatedFormTokenField } = unlock(import_components17.privateApis);
 function ArrayControl({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
   const { label, placeholder, getValue, setValue, isValid: isValid2 } = field;
   const value = getValue({ item: data });
+  const disabled2 = field.isDisabled({ item: data, field });
   const { elements, isLoading } = useElements({
     elements: field.elements,
     getElements: field.getElements
   });
-  const arrayValueAsElements = (0, import_element16.useMemo)(
+  const arrayValueAsElements = (0, import_element35.useMemo)(
     () => Array.isArray(value) ? value.map((token) => {
       const element = elements?.find(
         (suggestion) => suggestion.value === token
@@ -4161,7 +6678,7 @@ function ArrayControl({
     }) : [],
     [value, elements]
   );
-  const onChangeControl = (0, import_element16.useCallback)(
+  const onChangeControl = (0, import_element35.useCallback)(
     (tokens) => {
       const valueTokens = tokens.map((token) => {
         if (typeof token === "object" && "value" in token) {
@@ -4174,18 +6691,20 @@ function ArrayControl({
     [onChange, setValue, data]
   );
   if (isLoading) {
-    return /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(import_components17.Spinner, {});
+    return /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(import_components17.Spinner, {});
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(
     ValidatedFormTokenField,
     {
       required: !!isValid2?.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       label: hideLabelFromVision ? void 0 : label,
       value: arrayValueAsElements,
       onChange: onChangeControl,
       placeholder,
       suggestions: elements?.map((element) => element.value),
+      disabled: disabled2,
       __experimentalValidateInput: (token) => {
         if (field.isValid?.elements && elements) {
           return elements.some(
@@ -4213,9 +6732,9 @@ function ArrayControl({
           const element = elements.find(
             (el) => el.value === item
           );
-          return /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("span", { children: element?.label || item });
+          return /* @__PURE__ */ (0, import_jsx_runtime44.jsx)("span", { children: element?.label || item });
         }
-        return /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("span", { children: item });
+        return /* @__PURE__ */ (0, import_jsx_runtime44.jsx)("span", { children: item });
       }
     }
   );
@@ -4379,46 +6898,38 @@ var w = function(r3) {
   return r3 instanceof j ? r3 : new j(r3);
 };
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/color.js
-var import_components18 = __toESM(require_components());
-var import_element17 = __toESM(require_element());
-var import_jsx_runtime34 = __toESM(require_jsx_runtime());
-var { ValidatedInputControl: ValidatedInputControl3, Picker } = unlock(import_components18.privateApis);
-var ColorPicker = ({
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/color.mjs
+var import_components18 = __toESM(require_components(), 1);
+var import_element36 = __toESM(require_element(), 1);
+var import_i18n7 = __toESM(require_i18n(), 1);
+var import_jsx_runtime45 = __toESM(require_jsx_runtime(), 1);
+var { ValidatedInputControl: ValidatedInputControl3 } = unlock(import_components18.privateApis);
+var ColorPickerDropdown = ({
   color,
-  onColorChange
+  onColorChange,
+  disabled: disabled2
 }) => {
   const validColor = color && w(color).isValid() ? color : "#ffffff";
-  return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
     import_components18.Dropdown,
     {
-      renderToggle: ({ onToggle, isOpen }) => /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_components18.__experimentalInputControlPrefixWrapper, { variant: "icon", children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
-        "button",
+      className: "dataviews-controls__color-picker-dropdown",
+      popoverProps: { resize: false },
+      renderToggle: ({ onToggle }) => /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
+        import_components18.Button,
         {
-          type: "button",
           onClick: onToggle,
-          style: {
-            width: "24px",
-            height: "24px",
-            borderRadius: "50%",
-            backgroundColor: validColor,
-            border: "1px solid #ddd",
-            cursor: "pointer",
-            outline: isOpen ? "2px solid #007cba" : "none",
-            outlineOffset: "2px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 0,
-            margin: 0
-          },
-          "aria-label": "Open color picker"
+          "aria-label": (0, import_i18n7.__)("Open color picker"),
+          size: "small",
+          disabled: disabled2,
+          accessibleWhenDisabled: true,
+          icon: () => /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(import_components18.ColorIndicator, { colorValue: validColor })
         }
-      ) }),
-      renderContent: () => /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("div", { style: { padding: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
-        Picker,
+      ),
+      renderContent: () => /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(import_components18.__experimentalDropdownContentWrapper, { paddingSize: "none", children: /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
+        import_components18.ColorPicker,
         {
-          color: w(validColor),
+          color: validColor,
           onChange: onColorChange,
           enableAlpha: true
         }
@@ -4431,26 +6942,29 @@ function Color({
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
   const { label, placeholder, description, setValue, isValid: isValid2 } = field;
+  const disabled2 = field.isDisabled({ item: data, field });
   const value = field.getValue({ item: data }) || "";
-  const handleColorChange = (0, import_element17.useCallback)(
-    (colorObject) => {
-      onChange(setValue({ item: data, value: colorObject.toHex() }));
+  const handleColorChange = (0, import_element36.useCallback)(
+    (newColor) => {
+      onChange(setValue({ item: data, value: newColor }));
     },
     [data, onChange, setValue]
   );
-  const handleInputChange = (0, import_element17.useCallback)(
+  const handleInputChange = (0, import_element36.useCallback)(
     (newValue) => {
       onChange(setValue({ item: data, value: newValue || "" }));
     },
     [data, onChange, setValue]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
     ValidatedInputControl3,
     {
       required: !!field.isValid?.required,
+      markWhenOptional,
       customValidity: getCustomValidity(isValid2, validity),
       label,
       placeholder,
@@ -4459,34 +6973,38 @@ function Color({
       onChange: handleInputChange,
       hideLabelFromVision,
       type: "text",
-      prefix: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
-        ColorPicker,
+      disabled: disabled2,
+      prefix: /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(import_components18.__experimentalInputControlPrefixWrapper, { variant: "control", children: /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
+        ColorPickerDropdown,
         {
           color: value,
-          onColorChange: handleColorChange
+          onColorChange: handleColorChange,
+          disabled: disabled2
         }
-      )
+      ) })
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/password.js
-var import_components19 = __toESM(require_components());
-var import_element18 = __toESM(require_element());
-var import_i18n9 = __toESM(require_i18n());
-var import_jsx_runtime35 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/password.mjs
+var import_components19 = __toESM(require_components(), 1);
+var import_element37 = __toESM(require_element(), 1);
+var import_i18n8 = __toESM(require_i18n(), 1);
+var import_jsx_runtime46 = __toESM(require_jsx_runtime(), 1);
 function Password({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
-  const [isVisible, setIsVisible] = (0, import_element18.useState)(false);
-  const toggleVisibility = (0, import_element18.useCallback)(() => {
+  const [isVisible, setIsVisible] = (0, import_element37.useState)(false);
+  const disabled2 = field.isDisabled({ item: data, field });
+  const toggleVisibility = (0, import_element37.useCallback)(() => {
     setIsVisible((prev) => !prev);
   }, []);
-  return /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
     ValidatedText,
     {
       ...{
@@ -4494,15 +7012,18 @@ function Password({
         field,
         onChange,
         hideLabelFromVision,
+        markWhenOptional,
         validity,
         type: isVisible ? "text" : "password",
-        suffix: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(import_components19.__experimentalInputControlSuffixWrapper, { variant: "control", children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+        suffix: /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(import_components19.__experimentalInputControlSuffixWrapper, { variant: "control", children: /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
           import_components19.Button,
           {
             icon: isVisible ? unseen_default : seen_default,
             onClick: toggleVisibility,
             size: "small",
-            label: isVisible ? (0, import_i18n9.__)("Hide password") : (0, import_i18n9.__)("Show password")
+            label: isVisible ? (0, import_i18n8.__)("Hide password") : (0, import_i18n8.__)("Show password"),
+            disabled: disabled2,
+            accessibleWhenDisabled: true
           }
         ) })
       }
@@ -4510,28 +7031,30 @@ function Password({
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/has-elements.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/has-elements.mjs
 function hasElements(field) {
   return Array.isArray(field.elements) && field.elements.length > 0 || typeof field.getElements === "function";
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-controls/index.js
-var import_jsx_runtime36 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-controls/index.mjs
+var import_jsx_runtime47 = __toESM(require_jsx_runtime(), 1);
 var FORM_CONTROLS = {
+  adaptiveSelect: AdaptiveSelect,
   array: ArrayControl,
   checkbox: Checkbox,
   color: Color,
+  combobox: Combobox,
   datetime: DateTime,
   date: DateControl,
   email: Email,
   telephone: Telephone,
   url: Url,
-  integer: Number2,
-  number: Number3,
+  integer: Integer,
+  number: Number2,
   password: Password,
   radio: Radio,
   select: Select,
-  text: Text,
+  text: Text3,
   toggle: Toggle,
   textarea: Textarea,
   toggleGroup: ToggleGroup
@@ -4546,7 +7069,7 @@ function createConfiguredControl(config) {
     return null;
   }
   return function ConfiguredControl(props) {
-    return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(BaseControlType, { ...props, config: controlConfig });
+    return /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(BaseControlType, { ...props, config: controlConfig });
   };
 }
 function getControl(field, fallback) {
@@ -4560,7 +7083,7 @@ function getControl(field, fallback) {
     return createConfiguredControl(field.Edit);
   }
   if (hasElements(field) && field.type !== "array") {
-    return getControlByType("select");
+    return getControlByType("adaptiveSelect");
   }
   if (fallback === null) {
     return null;
@@ -4574,7 +7097,7 @@ function getControlByType(type) {
   return null;
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-filter-by.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-filter-by.mjs
 function getFilterBy(field, defaultOperators, validOperators) {
   if (field.filterBy === false) {
     return false;
@@ -4592,7 +7115,7 @@ function getFilterBy(field, defaultOperators, validOperators) {
 }
 var get_filter_by_default = getFilterBy;
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-value-from-id.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-value-from-id.mjs
 var getValueFromId = (id) => ({ item }) => {
   const path = id.split(".");
   let value = item;
@@ -4607,7 +7130,7 @@ var getValueFromId = (id) => ({ item }) => {
 };
 var get_value_from_id_default = getValueFromId;
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/set-value-from-id.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/set-value-from-id.mjs
 var setValueFromId = (id) => ({ value }) => {
   const path = id.split(".");
   const result = {};
@@ -4621,24 +7144,52 @@ var setValueFromId = (id) => ({ value }) => {
 };
 var set_value_from_id_default = setValueFromId;
 
-// node_modules/@wordpress/dataviews/build-module/field-types/email.js
-var import_i18n10 = __toESM(require_i18n());
+// node_modules/@wordpress/dataviews/build-module/field-types/email.mjs
+var import_i18n9 = __toESM(require_i18n(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/render-default.js
-var import_jsx_runtime37 = __toESM(require_jsx_runtime());
-function render3({
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/render-from-elements.mjs
+function RenderFromElements({
   item,
   field
 }) {
-  return field.hasElements ? /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(RenderFromElements, { item, field }) : field.getValue({ item });
+  const { elements, isLoading } = useElements({
+    elements: field.elements,
+    getElements: field.getElements
+  });
+  const value = field.getValue({ item });
+  if (isLoading) {
+    return value;
+  }
+  if (elements.length === 0) {
+    return value;
+  }
+  return elements?.find((element) => element.value === value)?.label || field.getValue({ item });
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/sort-text.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/render-default.mjs
+var import_jsx_runtime48 = __toESM(require_jsx_runtime(), 1);
+function render({
+  item,
+  field
+}) {
+  if (field.hasElements) {
+    return /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(RenderFromElements, { item, field });
+  }
+  return field.getValueFormatted({ item, field });
+}
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/sort-text.mjs
 var sort_text_default = (a2, b2, direction) => {
   return direction === "asc" ? a2.localeCompare(b2) : b2.localeCompare(a2);
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-min-length.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-required.mjs
+function isValidRequired(item, field) {
+  const value = field.getValue({ item });
+  return ![void 0, "", null].includes(value);
+}
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-min-length.mjs
 function isValidMinLength(item, field) {
   if (typeof field.isValid.minLength?.constraint !== "number") {
     return false;
@@ -4650,7 +7201,7 @@ function isValidMinLength(item, field) {
   return String(value).length >= field.isValid.minLength.constraint;
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-max-length.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-max-length.mjs
 function isValidMaxLength(item, field) {
   if (typeof field.isValid.maxLength?.constraint !== "number") {
     return false;
@@ -4662,7 +7213,7 @@ function isValidMaxLength(item, field) {
   return String(value).length <= field.isValid.maxLength.constraint;
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-pattern.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-pattern.mjs
 function isValidPattern(item, field) {
   if (field.isValid.pattern?.constraint === void 0) {
     return true;
@@ -4679,18 +7230,38 @@ function isValidPattern(item, field) {
   }
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/email.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-elements.mjs
+function isValidElements(item, field) {
+  const elements = field.elements ?? [];
+  const validValues = elements.map((el) => el.value);
+  if (validValues.length === 0) {
+    return true;
+  }
+  const value = field.getValue({ item });
+  return [].concat(value).every((v2) => validValues.includes(v2));
+}
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-value-formatted-default.mjs
+function getValueFormatted({
+  item,
+  field
+}) {
+  return field.getValue({ item });
+}
+var get_value_formatted_default_default = getValueFormatted;
+
+// node_modules/@wordpress/dataviews/build-module/field-types/email.mjs
 var emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-function isValidCustom3(item, field) {
+function isValidCustom(item, field) {
   const value = field.getValue({ item });
   if (![void 0, "", null].includes(value) && !emailRegex.test(value)) {
-    return (0, import_i18n10.__)("Value must be a valid email address.");
+    return (0, import_i18n9.__)("Value must be a valid email address.");
   }
   return null;
 }
 var email_default = {
   type: "email",
-  render: render3,
+  render,
   Edit: "email",
   sort: sort_text_default,
   enableSorting: true,
@@ -4708,21 +7279,218 @@ var email_default = {
     OPERATOR_IS_ALL,
     OPERATOR_IS_NOT_ALL
   ],
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: get_value_formatted_default_default,
   validate: {
     required: isValidRequired,
     pattern: isValidPattern,
     minLength: isValidMinLength,
     maxLength: isValidMaxLength,
     elements: isValidElements,
+    custom: isValidCustom
+  }
+};
+
+// node_modules/@wordpress/dataviews/build-module/field-types/integer.mjs
+var import_i18n10 = __toESM(require_i18n(), 1);
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/sort-number.mjs
+var sort_number_default = (a2, b2, direction) => {
+  return direction === "asc" ? a2 - b2 : b2 - a2;
+};
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-min.mjs
+function isValidMin(item, field) {
+  if (typeof field.isValid.min?.constraint !== "number") {
+    return false;
+  }
+  const value = field.getValue({ item });
+  if ([void 0, "", null].includes(value)) {
+    return true;
+  }
+  return Number(value) >= field.isValid.min.constraint;
+}
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-max.mjs
+function isValidMax(item, field) {
+  if (typeof field.isValid.max?.constraint !== "number") {
+    return false;
+  }
+  const value = field.getValue({ item });
+  if ([void 0, "", null].includes(value)) {
+    return true;
+  }
+  return Number(value) <= field.isValid.max.constraint;
+}
+
+// node_modules/@wordpress/dataviews/build-module/field-types/integer.mjs
+var format2 = {
+  separatorThousand: ","
+};
+function getValueFormatted2({
+  item,
+  field
+}) {
+  let value = field.getValue({ item });
+  if (value === null || value === void 0) {
+    return "";
+  }
+  value = Number(value);
+  if (!Number.isFinite(value)) {
+    return String(value);
+  }
+  let formatInteger;
+  if (field.type !== "integer") {
+    formatInteger = format2;
+  } else {
+    formatInteger = field.format;
+  }
+  const { separatorThousand } = formatInteger;
+  const integerValue = Math.trunc(value);
+  if (!separatorThousand) {
+    return String(integerValue);
+  }
+  return String(integerValue).replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    separatorThousand
+  );
+}
+function isValidCustom2(item, field) {
+  const value = field.getValue({ item });
+  if (![void 0, "", null].includes(value) && !Number.isInteger(value)) {
+    return (0, import_i18n10.__)("Value must be an integer.");
+  }
+  return null;
+}
+var integer_default = {
+  type: "integer",
+  render,
+  Edit: "integer",
+  sort: sort_number_default,
+  enableSorting: true,
+  enableGlobalSearch: false,
+  defaultOperators: [
+    OPERATOR_IS,
+    OPERATOR_IS_NOT,
+    OPERATOR_LESS_THAN,
+    OPERATOR_GREATER_THAN,
+    OPERATOR_LESS_THAN_OR_EQUAL,
+    OPERATOR_GREATER_THAN_OR_EQUAL,
+    OPERATOR_BETWEEN
+  ],
+  validOperators: [
+    // Single-selection
+    OPERATOR_IS,
+    OPERATOR_IS_NOT,
+    OPERATOR_LESS_THAN,
+    OPERATOR_GREATER_THAN,
+    OPERATOR_LESS_THAN_OR_EQUAL,
+    OPERATOR_GREATER_THAN_OR_EQUAL,
+    OPERATOR_BETWEEN,
+    // Multiple-selection
+    OPERATOR_IS_ANY,
+    OPERATOR_IS_NONE,
+    OPERATOR_IS_ALL,
+    OPERATOR_IS_NOT_ALL
+  ],
+  format: format2,
+  getValueFormatted: getValueFormatted2,
+  validate: {
+    required: isValidRequired,
+    min: isValidMin,
+    max: isValidMax,
+    elements: isValidElements,
+    custom: isValidCustom2
+  }
+};
+
+// node_modules/@wordpress/dataviews/build-module/field-types/number.mjs
+var import_i18n11 = __toESM(require_i18n(), 1);
+var format3 = {
+  separatorThousand: ",",
+  separatorDecimal: ".",
+  decimals: 2
+};
+function getValueFormatted3({
+  item,
+  field
+}) {
+  let value = field.getValue({ item });
+  if (value === null || value === void 0) {
+    return "";
+  }
+  value = Number(value);
+  if (!Number.isFinite(value)) {
+    return String(value);
+  }
+  let formatNumber;
+  if (field.type !== "number") {
+    formatNumber = format3;
+  } else {
+    formatNumber = field.format;
+  }
+  const { separatorThousand, separatorDecimal, decimals } = formatNumber;
+  const fixedValue = value.toFixed(decimals);
+  const [integerPart, decimalPart] = fixedValue.split(".");
+  const formattedInteger = separatorThousand ? integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separatorThousand) : integerPart;
+  return decimals === 0 ? formattedInteger : formattedInteger + separatorDecimal + decimalPart;
+}
+function isEmpty(value) {
+  return value === "" || value === void 0 || value === null;
+}
+function isValidCustom3(item, field) {
+  const value = field.getValue({ item });
+  if (!isEmpty(value) && !Number.isFinite(value)) {
+    return (0, import_i18n11.__)("Value must be a number.");
+  }
+  return null;
+}
+var number_default = {
+  type: "number",
+  render,
+  Edit: "number",
+  sort: sort_number_default,
+  enableSorting: true,
+  enableGlobalSearch: false,
+  defaultOperators: [
+    OPERATOR_IS,
+    OPERATOR_IS_NOT,
+    OPERATOR_LESS_THAN,
+    OPERATOR_GREATER_THAN,
+    OPERATOR_LESS_THAN_OR_EQUAL,
+    OPERATOR_GREATER_THAN_OR_EQUAL,
+    OPERATOR_BETWEEN
+  ],
+  validOperators: [
+    // Single-selection
+    OPERATOR_IS,
+    OPERATOR_IS_NOT,
+    OPERATOR_LESS_THAN,
+    OPERATOR_GREATER_THAN,
+    OPERATOR_LESS_THAN_OR_EQUAL,
+    OPERATOR_GREATER_THAN_OR_EQUAL,
+    OPERATOR_BETWEEN,
+    // Multiple-selection
+    OPERATOR_IS_ANY,
+    OPERATOR_IS_NONE,
+    OPERATOR_IS_ALL,
+    OPERATOR_IS_NOT_ALL
+  ],
+  format: format3,
+  getValueFormatted: getValueFormatted3,
+  validate: {
+    required: isValidRequired,
+    min: isValidMin,
+    max: isValidMax,
+    elements: isValidElements,
     custom: isValidCustom3
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/text.js
+// node_modules/@wordpress/dataviews/build-module/field-types/text.mjs
 var text_default = {
   type: "text",
-  render: render3,
+  render,
   Edit: "text",
   sort: sort_text_default,
   enableSorting: true,
@@ -4741,7 +7509,8 @@ var text_default = {
     OPERATOR_IS_ALL,
     OPERATOR_IS_NOT_ALL
   ],
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: get_value_formatted_default_default,
   validate: {
     required: isValidRequired,
     pattern: isValidPattern,
@@ -4751,22 +7520,62 @@ var text_default = {
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/datetime.js
-var import_jsx_runtime38 = __toESM(require_jsx_runtime());
-function render4({ item, field }) {
-  if (field.elements) {
-    return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(RenderFromElements, { item, field });
+// node_modules/@wordpress/dataviews/build-module/field-types/datetime.mjs
+var import_date7 = __toESM(require_date(), 1);
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-date-boundary.mjs
+var import_date6 = __toESM(require_date(), 1);
+function parseDateLike(value) {
+  if (!value) {
+    return null;
+  }
+  if (!isValid(new Date(value))) {
+    return null;
+  }
+  const parsed = (0, import_date6.getDate)(value);
+  return parsed && isValid(parsed) ? parsed : null;
+}
+function validateDateLikeBoundary(item, field, boundary) {
+  const constraint = field.isValid[boundary]?.constraint;
+  if (typeof constraint !== "string") {
+    return false;
   }
   const value = field.getValue({ item });
+  const boundaryValue = Array.isArray(value) ? value[boundary === "min" ? 0 : value.length - 1] : value;
+  if (boundaryValue === void 0 || boundaryValue === null || boundaryValue === "") {
+    return true;
+  }
+  const parsedConstraint = parseDateLike(constraint);
+  const parsedValue = parseDateLike(String(boundaryValue));
+  return !!parsedConstraint && !!parsedValue && (boundary === "min" ? parsedValue.getTime() >= parsedConstraint.getTime() : parsedValue.getTime() <= parsedConstraint.getTime());
+}
+function isValidMinDate(item, field) {
+  return validateDateLikeBoundary(item, field, "min");
+}
+function isValidMaxDate(item, field) {
+  return validateDateLikeBoundary(item, field, "max");
+}
+
+// node_modules/@wordpress/dataviews/build-module/field-types/datetime.mjs
+var format4 = {
+  datetime: (0, import_date7.getSettings)().formats.datetime,
+  weekStartsOn: (0, import_date7.getSettings)().l10n.startOfWeek
+};
+function getValueFormatted4({
+  item,
+  field
+}) {
+  const value = field.getValue({ item });
   if (["", void 0, null].includes(value)) {
-    return null;
+    return "";
   }
-  try {
-    const dateValue = parseDateTime(value);
-    return dateValue?.toLocaleString();
-  } catch (error) {
-    return null;
+  let formatDatetime;
+  if (field.type !== "datetime") {
+    formatDatetime = format4;
+  } else {
+    formatDatetime = field.format;
   }
+  return (0, import_date7.dateI18n)(formatDatetime.datetime, (0, import_date7.getDate)(value));
 }
 var sort = (a2, b2, direction) => {
   const timeA = new Date(a2).getTime();
@@ -4775,7 +7584,7 @@ var sort = (a2, b2, direction) => {
 };
 var datetime_default = {
   type: "datetime",
-  render: render4,
+  render,
   Edit: "datetime",
   sort,
   enableSorting: true,
@@ -4800,38 +7609,37 @@ var datetime_default = {
     OPERATOR_IN_THE_PAST,
     OPERATOR_OVER
   ],
-  getFormat: () => ({}),
+  format: format4,
+  getValueFormatted: getValueFormatted4,
   validate: {
     required: isValidRequired,
-    elements: isValidElements
+    elements: isValidElements,
+    min: isValidMinDate,
+    max: isValidMaxDate
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/date.js
-var import_date5 = __toESM(require_date());
-var import_jsx_runtime39 = __toESM(require_jsx_runtime());
-function getFormat3(field) {
-  const fieldFormat = field.format;
-  return {
-    date: fieldFormat?.date !== void 0 && typeof fieldFormat.date === "string" ? fieldFormat.date : (0, import_date5.getSettings)().formats.date,
-    weekStartsOn: fieldFormat?.weekStartsOn !== void 0 && DAYS_OF_WEEK.includes(fieldFormat?.weekStartsOn) ? fieldFormat.weekStartsOn : (0, import_date5.getSettings)().l10n.startOfWeek
-  };
-}
-function render5({ item, field }) {
-  if (field.hasElements) {
-    return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(RenderFromElements, { item, field });
-  }
+// node_modules/@wordpress/dataviews/build-module/field-types/date.mjs
+var import_date8 = __toESM(require_date(), 1);
+var format5 = {
+  date: (0, import_date8.getSettings)().formats.date,
+  weekStartsOn: (0, import_date8.getSettings)().l10n.startOfWeek
+};
+function getValueFormatted5({
+  item,
+  field
+}) {
   const value = field.getValue({ item });
-  if (!value) {
+  if (["", void 0, null].includes(value)) {
     return "";
   }
-  let format2;
+  let formatDate2;
   if (field.type !== "date") {
-    format2 = getFormat3({});
+    formatDate2 = format5;
   } else {
-    format2 = field.format;
+    formatDate2 = field.format;
   }
-  return (0, import_date5.dateI18n)(format2.date, (0, import_date5.getDate)(value));
+  return (0, import_date8.dateI18n)(formatDate2.date, (0, import_date8.getDate)(value));
 }
 var sort2 = (a2, b2, direction) => {
   const timeA = new Date(a2).getTime();
@@ -4840,7 +7648,7 @@ var sort2 = (a2, b2, direction) => {
 };
 var date_default = {
   type: "date",
-  render: render5,
+  render,
   Edit: "date",
   sort: sort2,
   enableSorting: true,
@@ -4867,40 +7675,43 @@ var date_default = {
     OPERATOR_OVER,
     OPERATOR_BETWEEN
   ],
-  getFormat: getFormat3,
+  format: format5,
+  getValueFormatted: getValueFormatted5,
   validate: {
     required: isValidRequired,
-    elements: isValidElements
+    elements: isValidElements,
+    min: isValidMinDate,
+    max: isValidMaxDate
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/boolean.js
-var import_i18n11 = __toESM(require_i18n());
+// node_modules/@wordpress/dataviews/build-module/field-types/boolean.mjs
+var import_i18n12 = __toESM(require_i18n(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-required-for-bool.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-required-for-bool.mjs
 function isValidRequiredForBool(item, field) {
   const value = field.getValue({ item });
   return value === true;
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/boolean.js
-var import_jsx_runtime40 = __toESM(require_jsx_runtime());
-function render6({ item, field }) {
-  if (field.hasElements) {
-    return /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(RenderFromElements, { item, field });
+// node_modules/@wordpress/dataviews/build-module/field-types/boolean.mjs
+function getValueFormatted6({
+  item,
+  field
+}) {
+  const value = field.getValue({ item });
+  if (value === true) {
+    return (0, import_i18n12.__)("True");
   }
-  if (field.getValue({ item }) === true) {
-    return (0, import_i18n11.__)("True");
+  if (value === false) {
+    return (0, import_i18n12.__)("False");
   }
-  if (field.getValue({ item }) === false) {
-    return (0, import_i18n11.__)("False");
-  }
-  return null;
+  return "";
 }
 function isValidCustom4(item, field) {
   const value = field.getValue({ item });
   if (![void 0, "", null].includes(value) && ![true, false].includes(value)) {
-    return (0, import_i18n11.__)("Value must be true, false, or undefined");
+    return (0, import_i18n12.__)("Value must be true, false, or undefined");
   }
   return null;
 }
@@ -4917,7 +7728,7 @@ var sort3 = (a2, b2, direction) => {
 };
 var boolean_default = {
   type: "boolean",
-  render: render6,
+  render,
   Edit: "checkbox",
   sort: sort3,
   validate: {
@@ -4929,10 +7740,11 @@ var boolean_default = {
   enableGlobalSearch: false,
   defaultOperators: [OPERATOR_IS, OPERATOR_IS_NOT],
   validOperators: [OPERATOR_IS, OPERATOR_IS_NOT],
-  getFormat: () => ({})
+  format: {},
+  getValueFormatted: getValueFormatted6
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/media.js
+// node_modules/@wordpress/dataviews/build-module/field-types/media.mjs
 var media_default = {
   type: "media",
   render: () => null,
@@ -4942,17 +7754,18 @@ var media_default = {
   enableGlobalSearch: false,
   defaultOperators: [],
   validOperators: [],
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: get_value_formatted_default_default,
   // cannot validate any constraint, so
   // the only available validation for the field author
   // would be providing a custom validator.
   validate: {}
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/array.js
-var import_i18n12 = __toESM(require_i18n());
+// node_modules/@wordpress/dataviews/build-module/field-types/array.mjs
+var import_i18n13 = __toESM(require_i18n(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-required-for-array.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/is-valid-required-for-array.mjs
 function isValidRequiredForArray(item, field) {
   const value = field.getValue({ item });
   return Array.isArray(value) && value.length > 0 && value.every(
@@ -4960,18 +7773,25 @@ function isValidRequiredForArray(item, field) {
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/array.js
-function render7({ item, field }) {
-  const value = field.getValue({ item }) || [];
-  return value.join(", ");
+// node_modules/@wordpress/dataviews/build-module/field-types/array.mjs
+function getValueFormatted7({
+  item,
+  field
+}) {
+  const value = field.getValue({ item });
+  const arr = Array.isArray(value) ? value : [];
+  return arr.join(", ");
+}
+function render2({ item, field }) {
+  return getValueFormatted7({ item, field });
 }
 function isValidCustom5(item, field) {
   const value = field.getValue({ item });
   if (![void 0, "", null].includes(value) && !Array.isArray(value)) {
-    return (0, import_i18n12.__)("Value must be an array.");
+    return (0, import_i18n13.__)("Value must be an array.");
   }
   if (!value.every((v2) => typeof v2 === "string")) {
-    return (0, import_i18n12.__)("Every value must be a string.");
+    return (0, import_i18n13.__)("Every value must be a string.");
   }
   return null;
 }
@@ -4987,7 +7807,7 @@ var sort4 = (a2, b2, direction) => {
 };
 var array_default = {
   type: "array",
-  render: render7,
+  render: render2,
   Edit: "array",
   sort: sort4,
   enableSorting: true,
@@ -4999,7 +7819,8 @@ var array_default = {
     OPERATOR_IS_ALL,
     OPERATOR_IS_NOT_ALL
   ],
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: getValueFormatted7,
   validate: {
     required: isValidRequiredForArray,
     elements: isValidElements,
@@ -5007,14 +7828,16 @@ var array_default = {
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/password.js
-var import_jsx_runtime41 = __toESM(require_jsx_runtime());
-function render8({ item, field }) {
-  return field.hasElements ? /* @__PURE__ */ (0, import_jsx_runtime41.jsx)(RenderFromElements, { item, field }) : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
+// node_modules/@wordpress/dataviews/build-module/field-types/password.mjs
+function getValueFormatted8({
+  item,
+  field
+}) {
+  return field.getValue({ item }) ? "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" : "";
 }
 var password_default = {
   type: "password",
-  render: render8,
+  render,
   Edit: "password",
   sort: () => 0,
   // Passwords should not be sortable for security reasons
@@ -5022,7 +7845,8 @@ var password_default = {
   enableGlobalSearch: false,
   defaultOperators: [],
   validOperators: [],
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: getValueFormatted8,
   validate: {
     required: isValidRequired,
     pattern: isValidPattern,
@@ -5032,10 +7856,10 @@ var password_default = {
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/telephone.js
+// node_modules/@wordpress/dataviews/build-module/field-types/telephone.mjs
 var telephone_default = {
   type: "telephone",
-  render: render3,
+  render,
   Edit: "telephone",
   sort: sort_text_default,
   enableSorting: true,
@@ -5053,7 +7877,8 @@ var telephone_default = {
     OPERATOR_IS_ALL,
     OPERATOR_IS_NOT_ALL
   ],
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: get_value_formatted_default_default,
   validate: {
     required: isValidRequired,
     pattern: isValidPattern,
@@ -5063,19 +7888,19 @@ var telephone_default = {
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/color.js
-var import_i18n13 = __toESM(require_i18n());
-var import_jsx_runtime42 = __toESM(require_jsx_runtime());
-function render9({ item, field }) {
+// node_modules/@wordpress/dataviews/build-module/field-types/color.mjs
+var import_i18n14 = __toESM(require_i18n(), 1);
+var import_jsx_runtime49 = __toESM(require_jsx_runtime(), 1);
+function render3({ item, field }) {
   if (field.hasElements) {
-    return /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(RenderFromElements, { item, field });
+    return /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(RenderFromElements, { item, field });
   }
-  const value = field.getValue({ item });
+  const value = get_value_formatted_default_default({ item, field });
   if (!value || !w(value).isValid()) {
     return value;
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime42.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime49.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
       "div",
       {
         style: {
@@ -5088,13 +7913,13 @@ function render9({ item, field }) {
         }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime42.jsx)("span", { children: value })
+    /* @__PURE__ */ (0, import_jsx_runtime49.jsx)("span", { children: value })
   ] });
 }
 function isValidCustom6(item, field) {
   const value = field.getValue({ item });
   if (![void 0, "", null].includes(value) && !w(value).isValid()) {
-    return (0, import_i18n13.__)("Value must be a valid color.");
+    return (0, import_i18n14.__)("Value must be a valid color.");
   }
   return null;
 }
@@ -5122,7 +7947,7 @@ var sort5 = (a2, b2, direction) => {
 };
 var color_default = {
   type: "color",
-  render: render9,
+  render: render3,
   Edit: "color",
   sort: sort5,
   enableSorting: true,
@@ -5134,7 +7959,8 @@ var color_default = {
     OPERATOR_IS_ANY,
     OPERATOR_IS_NONE
   ],
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: get_value_formatted_default_default,
   validate: {
     required: isValidRequired,
     elements: isValidElements,
@@ -5142,10 +7968,10 @@ var color_default = {
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/url.js
+// node_modules/@wordpress/dataviews/build-module/field-types/url.mjs
 var url_default = {
   type: "url",
-  render: render3,
+  render,
   Edit: "url",
   sort: sort_text_default,
   enableSorting: true,
@@ -5163,7 +7989,8 @@ var url_default = {
     OPERATOR_IS_ALL,
     OPERATOR_IS_NOT_ALL
   ],
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: get_value_formatted_default_default,
   validate: {
     required: isValidRequired,
     pattern: isValidPattern,
@@ -5173,7 +8000,7 @@ var url_default = {
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/no-type.js
+// node_modules/@wordpress/dataviews/build-module/field-types/no-type.mjs
 var sort6 = (a2, b2, direction) => {
   if (typeof a2 === "number" && typeof b2 === "number") {
     return sort_number_default(a2, b2, direction);
@@ -5182,73 +8009,79 @@ var sort6 = (a2, b2, direction) => {
 };
 var no_type_default = {
   // type: no type for this one
-  render: render3,
+  render,
   Edit: null,
   sort: sort6,
   enableSorting: true,
   enableGlobalSearch: false,
   defaultOperators: [OPERATOR_IS, OPERATOR_IS_NOT],
   validOperators: getAllOperatorNames(),
-  getFormat: () => ({}),
+  format: {},
+  getValueFormatted: get_value_formatted_default_default,
   validate: {
     required: isValidRequired,
     elements: isValidElements
   }
 };
 
-// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-is-valid.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-is-valid.mjs
+function supportsNumericRangeConstraint(type) {
+  return type === "integer" || type === "number";
+}
+function supportsDateRangeConstraint(type) {
+  return type === "date" || type === "datetime";
+}
+function normalizeRangeRule(value, fieldType, key) {
+  const validator = fieldType.validate[key];
+  if (validator && (typeof value === "number" && supportsNumericRangeConstraint(fieldType.type) || typeof value === "string" && supportsDateRangeConstraint(fieldType.type))) {
+    return { constraint: value, validate: validator };
+  }
+  return void 0;
+}
 function getIsValid(field, fieldType) {
+  const rules = field.isValid;
   let required;
-  if (field.isValid?.required === true && fieldType.validate.required !== void 0) {
+  if (rules?.required === true && fieldType.validate.required !== void 0) {
     required = {
       constraint: true,
       validate: fieldType.validate.required
     };
   }
   let elements;
-  if ((field.isValid?.elements === true || // elements is enabled unless the field opts-out
-  field.isValid?.elements === void 0 && (!!field.elements || !!field.getElements)) && fieldType.validate.elements !== void 0) {
+  if ((rules?.elements === true || // elements is enabled unless the field opts-out
+  rules?.elements === void 0 && (!!field.elements || !!field.getElements)) && fieldType.validate.elements !== void 0) {
     elements = {
       constraint: true,
       validate: fieldType.validate.elements
     };
   }
-  let min;
-  if (typeof field.isValid?.min === "number" && fieldType.validate.min !== void 0) {
-    min = {
-      constraint: field.isValid.min,
-      validate: fieldType.validate.min
-    };
-  }
-  let max;
-  if (typeof field.isValid?.max === "number" && fieldType.validate.max !== void 0) {
-    max = {
-      constraint: field.isValid.max,
-      validate: fieldType.validate.max
-    };
-  }
+  const min = normalizeRangeRule(rules?.min, fieldType, "min");
+  const max = normalizeRangeRule(rules?.max, fieldType, "max");
+  const minLengthValue = rules?.minLength;
   let minLength;
-  if (typeof field.isValid?.minLength === "number" && fieldType.validate.minLength !== void 0) {
+  if (typeof minLengthValue === "number" && fieldType.validate.minLength !== void 0) {
     minLength = {
-      constraint: field.isValid.minLength,
+      constraint: minLengthValue,
       validate: fieldType.validate.minLength
     };
   }
+  const maxLengthValue = rules?.maxLength;
   let maxLength;
-  if (typeof field.isValid?.maxLength === "number" && fieldType.validate.maxLength !== void 0) {
+  if (typeof maxLengthValue === "number" && fieldType.validate.maxLength !== void 0) {
     maxLength = {
-      constraint: field.isValid.maxLength,
+      constraint: maxLengthValue,
       validate: fieldType.validate.maxLength
     };
   }
+  const patternValue = rules?.pattern;
   let pattern;
-  if (field.isValid?.pattern !== void 0 && fieldType.validate.pattern !== void 0) {
+  if (patternValue !== void 0 && fieldType.validate.pattern !== void 0) {
     pattern = {
-      constraint: field.isValid?.pattern,
+      constraint: patternValue,
       validate: fieldType.validate.pattern
     };
   }
-  const custom = field.isValid?.custom ?? fieldType.validate.custom;
+  const custom = rules?.custom ?? fieldType.validate.custom;
   return {
     required,
     elements,
@@ -5261,7 +8094,27 @@ function getIsValid(field, fieldType) {
   };
 }
 
-// node_modules/@wordpress/dataviews/build-module/field-types/index.js
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-filter.mjs
+function getFilter(fieldType) {
+  return fieldType.validOperators.reduce((accumulator, operator) => {
+    const operatorObj = getOperatorByName(operator);
+    if (operatorObj?.filter) {
+      accumulator[operator] = operatorObj.filter;
+    }
+    return accumulator;
+  }, {});
+}
+
+// node_modules/@wordpress/dataviews/build-module/field-types/utils/get-format.mjs
+function getFormat(field, fieldType) {
+  return {
+    ...fieldType.format,
+    ...field.format
+  };
+}
+var get_format_default = getFormat;
+
+// node_modules/@wordpress/dataviews/build-module/field-types/index.mjs
 function getFieldTypeByName(type) {
   const found = [
     email_default,
@@ -5304,6 +8157,7 @@ function normalizeFields(fields) {
       getElements: field.getElements,
       hasElements: hasElements(field),
       isVisible: field.isVisible,
+      isDisabled: typeof field.isDisabled === "function" ? field.isDisabled : () => !!field.isDisabled,
       enableHiding: field.enableHiding ?? true,
       readOnly: field.readOnly ?? false,
       // The type provides defaults for the following props
@@ -5319,18 +8173,20 @@ function normalizeFields(fields) {
         fieldType.defaultOperators,
         fieldType.validOperators
       ),
-      format: fieldType.getFormat(field)
+      filter: getFilter(fieldType),
+      format: get_format_default(field, fieldType),
+      getValueFormatted: field.getValueFormatted ?? fieldType.getValueFormatted
     };
   });
 }
 
-// node_modules/@wordpress/dataviews/build-module/components/dataform/index.js
-var import_element28 = __toESM(require_element());
+// node_modules/@wordpress/dataviews/build-module/dataform/index.mjs
+var import_element49 = __toESM(require_element(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/components/dataform-context/index.js
-var import_element19 = __toESM(require_element());
-var import_jsx_runtime43 = __toESM(require_jsx_runtime());
-var DataFormContext = (0, import_element19.createContext)({
+// node_modules/@wordpress/dataviews/build-module/components/dataform-context/index.mjs
+var import_element38 = __toESM(require_element(), 1);
+var import_jsx_runtime50 = __toESM(require_jsx_runtime(), 1);
+var DataFormContext = (0, import_element38.createContext)({
   fields: []
 });
 DataFormContext.displayName = "DataFormContext";
@@ -5338,22 +8194,19 @@ function DataFormProvider({
   fields,
   children
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime43.jsx)(DataFormContext.Provider, { value: { fields }, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(DataFormContext.Provider, { value: { fields }, children });
 }
 var dataform_context_default = DataFormContext;
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/data-form-layout.js
-var import_components28 = __toESM(require_components());
-var import_element27 = __toESM(require_element());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/data-form-layout.mjs
+var import_element48 = __toESM(require_element(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/index.js
-var import_components27 = __toESM(require_components());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/regular/index.mjs
+var import_element39 = __toESM(require_element(), 1);
+var import_components20 = __toESM(require_components(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/regular/index.js
-var import_element20 = __toESM(require_element());
-var import_components20 = __toESM(require_components());
-
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/normalize-form.js
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/normalize-form.mjs
+var import_i18n15 = __toESM(require_i18n(), 1);
 var DEFAULT_LAYOUT = {
   type: "regular",
   labelPosition: "top"
@@ -5379,11 +8232,29 @@ function normalizeLayout(layout) {
   } else if (layout?.type === "panel") {
     const summary = layout.summary ?? [];
     const normalizedSummary = Array.isArray(summary) ? summary : [summary];
+    const openAs = layout?.openAs;
+    let normalizedOpenAs;
+    if (typeof openAs === "object" && openAs.type === "modal") {
+      normalizedOpenAs = {
+        type: "modal",
+        applyLabel: openAs.applyLabel?.trim() || (0, import_i18n15.__)("Apply"),
+        cancelLabel: openAs.cancelLabel?.trim() || (0, import_i18n15.__)("Cancel")
+      };
+    } else if (openAs === "modal") {
+      normalizedOpenAs = {
+        type: "modal",
+        applyLabel: (0, import_i18n15.__)("Apply"),
+        cancelLabel: (0, import_i18n15.__)("Cancel")
+      };
+    } else {
+      normalizedOpenAs = { type: "dropdown" };
+    }
     normalizedLayout = {
       type: "panel",
       labelPosition: layout?.labelPosition ?? "side",
-      openAs: layout?.openAs ?? "dropdown",
-      summary: normalizedSummary
+      openAs: normalizedOpenAs,
+      summary: normalizedSummary,
+      editVisibility: layout?.editVisibility ?? "on-hover"
     };
   } else if (layout?.type === "card") {
     if (layout.withHeader === false) {
@@ -5452,24 +8323,30 @@ function normalizeForm(form) {
 }
 var normalize_form_default = normalizeForm;
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/regular/index.js
-var import_jsx_runtime44 = __toESM(require_jsx_runtime());
-function Header2({ title }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(import_components20.__experimentalVStack, { className: "dataforms-layouts-regular__header", spacing: 4, children: /* @__PURE__ */ (0, import_jsx_runtime44.jsxs)(import_components20.__experimentalHStack, { alignment: "center", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(import_components20.__experimentalHeading, { level: 2, size: 13, children: title }),
-    /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(import_components20.__experimentalSpacer, {})
-  ] }) });
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/regular/index.mjs
+var import_jsx_runtime51 = __toESM(require_jsx_runtime(), 1);
+function Header4({ title }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
+    Stack,
+    {
+      direction: "column",
+      className: "dataforms-layouts-regular__header",
+      gap: "lg",
+      children: /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(Stack, { direction: "row", align: "center", children: /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(import_components20.__experimentalHeading, { level: 2, size: 13, children: title }) })
+    }
+  );
 }
 function FormRegularField({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
-  const { fields } = (0, import_element20.useContext)(dataform_context_default);
+  const { fields } = (0, import_element39.useContext)(dataform_context_default);
   const layout = field.layout;
-  const form = (0, import_element20.useMemo)(
+  const form = (0, import_element39.useMemo)(
     () => ({
       layout: DEFAULT_LAYOUT,
       fields: !!field.children ? field.children : []
@@ -5477,9 +8354,9 @@ function FormRegularField({
     [field]
   );
   if (!!field.children) {
-    return /* @__PURE__ */ (0, import_jsx_runtime44.jsxs)(import_jsx_runtime44.Fragment, { children: [
-      !hideLabelFromVision && field.label && /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(Header2, { title: field.label }),
-      /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime51.jsxs)(import_jsx_runtime51.Fragment, { children: [
+      !hideLabelFromVision && field.label && /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(Header4, { title: field.label }),
+      /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
         DataFormLayout,
         {
           data,
@@ -5498,270 +8375,260 @@ function FormRegularField({
     return null;
   }
   if (labelPosition === "side") {
-    return /* @__PURE__ */ (0, import_jsx_runtime44.jsxs)(import_components20.__experimentalHStack, { className: "dataforms-layouts-regular__field", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(
-        "div",
-        {
-          className: clsx_default(
-            "dataforms-layouts-regular__field-label",
-            `dataforms-layouts-regular__field-label--label-position-${labelPosition}`
+    return /* @__PURE__ */ (0, import_jsx_runtime51.jsxs)(
+      Stack,
+      {
+        direction: "row",
+        className: "dataforms-layouts-regular__field",
+        gap: "sm",
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
+            "div",
+            {
+              className: clsx_default(
+                "dataforms-layouts-regular__field-label",
+                `dataforms-layouts-regular__field-label--label-position-${labelPosition}`
+              ),
+              children: /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(import_components20.BaseControl.VisualLabel, { children: fieldDefinition.label })
+            }
           ),
-          children: fieldDefinition.label
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime44.jsx)("div", { className: "dataforms-layouts-regular__field-control", children: fieldDefinition.readOnly === true ? /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(
-        fieldDefinition.render,
-        {
-          item: data,
-          field: fieldDefinition
-        }
-      ) : /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(
-        fieldDefinition.Edit,
-        {
-          data,
-          field: fieldDefinition,
-          onChange,
-          hideLabelFromVision: true,
-          validity
-        },
-        fieldDefinition.id
-      ) })
-    ] });
+          /* @__PURE__ */ (0, import_jsx_runtime51.jsx)("div", { className: "dataforms-layouts-regular__field-control", children: fieldDefinition.readOnly === true ? /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
+            fieldDefinition.render,
+            {
+              item: data,
+              field: fieldDefinition
+            }
+          ) : /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
+            fieldDefinition.Edit,
+            {
+              data,
+              field: fieldDefinition,
+              onChange,
+              hideLabelFromVision: true,
+              markWhenOptional,
+              validity
+            },
+            fieldDefinition.id
+          ) })
+        ]
+      }
+    );
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime44.jsx)("div", { className: "dataforms-layouts-regular__field", children: fieldDefinition.readOnly === true ? /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(import_jsx_runtime44.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime44.jsxs)(import_jsx_runtime44.Fragment, { children: [
-    !hideLabelFromVision && labelPosition !== "none" && /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(import_components20.BaseControl.VisualLabel, { children: fieldDefinition.label }),
-    /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime51.jsx)("div", { className: "dataforms-layouts-regular__field", children: fieldDefinition.readOnly === true ? /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(import_jsx_runtime51.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime51.jsxs)(import_jsx_runtime51.Fragment, { children: [
+    !hideLabelFromVision && labelPosition !== "none" && /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(import_components20.BaseControl.VisualLabel, { children: fieldDefinition.label }),
+    /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
       fieldDefinition.render,
       {
         item: data,
         field: fieldDefinition
       }
     )
-  ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(
+  ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
     fieldDefinition.Edit,
     {
       data,
       field: fieldDefinition,
       onChange,
       hideLabelFromVision: labelPosition === "none" ? true : hideLabelFromVision,
+      markWhenOptional,
       validity
     }
   ) });
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/panel/index.js
-var import_components24 = __toESM(require_components());
-var import_element24 = __toESM(require_element());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/modal.mjs
+var import_deepmerge2 = __toESM(require_cjs(), 1);
+var import_components23 = __toESM(require_components(), 1);
+var import_element44 = __toESM(require_element(), 1);
+var import_compose2 = __toESM(require_compose(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/panel/dropdown.js
-var import_components22 = __toESM(require_components());
-var import_i18n15 = __toESM(require_i18n());
-var import_element21 = __toESM(require_element());
-var import_compose = __toESM(require_compose());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/summary-button.mjs
+var import_components22 = __toESM(require_components(), 1);
+var import_i18n16 = __toESM(require_i18n(), 1);
+var import_compose = __toESM(require_compose(), 1);
+var import_element40 = __toESM(require_element(), 1);
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/panel/summary-button.js
-var import_components21 = __toESM(require_components());
-var import_i18n14 = __toESM(require_i18n());
-var import_jsx_runtime45 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/utils/get-label-classname.mjs
+function getLabelClassName(labelPosition, showError) {
+  return clsx_default(
+    "dataforms-layouts-panel__field-label",
+    `dataforms-layouts-panel__field-label--label-position-${labelPosition}`,
+    { "has-error": showError }
+  );
+}
+var get_label_classname_default = getLabelClassName;
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/utils/get-label-content.mjs
+var import_components21 = __toESM(require_components(), 1);
+var import_jsx_runtime52 = __toESM(require_jsx_runtime(), 1);
+function getLabelContent(showError, errorMessage, fieldLabel) {
+  return showError ? /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(import_components21.Tooltip, { text: errorMessage, placement: "top", children: /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("span", { className: "dataforms-layouts-panel__field-label-error-content", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(import_components21.Icon, { icon: error_default, size: 16 }),
+    fieldLabel
+  ] }) }) : fieldLabel;
+}
+var get_label_content_default = getLabelContent;
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/utils/get-first-validation-error.mjs
+function getFirstValidationError(validity) {
+  if (!validity) {
+    return void 0;
+  }
+  const validityRules = Object.keys(validity).filter(
+    (key) => key !== "children"
+  );
+  for (const key of validityRules) {
+    const rule = validity[key];
+    if (rule === void 0) {
+      continue;
+    }
+    if (rule.type === "invalid") {
+      if (rule.message) {
+        return rule.message;
+      }
+      if (key === "required") {
+        return "A required field is empty";
+      }
+      return "Unidentified validation error";
+    }
+  }
+  if (validity.children) {
+    for (const childValidity of Object.values(validity.children)) {
+      const childError = getFirstValidationError(childValidity);
+      if (childError) {
+        return childError;
+      }
+    }
+  }
+  return void 0;
+}
+var get_first_validation_error_default = getFirstValidationError;
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/summary-button.mjs
+var import_jsx_runtime53 = __toESM(require_jsx_runtime(), 1);
 function SummaryButton({
-  summaryFields,
   data,
-  labelPosition,
+  field,
   fieldLabel,
-  disabled,
+  summaryFields,
+  validity,
+  touched,
+  disabled: disabled2,
   onClick,
   "aria-expanded": ariaExpanded
 }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
-    import_components21.Button,
+  const { labelPosition, editVisibility } = field.layout;
+  const errorMessage = get_first_validation_error_default(validity);
+  const showError = touched && !!errorMessage;
+  const labelClassName = get_label_classname_default(labelPosition, showError);
+  const labelContent = get_label_content_default(showError, errorMessage, fieldLabel);
+  const className = clsx_default(
+    "dataforms-layouts-panel__field-trigger",
+    `dataforms-layouts-panel__field-trigger--label-${labelPosition}`,
     {
-      className: "dataforms-layouts-panel__summary-button",
-      size: "compact",
-      variant: ["none", "top"].includes(labelPosition) ? "link" : "tertiary",
-      "aria-expanded": ariaExpanded,
-      "aria-label": (0, import_i18n14.sprintf)(
-        // translators: %s: Field name.
-        (0, import_i18n14._x)("Edit %s", "field"),
-        fieldLabel || ""
-      ),
-      onClick,
-      disabled,
-      accessibleWhenDisabled: true,
-      style: summaryFields.length > 1 ? {
-        minHeight: "auto",
-        height: "auto",
-        alignItems: "flex-start"
-      } : void 0,
-      children: summaryFields.length > 1 ? /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
-        "div",
-        {
-          style: {
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            width: "100%",
-            gap: "2px"
-          },
-          children: summaryFields.map((summaryField) => /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
-            "div",
-            {
-              style: { width: "100%" },
-              children: /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
-                summaryField.render,
-                {
-                  item: data,
-                  field: summaryField
-                }
-              )
-            },
-            summaryField.id
-          ))
-        }
-      ) : summaryFields.map((summaryField) => /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
-        summaryField.render,
-        {
-          item: data,
-          field: summaryField
-        },
-        summaryField.id
-      ))
+      "is-disabled": disabled2,
+      "dataforms-layouts-panel__field-trigger--edit-always": editVisibility === "always"
     }
   );
-}
-var summary_button_default = SummaryButton;
-
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/panel/dropdown.js
-var import_jsx_runtime46 = __toESM(require_jsx_runtime());
-function DropdownHeader({
-  title,
-  onClose
-}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
-    import_components22.__experimentalVStack,
+  const controlId = (0, import_compose.useInstanceId)(
+    SummaryButton,
+    "dataforms-layouts-panel__field-control"
+  );
+  const ariaLabel = showError ? (0, import_i18n16.sprintf)(
+    // translators: %s: Field name.
+    (0, import_i18n16._x)("Edit %s (has errors)", "field"),
+    fieldLabel || ""
+  ) : (0, import_i18n16.sprintf)(
+    // translators: %s: Field name.
+    (0, import_i18n16._x)("Edit %s", "field"),
+    fieldLabel || ""
+  );
+  const rowRef = (0, import_element40.useRef)(null);
+  const handleRowClick = () => {
+    const selection = rowRef.current?.ownerDocument.defaultView?.getSelection();
+    if (selection && selection.toString().length > 0) {
+      return;
+    }
+    onClick();
+  };
+  const handleKeyDown = (event) => {
+    if (event.target === event.currentTarget && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      onClick();
+    }
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)(
+    "div",
     {
-      className: "dataforms-layouts-panel__dropdown-header",
-      spacing: 4,
-      children: /* @__PURE__ */ (0, import_jsx_runtime46.jsxs)(import_components22.__experimentalHStack, { alignment: "center", children: [
-        title && /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(import_components22.__experimentalHeading, { level: 2, size: 13, children: title }),
-        /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(import_components22.__experimentalSpacer, {}),
-        onClose && /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
+      ref: rowRef,
+      className,
+      onClick: !disabled2 ? handleRowClick : void 0,
+      onKeyDown: !disabled2 ? handleKeyDown : void 0,
+      children: [
+        labelPosition !== "none" && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: labelClassName, children: labelContent }),
+        labelPosition === "none" && showError && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(import_components22.Tooltip, { text: errorMessage, placement: "top", children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "dataforms-layouts-panel__field-label-error-content", children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(import_components22.Icon, { icon: error_default, size: 16 }) }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
+          "span",
+          {
+            id: `${controlId}`,
+            className: "dataforms-layouts-panel__field-control",
+            children: summaryFields.length > 1 ? /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
+              "span",
+              {
+                style: {
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  width: "100%",
+                  gap: "2px"
+                },
+                children: summaryFields.map((summaryField) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
+                  "span",
+                  {
+                    style: { width: "100%" },
+                    children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
+                      summaryField.render,
+                      {
+                        item: data,
+                        field: summaryField
+                      }
+                    )
+                  },
+                  summaryField.id
+                ))
+              }
+            ) : summaryFields.map((summaryField) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
+              summaryField.render,
+              {
+                item: data,
+                field: summaryField
+              },
+              summaryField.id
+            ))
+          }
+        ),
+        !disabled2 && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
           import_components22.Button,
           {
-            label: (0, import_i18n15.__)("Close"),
-            icon: close_small_default,
-            onClick: onClose,
-            size: "small"
+            className: "dataforms-layouts-panel__field-trigger-icon",
+            label: ariaLabel,
+            icon: pencil_default,
+            size: "small",
+            "aria-expanded": ariaExpanded,
+            "aria-haspopup": "dialog",
+            "aria-describedby": `${controlId}`
           }
         )
-      ] })
+      ]
     }
   );
 }
-function PanelDropdown({
-  data,
-  field,
-  onChange,
-  validity,
-  labelPosition = "side",
-  summaryFields,
-  fieldDefinition,
-  popoverAnchor
-}) {
-  const fieldLabel = !!field.children ? field.label : fieldDefinition?.label;
-  const form = (0, import_element21.useMemo)(
-    () => ({
-      layout: DEFAULT_LAYOUT,
-      fields: !!field.children ? field.children : (
-        // If not explicit children return the field id itself.
-        [{ id: field.id, layout: DEFAULT_LAYOUT }]
-      )
-    }),
-    [field]
-  );
-  const formValidity = (0, import_element21.useMemo)(() => {
-    if (validity === void 0) {
-      return void 0;
-    }
-    if (!!field.children) {
-      return validity?.children;
-    }
-    return { [field.id]: validity };
-  }, [validity, field]);
-  const popoverProps = (0, import_element21.useMemo)(
-    () => ({
-      // Anchor the popover to the middle of the entire row so that it doesn't
-      // move around when the label changes.
-      anchor: popoverAnchor,
-      placement: "left-start",
-      offset: 36,
-      shift: true
-    }),
-    [popoverAnchor]
-  );
-  const focusOnMountRef = (0, import_compose.useFocusOnMount)("firstInputElement");
-  return /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
-    import_components22.Dropdown,
-    {
-      contentClassName: "dataforms-layouts-panel__field-dropdown",
-      popoverProps,
-      focusOnMount: false,
-      toggleProps: {
-        size: "compact",
-        variant: "tertiary",
-        tooltipPosition: "middle left"
-      },
-      renderToggle: ({ isOpen, onToggle }) => /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
-        summary_button_default,
-        {
-          summaryFields,
-          data,
-          labelPosition,
-          fieldLabel,
-          disabled: fieldDefinition.readOnly === true,
-          onClick: onToggle,
-          "aria-expanded": isOpen
-        }
-      ),
-      renderContent: ({ onClose }) => /* @__PURE__ */ (0, import_jsx_runtime46.jsxs)(import_jsx_runtime46.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(DropdownHeader, { title: fieldLabel, onClose }),
-        /* @__PURE__ */ (0, import_jsx_runtime46.jsx)("div", { ref: focusOnMountRef, children: /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
-          DataFormLayout,
-          {
-            data,
-            form,
-            onChange,
-            validity: formValidity,
-            children: (FieldLayout, childField, childFieldValidity) => /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
-              FieldLayout,
-              {
-                data,
-                field: childField,
-                onChange,
-                hideLabelFromVision: (form?.fields ?? []).length < 2,
-                validity: childFieldValidity
-              },
-              childField.id
-            )
-          }
-        ) })
-      ] })
-    }
-  );
-}
-var dropdown_default = PanelDropdown;
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/panel/modal.js
-var import_deepmerge2 = __toESM(require_cjs());
-var import_components23 = __toESM(require_components());
-var import_i18n17 = __toESM(require_i18n());
-var import_element23 = __toESM(require_element());
-var import_compose2 = __toESM(require_compose());
-
-// node_modules/@wordpress/dataviews/build-module/hooks/use-form-validity.js
-var import_deepmerge = __toESM(require_cjs());
-var import_es6 = __toESM(require_es6());
-var import_element22 = __toESM(require_element());
-var import_i18n16 = __toESM(require_i18n());
+// node_modules/@wordpress/dataviews/build-module/hooks/use-form-validity.mjs
+var import_deepmerge = __toESM(require_cjs(), 1);
+var import_es6 = __toESM(require_es6(), 1);
+var import_element41 = __toESM(require_element(), 1);
+var import_i18n17 = __toESM(require_i18n(), 1);
 function isFormValid(formValidity) {
   if (!formValidity) {
     return true;
@@ -5772,7 +8639,7 @@ function isFormValid(formValidity) {
         if (key === "children" && validation && typeof validation === "object") {
           return isFormValid(validation);
         }
-        return validation.type === "valid";
+        return validation.type !== "invalid" && validation.type !== "validating";
       }
     );
   });
@@ -5836,6 +8703,7 @@ function setValidityAtPath(formValidity, fieldValidity, path) {
     if (!current[segment]) {
       current[segment] = {};
     }
+    current[segment] = { ...current[segment] };
     current = current[segment];
   }
   const finalKey = path[path.length - 1];
@@ -5843,6 +8711,36 @@ function setValidityAtPath(formValidity, fieldValidity, path) {
     ...current[finalKey] || {},
     ...fieldValidity
   };
+  return result;
+}
+function removeValidationProperty(formValidity, path, property) {
+  if (!formValidity || path.length === 0) {
+    return formValidity;
+  }
+  const result = { ...formValidity };
+  let current = result;
+  for (let i2 = 0; i2 < path.length - 1; i2++) {
+    const segment = path[i2];
+    if (!current[segment]) {
+      return formValidity;
+    }
+    current[segment] = { ...current[segment] };
+    current = current[segment];
+  }
+  const finalKey = path[path.length - 1];
+  if (!current[finalKey]) {
+    return formValidity;
+  }
+  const fieldValidity = { ...current[finalKey] };
+  delete fieldValidity[property];
+  if (Object.keys(fieldValidity).length === 0) {
+    delete current[finalKey];
+  } else {
+    current[finalKey] = fieldValidity;
+  }
+  if (Object.keys(result).length === 0) {
+    return void 0;
+  }
   return result;
 }
 function handleElementsValidationAsync(promise, formField, promiseHandler) {
@@ -5860,7 +8758,7 @@ function handleElementsValidationAsync(promise, formField, promiseHandler) {
           {
             elements: {
               type: "invalid",
-              message: (0, import_i18n16.__)("Could not validate elements.")
+              message: (0, import_i18n17.__)("Could not validate elements.")
             }
           },
           [...path, formField.id]
@@ -5879,7 +8777,7 @@ function handleElementsValidationAsync(promise, formField, promiseHandler) {
           {
             elements: {
               type: "invalid",
-              message: (0, import_i18n16.__)(
+              message: (0, import_i18n17.__)(
                 "Value must be one of the elements."
               )
             }
@@ -5888,16 +8786,24 @@ function handleElementsValidationAsync(promise, formField, promiseHandler) {
         );
         return newFormValidity;
       });
+    } else {
+      setFormValidity((prev) => {
+        return removeValidationProperty(
+          prev,
+          [...path, formField.id],
+          "elements"
+        );
+      });
     }
-  }).catch((error) => {
+  }).catch((error2) => {
     if (currentToken !== elementsCounterRef.current[formField.id]) {
       return;
     }
     let errorMessage;
-    if (error instanceof Error) {
-      errorMessage = error.message;
+    if (error2 instanceof Error) {
+      errorMessage = error2.message;
     } else {
-      errorMessage = String(error) || (0, import_i18n16.__)(
+      errorMessage = String(error2) || (0, import_i18n17.__)(
         "Unknown error when running elements validation asynchronously."
       );
     }
@@ -5926,17 +8832,11 @@ function handleCustomValidationAsync(promise, formField, promiseHandler) {
     }
     if (result === null) {
       setFormValidity((prev) => {
-        const newFormValidity = setValidityAtPath(
+        return removeValidationProperty(
           prev,
-          {
-            custom: {
-              type: "valid",
-              message: (0, import_i18n16.__)("Valid")
-            }
-          },
-          [...path, formField.id]
+          [...path, formField.id],
+          "custom"
         );
-        return newFormValidity;
       });
       return;
     }
@@ -5962,22 +8862,22 @@ function handleCustomValidationAsync(promise, formField, promiseHandler) {
         {
           custom: {
             type: "invalid",
-            message: (0, import_i18n16.__)("Validation could not be processed.")
+            message: (0, import_i18n17.__)("Validation could not be processed.")
           }
         },
         [...path, formField.id]
       );
       return newFormValidity;
     });
-  }).catch((error) => {
+  }).catch((error2) => {
     if (currentToken !== customCounterRef.current[formField.id]) {
       return;
     }
     let errorMessage;
-    if (error instanceof Error) {
-      errorMessage = error.message;
+    if (error2 instanceof Error) {
+      errorMessage = error2.message;
     } else {
-      errorMessage = String(error) || (0, import_i18n16.__)(
+      errorMessage = String(error2) || (0, import_i18n17.__)(
         "Unknown error when running custom validation asynchronously."
       );
     }
@@ -6006,7 +8906,7 @@ function validateFormField(item, formField, promiseHandler) {
     return {
       pattern: {
         type: "invalid",
-        message: (0, import_i18n16.__)("Value does not match the required pattern.")
+        message: (0, import_i18n17.__)("Value does not match the required pattern.")
       }
     };
   }
@@ -6014,7 +8914,7 @@ function validateFormField(item, formField, promiseHandler) {
     return {
       min: {
         type: "invalid",
-        message: (0, import_i18n16.__)("Value is below the minimum.")
+        message: (0, import_i18n17.__)("Value is below the minimum.")
       }
     };
   }
@@ -6022,7 +8922,7 @@ function validateFormField(item, formField, promiseHandler) {
     return {
       max: {
         type: "invalid",
-        message: (0, import_i18n16.__)("Value is above the maximum.")
+        message: (0, import_i18n17.__)("Value is above the maximum.")
       }
     };
   }
@@ -6030,7 +8930,7 @@ function validateFormField(item, formField, promiseHandler) {
     return {
       minLength: {
         type: "invalid",
-        message: (0, import_i18n16.__)("Value is too short.")
+        message: (0, import_i18n17.__)("Value is too short.")
       }
     };
   }
@@ -6038,7 +8938,7 @@ function validateFormField(item, formField, promiseHandler) {
     return {
       maxLength: {
         type: "invalid",
-        message: (0, import_i18n16.__)("Value is too long.")
+        message: (0, import_i18n17.__)("Value is too long.")
       }
     };
   }
@@ -6046,20 +8946,7 @@ function validateFormField(item, formField, promiseHandler) {
     return {
       elements: {
         type: "invalid",
-        message: (0, import_i18n16.__)("Value must be one of the elements.")
-      }
-    };
-  }
-  if (!!formField.field && formField.field.isValid.elements && formField.field.hasElements && typeof formField.field.getElements === "function") {
-    handleElementsValidationAsync(
-      formField.field.getElements(),
-      formField,
-      promiseHandler
-    );
-    return {
-      elements: {
-        type: "validating",
-        message: (0, import_i18n16.__)("Validating\u2026")
+        message: (0, import_i18n17.__)("Value must be one of the elements.")
       }
     };
   }
@@ -6077,12 +8964,12 @@ function validateFormField(item, formField, promiseHandler) {
         ),
         formField.field
       );
-    } catch (error) {
+    } catch (error2) {
       let errorMessage;
-      if (error instanceof Error) {
-        errorMessage = error.message;
+      if (error2 instanceof Error) {
+        errorMessage = error2.message;
       } else {
-        errorMessage = String(error) || (0, import_i18n16.__)("Unknown error when running custom validation.");
+        errorMessage = String(error2) || (0, import_i18n17.__)("Unknown error when running custom validation.");
       }
       return {
         custom: {
@@ -6100,14 +8987,27 @@ function validateFormField(item, formField, promiseHandler) {
       }
     };
   }
+  const fieldValidity = {};
+  if (!!formField.field && formField.field.isValid.elements && formField.field.hasElements && typeof formField.field.getElements === "function") {
+    handleElementsValidationAsync(
+      formField.field.getElements(),
+      formField,
+      promiseHandler
+    );
+    fieldValidity.elements = {
+      type: "validating",
+      message: (0, import_i18n17.__)("Validating\u2026")
+    };
+  }
   if (customError instanceof Promise) {
     handleCustomValidationAsync(customError, formField, promiseHandler);
-    return {
-      custom: {
-        type: "validating",
-        message: (0, import_i18n16.__)("Validating\u2026")
-      }
+    fieldValidity.custom = {
+      type: "validating",
+      message: (0, import_i18n17.__)("Validating\u2026")
     };
+  }
+  if (Object.keys(fieldValidity).length > 0) {
+    return fieldValidity;
   }
   if (formField.children.length > 0) {
     const result = {};
@@ -6149,11 +9049,11 @@ function getFormFieldValue(formField, item) {
   };
 }
 function useFormValidity(item, fields, form) {
-  const [formValidity, setFormValidity] = (0, import_element22.useState)();
-  const customCounterRef = (0, import_element22.useRef)({});
-  const elementsCounterRef = (0, import_element22.useRef)({});
-  const previousValuesRef = (0, import_element22.useRef)({});
-  const validate = (0, import_element22.useCallback)(() => {
+  const [formValidity, setFormValidity] = (0, import_element41.useState)();
+  const customCounterRef = (0, import_element41.useRef)({});
+  const elementsCounterRef = (0, import_element41.useRef)({});
+  const previousValuesRef = (0, import_element41.useRef)({});
+  const validate = (0, import_element41.useCallback)(() => {
     const promiseHandler = {
       customCounterRef,
       elementsCounterRef,
@@ -6211,7 +9111,7 @@ function useFormValidity(item, fields, form) {
       return validity;
     });
   }, [item, fields, form]);
-  (0, import_element22.useEffect)(() => {
+  (0, import_element41.useEffect)(() => {
     validate();
   }, [validate]);
   return {
@@ -6221,23 +9121,103 @@ function useFormValidity(item, fields, form) {
 }
 var use_form_validity_default = useFormValidity;
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/panel/modal.js
-var import_jsx_runtime47 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/hooks/use-report-validity.mjs
+var import_element42 = __toESM(require_element(), 1);
+function useReportValidity(ref, shouldReport) {
+  (0, import_element42.useEffect)(() => {
+    if (shouldReport && ref.current) {
+      const inputs = ref.current.querySelectorAll(
+        "input, textarea, select"
+      );
+      inputs.forEach((input) => {
+        input.reportValidity();
+      });
+    }
+  }, [shouldReport, ref]);
+}
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/utils/use-field-from-form-field.mjs
+var import_element43 = __toESM(require_element(), 1);
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/get-summary-fields.mjs
+function extractSummaryIds(summary) {
+  if (Array.isArray(summary)) {
+    return summary.map(
+      (item) => typeof item === "string" ? item : item.id
+    );
+  }
+  return [];
+}
+var getSummaryFields = (summaryField, fields) => {
+  if (Array.isArray(summaryField) && summaryField.length > 0) {
+    const summaryIds = extractSummaryIds(summaryField);
+    return summaryIds.map(
+      (summaryId) => fields.find((_field) => _field.id === summaryId)
+    ).filter((_field) => _field !== void 0);
+  }
+  return [];
+};
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/utils/use-field-from-form-field.mjs
+var getFieldDefinition = (field, fields) => {
+  const fieldDefinition = fields.find((_field) => _field.id === field.id);
+  if (!fieldDefinition) {
+    return fields.find((_field) => {
+      if (!!field.children) {
+        const simpleChildren = field.children.filter(
+          (child) => !child.children
+        );
+        if (simpleChildren.length === 0) {
+          return false;
+        }
+        return _field.id === simpleChildren[0].id;
+      }
+      return _field.id === field.id;
+    });
+  }
+  return fieldDefinition;
+};
+function useFieldFromFormField(field) {
+  const { fields } = (0, import_element43.useContext)(dataform_context_default);
+  const layout = field.layout;
+  const summaryFields = getSummaryFields(layout.summary, fields);
+  const fieldDefinition = getFieldDefinition(field, fields);
+  const fieldLabel = !!field.children ? field.label : fieldDefinition?.label;
+  if (summaryFields.length === 0) {
+    return {
+      summaryFields: fieldDefinition ? [fieldDefinition] : [],
+      fieldDefinition,
+      fieldLabel
+    };
+  }
+  return {
+    summaryFields,
+    fieldDefinition,
+    fieldLabel
+  };
+}
+var use_field_from_form_field_default = useFieldFromFormField;
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/modal.mjs
+var import_jsx_runtime54 = __toESM(require_jsx_runtime(), 1);
 function ModalContent({
   data,
   field,
   onChange,
   fieldLabel,
-  onClose
+  onClose,
+  touched
 }) {
-  const { fields } = (0, import_element23.useContext)(dataform_context_default);
-  const [changes, setChanges] = (0, import_element23.useState)({});
-  const modalData = (0, import_element23.useMemo)(() => {
+  const { openAs } = field.layout;
+  const { applyLabel, cancelLabel } = openAs;
+  const { fields } = (0, import_element44.useContext)(dataform_context_default);
+  const [changes, setChanges] = (0, import_element44.useState)({});
+  const modalData = (0, import_element44.useMemo)(() => {
     return (0, import_deepmerge2.default)(data, changes, {
       arrayMerge: (target, source) => source
     });
   }, [data, changes]);
-  const form = (0, import_element23.useMemo)(
+  const form = (0, import_element44.useMemo)(
     () => ({
       layout: DEFAULT_LAYOUT,
       fields: !!field.children ? field.children : (
@@ -6273,7 +9253,10 @@ function ModalContent({
     );
   };
   const focusOnMountRef = (0, import_compose2.useFocusOnMount)("firstInputElement");
-  return /* @__PURE__ */ (0, import_jsx_runtime47.jsxs)(
+  const contentRef = (0, import_element44.useRef)(null);
+  const mergedRef = (0, import_compose2.useMergeRefs)([focusOnMountRef, contentRef]);
+  useReportValidity(contentRef, touched);
+  return /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(
     import_components23.Modal,
     {
       className: "dataforms-layouts-panel__modal",
@@ -6282,49 +9265,51 @@ function ModalContent({
       title: fieldLabel,
       size: "medium",
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime47.jsx)("div", { ref: focusOnMountRef, children: /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("div", { ref: mergedRef, children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
           DataFormLayout,
           {
             data: modalData,
             form,
             onChange: handleOnChange,
             validity,
-            children: (FieldLayout, childField, childFieldValidity) => /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
+            children: (FieldLayout, childField, childFieldValidity, markWhenOptional) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
               FieldLayout,
               {
                 data: modalData,
                 field: childField,
                 onChange: handleOnChange,
                 hideLabelFromVision: form.fields.length < 2,
+                markWhenOptional,
                 validity: childFieldValidity
               },
               childField.id
             )
           }
         ) }),
-        /* @__PURE__ */ (0, import_jsx_runtime47.jsxs)(
-          import_components23.__experimentalHStack,
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(
+          Stack,
           {
+            direction: "row",
             className: "dataforms-layouts-panel__modal-footer",
-            spacing: 3,
+            gap: "md",
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(import_components23.__experimentalSpacer, {}),
-              /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(import_components23.__experimentalSpacer, { style: { flex: 1 } }),
+              /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
                 import_components23.Button,
                 {
                   variant: "tertiary",
                   onClick: onClose,
                   __next40pxDefaultSize: true,
-                  children: (0, import_i18n17.__)("Cancel")
+                  children: cancelLabel
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
                 import_components23.Button,
                 {
                   variant: "primary",
                   onClick: onApply,
                   __next40pxDefaultSize: true,
-                  children: (0, import_i18n17.__)("Apply")
+                  children: applyLabel
                 }
               )
             ]
@@ -6338,238 +9323,280 @@ function PanelModal({
   data,
   field,
   onChange,
-  labelPosition,
-  summaryFields,
-  fieldDefinition
+  validity
 }) {
-  const [isOpen, setIsOpen] = (0, import_element23.useState)(false);
-  const fieldLabel = !!field.children ? field.label : fieldDefinition?.label;
-  return /* @__PURE__ */ (0, import_jsx_runtime47.jsxs)(import_jsx_runtime47.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
-      summary_button_default,
+  const [touched, setTouched] = (0, import_element44.useState)(false);
+  const [isOpen, setIsOpen] = (0, import_element44.useState)(false);
+  const { fieldDefinition, fieldLabel, summaryFields } = use_field_from_form_field_default(field);
+  if (!fieldDefinition) {
+    return null;
+  }
+  const handleClose = () => {
+    setIsOpen(false);
+    setTouched(true);
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(import_jsx_runtime54.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
+      SummaryButton,
       {
-        summaryFields,
         data,
-        labelPosition,
+        field,
         fieldLabel,
+        summaryFields,
+        validity,
+        touched,
         disabled: fieldDefinition.readOnly === true,
         onClick: () => setIsOpen(true),
         "aria-expanded": isOpen
       }
     ),
-    isOpen && /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
+    isOpen && /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
       ModalContent,
       {
         data,
         field,
         onChange,
         fieldLabel: fieldLabel ?? "",
-        onClose: () => setIsOpen(false)
+        onClose: handleClose,
+        touched
       }
     )
   ] });
 }
 var modal_default = PanelModal;
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/get-summary-fields.js
-function extractSummaryIds(summary) {
-  if (Array.isArray(summary)) {
-    return summary.map(
-      (item) => typeof item === "string" ? item : item.id
-    );
-  }
-  return [];
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/dropdown.mjs
+var import_components24 = __toESM(require_components(), 1);
+var import_i18n18 = __toESM(require_i18n(), 1);
+var import_element45 = __toESM(require_element(), 1);
+var import_compose3 = __toESM(require_compose(), 1);
+var import_jsx_runtime55 = __toESM(require_jsx_runtime(), 1);
+function DropdownHeader({
+  title,
+  onClose
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+    Stack,
+    {
+      direction: "column",
+      className: "dataforms-layouts-panel__dropdown-header",
+      gap: "lg",
+      children: /* @__PURE__ */ (0, import_jsx_runtime55.jsxs)(Stack, { direction: "row", gap: "sm", align: "center", children: [
+        title && /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(import_components24.__experimentalHeading, { level: 2, size: 13, children: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(import_components24.__experimentalSpacer, { style: { flex: 1 } }),
+        onClose && /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+          import_components24.Button,
+          {
+            label: (0, import_i18n18.__)("Close"),
+            icon: close_small_default,
+            onClick: onClose,
+            size: "small"
+          }
+        )
+      ] })
+    }
+  );
 }
-var getSummaryFields = (summaryField, fields) => {
-  if (Array.isArray(summaryField) && summaryField.length > 0) {
-    const summaryIds = extractSummaryIds(summaryField);
-    return summaryIds.map(
-      (summaryId) => fields.find((_field) => _field.id === summaryId)
-    ).filter((_field) => _field !== void 0);
-  }
-  return [];
-};
-
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/panel/index.js
-var import_jsx_runtime48 = __toESM(require_jsx_runtime());
-var getFieldDefinition = (field, fields) => {
-  const fieldDefinition = fields.find((_field) => _field.id === field.id);
+function DropdownContentWithValidation({
+  touched,
+  children
+}) {
+  const ref = (0, import_element45.useRef)(null);
+  useReportValidity(ref, touched);
+  return /* @__PURE__ */ (0, import_jsx_runtime55.jsx)("div", { ref, children });
+}
+function PanelDropdown({
+  data,
+  field,
+  onChange,
+  validity
+}) {
+  const [touched, setTouched] = (0, import_element45.useState)(false);
+  const [popoverAnchor, setPopoverAnchor] = (0, import_element45.useState)(
+    null
+  );
+  const popoverProps = (0, import_element45.useMemo)(
+    () => ({
+      // Anchor the popover to the middle of the entire row so that it doesn't
+      // move around when the label changes.
+      anchor: popoverAnchor,
+      placement: "left-start",
+      offset: 36,
+      shift: true
+    }),
+    [popoverAnchor]
+  );
+  const [dialogRef, dialogProps] = (0, import_compose3.__experimentalUseDialog)({
+    focusOnMount: "firstInputElement"
+  });
+  const form = (0, import_element45.useMemo)(
+    () => ({
+      layout: DEFAULT_LAYOUT,
+      fields: !!field.children ? field.children : (
+        // If not explicit children return the field id itself.
+        [{ id: field.id, layout: DEFAULT_LAYOUT }]
+      )
+    }),
+    [field]
+  );
+  const formValidity = (0, import_element45.useMemo)(() => {
+    if (validity === void 0) {
+      return void 0;
+    }
+    if (!!field.children) {
+      return validity?.children;
+    }
+    return { [field.id]: validity };
+  }, [validity, field]);
+  const { fieldDefinition, fieldLabel, summaryFields } = use_field_from_form_field_default(field);
   if (!fieldDefinition) {
-    return fields.find((_field) => {
-      if (!!field.children) {
-        const simpleChildren = field.children.filter(
-          (child) => !child.children
-        );
-        if (simpleChildren.length === 0) {
-          return false;
+    return null;
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+    "div",
+    {
+      ref: setPopoverAnchor,
+      className: "dataforms-layouts-panel__field-dropdown-anchor",
+      children: /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+        import_components24.Dropdown,
+        {
+          contentClassName: "dataforms-layouts-panel__field-dropdown",
+          popoverProps,
+          focusOnMount: false,
+          onToggle: (willOpen) => {
+            if (!willOpen) {
+              setTouched(true);
+            }
+          },
+          renderToggle: ({ isOpen, onToggle }) => /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+            SummaryButton,
+            {
+              data,
+              field,
+              fieldLabel,
+              summaryFields,
+              validity,
+              touched,
+              disabled: fieldDefinition.readOnly === true,
+              onClick: onToggle,
+              "aria-expanded": isOpen
+            }
+          ),
+          renderContent: ({ onClose }) => /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(DropdownContentWithValidation, { touched, children: /* @__PURE__ */ (0, import_jsx_runtime55.jsxs)("div", { ref: dialogRef, ...dialogProps, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+              DropdownHeader,
+              {
+                title: fieldLabel,
+                onClose
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+              DataFormLayout,
+              {
+                data,
+                form,
+                onChange,
+                validity: formValidity,
+                children: (FieldLayout, childField, childFieldValidity, markWhenOptional) => /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+                  FieldLayout,
+                  {
+                    data,
+                    field: childField,
+                    onChange,
+                    hideLabelFromVision: (form?.fields ?? []).length < 2,
+                    markWhenOptional,
+                    validity: childFieldValidity
+                  },
+                  childField.id
+                )
+              }
+            )
+          ] }) })
         }
-        return _field.id === simpleChildren[0].id;
-      }
-      return _field.id === field.id;
-    });
-  }
-  return fieldDefinition;
-};
-var getFieldDefinitionAndSummaryFields = (layout, field, fields) => {
-  const summaryFields = getSummaryFields(layout.summary, fields);
-  const fieldDefinition = getFieldDefinition(field, fields);
-  if (summaryFields.length === 0) {
-    return {
-      summaryFields: fieldDefinition ? [fieldDefinition] : [],
-      fieldDefinition
-    };
-  }
-  return {
-    summaryFields,
-    fieldDefinition
-  };
-};
+      )
+    }
+  );
+}
+var dropdown_default = PanelDropdown;
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/panel/index.mjs
+var import_jsx_runtime56 = __toESM(require_jsx_runtime(), 1);
 function FormPanelField({
   data,
   field,
   onChange,
   validity
 }) {
-  const { fields } = (0, import_element24.useContext)(dataform_context_default);
   const layout = field.layout;
-  const [popoverAnchor, setPopoverAnchor] = (0, import_element24.useState)(
-    null
-  );
-  const { fieldDefinition, summaryFields } = getFieldDefinitionAndSummaryFields(layout, field, fields);
-  if (!fieldDefinition) {
-    return null;
+  if (layout.openAs.type === "modal") {
+    return /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
+      modal_default,
+      {
+        data,
+        field,
+        onChange,
+        validity
+      }
+    );
   }
-  const labelPosition = layout.labelPosition;
-  const labelClassName = clsx_default(
-    "dataforms-layouts-panel__field-label",
-    `dataforms-layouts-panel__field-label--label-position-${labelPosition}`
-  );
-  const fieldLabel = !!field.children ? field.label : fieldDefinition?.label;
-  const renderedControl = layout.openAs === "modal" ? /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(
-    modal_default,
-    {
-      data,
-      field,
-      onChange,
-      labelPosition,
-      summaryFields,
-      fieldDefinition
-    }
-  ) : /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
     dropdown_default,
     {
       data,
       field,
       onChange,
-      validity,
-      labelPosition,
-      summaryFields,
-      fieldDefinition,
-      popoverAnchor
-    }
-  );
-  if (labelPosition === "top") {
-    return /* @__PURE__ */ (0, import_jsx_runtime48.jsxs)(import_components24.__experimentalVStack, { className: "dataforms-layouts-panel__field", spacing: 0, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(
-        "div",
-        {
-          className: labelClassName,
-          style: { paddingBottom: 0 },
-          children: fieldLabel
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime48.jsx)("div", { className: "dataforms-layouts-panel__field-control", children: renderedControl })
-    ] });
-  }
-  if (labelPosition === "none") {
-    return /* @__PURE__ */ (0, import_jsx_runtime48.jsx)("div", { className: "dataforms-layouts-panel__field", children: renderedControl });
-  }
-  return /* @__PURE__ */ (0, import_jsx_runtime48.jsxs)(
-    import_components24.__experimentalHStack,
-    {
-      ref: setPopoverAnchor,
-      className: "dataforms-layouts-panel__field",
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime48.jsx)("div", { className: labelClassName, children: fieldLabel }),
-        /* @__PURE__ */ (0, import_jsx_runtime48.jsx)("div", { className: "dataforms-layouts-panel__field-control", children: renderedControl })
-      ]
+      validity
     }
   );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/card/index.js
-var import_components25 = __toESM(require_components());
-var import_element25 = __toESM(require_element());
-var import_jsx_runtime49 = __toESM(require_jsx_runtime());
-var NonCollapsibleCardHeader = ({
-  children,
-  ...props
-}) => /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(import_components25.CardHeader, { isBorderless: true, ...props, children: /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
-  "div",
-  {
-    style: {
-      height: "40px",
-      // This is to match the chevron's __next40pxDefaultSize
-      width: "100%",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center"
-    },
-    children
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/card/index.mjs
+var import_element46 = __toESM(require_element(), 1);
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/validation-badge.mjs
+var import_i18n19 = __toESM(require_i18n(), 1);
+var import_jsx_runtime57 = __toESM(require_jsx_runtime(), 1);
+function countInvalidFields(validity) {
+  if (!validity) {
+    return 0;
   }
-) });
-function useCardHeader(layout) {
-  const { isOpened, isCollapsible } = layout;
-  const [isOpen, setIsOpen] = (0, import_element25.useState)(isOpened);
-  const toggle = (0, import_element25.useCallback)(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
-  const CollapsibleCardHeader = (0, import_element25.useCallback)(
-    ({
-      children,
-      ...props
-    }) => /* @__PURE__ */ (0, import_jsx_runtime49.jsxs)(
-      import_components25.CardHeader,
-      {
-        ...props,
-        onClick: toggle,
-        style: {
-          cursor: "pointer",
-          ...props.style
-        },
-        isBorderless: true,
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
-            "div",
-            {
-              style: {
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center"
-              },
-              children
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
-            import_components25.Button,
-            {
-              __next40pxDefaultSize: true,
-              variant: "tertiary",
-              icon: isOpen ? chevron_up_default : chevron_down_default,
-              "aria-expanded": isOpen,
-              "aria-label": isOpen ? "Collapse" : "Expand"
-            }
-          )
-        ]
-      }
-    ),
-    [toggle, isOpen]
+  let count = 0;
+  const validityRules = Object.keys(validity).filter(
+    (key) => key !== "children"
   );
-  const effectiveIsOpen = isCollapsible ? isOpen : true;
-  const CardHeaderComponent = isCollapsible ? CollapsibleCardHeader : NonCollapsibleCardHeader;
-  return { isOpen: effectiveIsOpen, CardHeader: CardHeaderComponent };
+  for (const key of validityRules) {
+    const rule = validity[key];
+    if (rule?.type === "invalid") {
+      count++;
+    }
+  }
+  if (validity.children) {
+    for (const childValidity of Object.values(validity.children)) {
+      count += countInvalidFields(childValidity);
+    }
+  }
+  return count;
 }
+function ValidationBadge({
+  validity
+}) {
+  const invalidCount = countInvalidFields(validity);
+  if (invalidCount === 0) {
+    return null;
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime57.jsx)(Badge, { intent: "high", children: (0, import_i18n19.sprintf)(
+    /* translators: %d: Number of fields that need attention */
+    (0, import_i18n19._n)(
+      "%d field needs attention",
+      "%d fields need attention",
+      invalidCount
+    ),
+    invalidCount
+  ) });
+}
+
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/card/index.mjs
+var import_jsx_runtime58 = __toESM(require_jsx_runtime(), 1);
 function isSummaryFieldVisible(summaryField, summaryConfig, isOpen) {
   if (!summaryConfig || Array.isArray(summaryConfig) && summaryConfig.length === 0) {
     return false;
@@ -6595,144 +9622,208 @@ function isSummaryFieldVisible(summaryField, summaryConfig, isOpen) {
   }
   return true;
 }
-function FormCardField({
+function HeaderContent({
   data,
-  field,
-  onChange,
-  hideLabelFromVision,
+  fields,
+  label,
+  layout,
+  isOpen,
+  touched,
   validity
 }) {
-  const { fields } = (0, import_element25.useContext)(dataform_context_default);
-  const layout = field.layout;
-  const form = (0, import_element25.useMemo)(
-    () => ({
-      layout: DEFAULT_LAYOUT,
-      fields: field.children ?? []
-    }),
-    [field]
-  );
-  const { isOpen, CardHeader } = useCardHeader(layout);
   const summaryFields = getSummaryFields(layout.summary, fields);
   const visibleSummaryFields = summaryFields.filter(
     (summaryField) => isSummaryFieldVisible(summaryField, layout.summary, isOpen)
   );
-  const sizeCard = {
-    blockStart: "medium",
-    blockEnd: "medium",
-    inlineStart: "medium",
-    inlineEnd: "medium"
-  };
-  if (!!field.children) {
-    const withHeader2 = !!field.label && layout.withHeader;
-    const sizeCardBody2 = {
-      blockStart: withHeader2 ? "none" : "medium",
-      blockEnd: "medium",
-      inlineStart: "medium",
-      inlineEnd: "medium"
-    };
-    return /* @__PURE__ */ (0, import_jsx_runtime49.jsxs)(import_components25.Card, { className: "dataforms-layouts-card__field", size: sizeCard, children: [
-      withHeader2 && /* @__PURE__ */ (0, import_jsx_runtime49.jsxs)(CardHeader, { className: "dataforms-layouts-card__field-header", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime49.jsx)("span", { className: "dataforms-layouts-card__field-header-label", children: field.label }),
-        visibleSummaryFields.length > 0 && layout.withHeader && /* @__PURE__ */ (0, import_jsx_runtime49.jsx)("div", { className: "dataforms-layouts-card__field-summary", children: visibleSummaryFields.map(
-          (summaryField) => /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
+  const hasBadge = touched && layout.isCollapsible;
+  const hasSummary = visibleSummaryFields.length > 0 && layout.withHeader;
+  return /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)(
+    Stack,
+    {
+      align: "center",
+      justify: "space-between",
+      className: "dataforms-layouts-card__field-header-content",
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(card_exports.Title, { children: label }),
+        (hasBadge || hasSummary) && /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)(collapsible_card_exports.HeaderDescription, { className: "dataforms-layouts-card__field-header-content-description", children: [
+          hasBadge && /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(ValidationBadge, { validity }),
+          hasSummary && /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { className: "dataforms-layouts-card__field-summary", children: visibleSummaryFields.map((summaryField) => /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
             summaryField.render,
             {
               item: data,
               field: summaryField
             },
             summaryField.id
-          )
-        ) })
-      ] }),
-      (isOpen || !withHeader2) && // If it doesn't have a header, keep it open.
-      // Otherwise, the card will not be visible.
-      /* @__PURE__ */ (0, import_jsx_runtime49.jsxs)(
-        import_components25.CardBody,
+          )) })
+        ] })
+      ]
+    }
+  );
+}
+function BodyContent({
+  data,
+  field,
+  form,
+  onChange,
+  hideLabelFromVision,
+  markWhenOptional,
+  validity,
+  withHeader
+}) {
+  if (field.children) {
+    return /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)(import_jsx_runtime58.Fragment, { children: [
+      field.description && /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { className: "dataforms-layouts-card__field-description", children: field.description }),
+      /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
+        DataFormLayout,
         {
-          size: sizeCardBody2,
-          className: "dataforms-layouts-card__field-control",
-          children: [
-            field.description && /* @__PURE__ */ (0, import_jsx_runtime49.jsx)("div", { className: "dataforms-layouts-card__field-description", children: field.description }),
-            /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
-              DataFormLayout,
-              {
-                data,
-                form,
-                onChange,
-                validity: validity?.children
-              }
-            )
-          ]
+          data,
+          form,
+          onChange,
+          validity: validity?.children
         }
       )
     ] });
   }
-  const fieldDefinition = fields.find(
-    (fieldDef) => fieldDef.id === field.id
+  const SingleFieldLayout = getFormFieldLayout("regular")?.component;
+  if (!SingleFieldLayout) {
+    return null;
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
+    SingleFieldLayout,
+    {
+      data,
+      field,
+      onChange,
+      hideLabelFromVision: hideLabelFromVision || withHeader,
+      markWhenOptional,
+      validity
+    }
   );
-  if (!fieldDefinition || !fieldDefinition.Edit) {
-    return null;
+}
+function FormCardField({
+  data,
+  field,
+  onChange,
+  hideLabelFromVision,
+  markWhenOptional,
+  validity
+}) {
+  const { fields } = (0, import_element46.useContext)(dataform_context_default);
+  const layout = field.layout;
+  const contentRef = (0, import_element46.useRef)(null);
+  const form = (0, import_element46.useMemo)(
+    () => ({
+      layout: DEFAULT_LAYOUT,
+      fields: field.children ?? []
+    }),
+    [field]
+  );
+  const { isOpened, isCollapsible } = layout;
+  const [isOpen, setIsOpen] = (0, import_element46.useState)(isOpened);
+  const [touched, setTouched] = (0, import_element46.useState)(false);
+  (0, import_element46.useEffect)(() => {
+    setIsOpen(isOpened);
+  }, [isOpened]);
+  const handleOpenChange = (0, import_element46.useCallback)((open) => {
+    if (!open) {
+      setTouched(true);
+    }
+    setIsOpen(open);
+  }, []);
+  const handleBlur = (0, import_element46.useCallback)(() => {
+    setTouched(true);
+  }, []);
+  useReportValidity(
+    contentRef,
+    (isCollapsible ? isOpen : true) && touched
+  );
+  let label = field.label;
+  let withHeader;
+  if (field.children) {
+    withHeader = !!label && layout.withHeader;
+  } else {
+    const fieldDefinition = fields.find(
+      (fieldDef) => fieldDef.id === field.id
+    );
+    if (!fieldDefinition || !fieldDefinition.Edit) {
+      return null;
+    }
+    label = fieldDefinition.label;
+    withHeader = !!label && layout.withHeader;
   }
-  const RegularLayout = getFormFieldLayout("regular")?.component;
-  if (!RegularLayout) {
-    return null;
-  }
-  const withHeader = !!fieldDefinition.label && layout.withHeader;
-  const sizeCardBody = {
-    blockStart: withHeader ? "none" : "medium",
-    blockEnd: "medium",
-    inlineStart: "medium",
-    inlineEnd: "medium"
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime49.jsxs)(import_components25.Card, { className: "dataforms-layouts-card__field", size: sizeCard, children: [
-    withHeader && /* @__PURE__ */ (0, import_jsx_runtime49.jsxs)(CardHeader, { className: "dataforms-layouts-card__field-header", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime49.jsx)("span", { className: "dataforms-layouts-card__field-header-label", children: fieldDefinition.label }),
-      visibleSummaryFields.length > 0 && layout.withHeader && /* @__PURE__ */ (0, import_jsx_runtime49.jsx)("div", { className: "dataforms-layouts-card__field-summary", children: visibleSummaryFields.map((summaryField) => /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
-        summaryField.render,
-        {
-          item: data,
-          field: summaryField
-        },
-        summaryField.id
-      )) })
-    ] }),
-    (isOpen || !withHeader) && // If it doesn't have a header, keep it open.
-    // Otherwise, the card will not be visible.
-    /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
-      import_components25.CardBody,
+  const bodyContent = /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
+    BodyContent,
+    {
+      data,
+      field,
+      form,
+      onChange,
+      hideLabelFromVision,
+      markWhenOptional,
+      validity,
+      withHeader
+    }
+  );
+  const headerContent = /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
+    HeaderContent,
+    {
+      data,
+      fields,
+      label,
+      layout,
+      isOpen: isCollapsible ? !!isOpen : true,
+      touched,
+      validity
+    }
+  );
+  if (withHeader && isCollapsible) {
+    return /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)(
+      collapsible_card_exports.Root,
       {
-        size: sizeCardBody,
-        className: "dataforms-layouts-card__field-control",
-        children: /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
-          RegularLayout,
-          {
-            data,
-            field,
-            onChange,
-            hideLabelFromVision: hideLabelFromVision || withHeader,
-            validity
-          }
-        )
+        className: "dataforms-layouts-card__field",
+        open: isOpen,
+        onOpenChange: handleOpenChange,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(collapsible_card_exports.Header, { children: headerContent }),
+          /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
+            collapsible_card_exports.Content,
+            {
+              ref: contentRef,
+              onBlur: handleBlur,
+              children: bodyContent
+            }
+          )
+        ]
       }
-    )
+    );
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime58.jsxs)(card_exports.Root, { className: "dataforms-layouts-card__field", children: [
+    withHeader && /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(card_exports.Header, { children: headerContent }),
+    /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(card_exports.Content, { ref: contentRef, onBlur: handleBlur, children: bodyContent })
   ] });
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/row/index.js
-var import_components26 = __toESM(require_components());
-var import_jsx_runtime50 = __toESM(require_jsx_runtime());
-function Header3({ title }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(import_components26.__experimentalVStack, { className: "dataforms-layouts-row__header", spacing: 4, children: /* @__PURE__ */ (0, import_jsx_runtime50.jsxs)(import_components26.__experimentalHStack, { alignment: "center", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(import_components26.__experimentalHeading, { level: 2, size: 13, children: title }),
-    /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(import_components26.__experimentalSpacer, {})
-  ] }) });
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/row/index.mjs
+var import_components25 = __toESM(require_components(), 1);
+var import_jsx_runtime59 = __toESM(require_jsx_runtime(), 1);
+function Header5({ title }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(
+    Stack,
+    {
+      direction: "column",
+      className: "dataforms-layouts-row__header",
+      gap: "lg",
+      children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Stack, { direction: "row", align: "center", children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(import_components25.__experimentalHeading, { level: 2, size: 13, children: title }) })
+    }
+  );
 }
-var EMPTY_WRAPPER = ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(import_jsx_runtime50.Fragment, { children });
+var EMPTY_WRAPPER = ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(import_jsx_runtime59.Fragment, { children });
 function FormRowField({
   data,
   field,
   onChange,
   hideLabelFromVision,
+  markWhenOptional,
   validity
 }) {
   const layout = field.layout;
@@ -6741,9 +9832,9 @@ function FormRowField({
       layout: DEFAULT_LAYOUT,
       fields: field.children
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime50.jsxs)("div", { className: "dataforms-layouts-row__field", children: [
-      !hideLabelFromVision && field.label && /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(Header3, { title: field.label }),
-      /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(import_components26.__experimentalHStack, { alignment: layout.alignment, spacing: 4, children: /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { className: "dataforms-layouts-row__field", children: [
+      !hideLabelFromVision && field.label && /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Header5, { title: field.label }),
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Stack, { direction: "row", align: layout.alignment, gap: "lg", children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(
         DataFormLayout,
         {
           data,
@@ -6751,18 +9842,19 @@ function FormRowField({
           onChange,
           validity: validity?.children,
           as: EMPTY_WRAPPER,
-          children: (FieldLayout, childField, childFieldValidity) => /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(
+          children: (FieldLayout, childField, childFieldValidity) => /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(
             "div",
             {
               className: "dataforms-layouts-row__field-control",
               style: layout.styles[childField.id],
-              children: /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(
+              children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(
                 FieldLayout,
                 {
                   data,
                   field: childField,
                   onChange,
                   hideLabelFromVision,
+                  markWhenOptional,
                   validity: childFieldValidity
                 }
               )
@@ -6777,34 +9869,61 @@ function FormRowField({
   if (!RegularLayout) {
     return null;
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(import_jsx_runtime50.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime50.jsx)("div", { className: "dataforms-layouts-row__field-control", children: /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(import_jsx_runtime59.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "dataforms-layouts-row__field-control", children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(
     RegularLayout,
     {
       data,
       field,
       onChange,
+      markWhenOptional,
       validity
     }
   ) }) });
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/details/index.js
-var import_element26 = __toESM(require_element());
-var import_i18n18 = __toESM(require_i18n());
-var import_jsx_runtime51 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/details/index.mjs
+var import_element47 = __toESM(require_element(), 1);
+var import_i18n20 = __toESM(require_i18n(), 1);
+var import_jsx_runtime60 = __toESM(require_jsx_runtime(), 1);
 function FormDetailsField({
   data,
   field,
-  onChange
+  onChange,
+  validity
 }) {
-  const { fields } = (0, import_element26.useContext)(dataform_context_default);
-  const form = (0, import_element26.useMemo)(
+  const { fields } = (0, import_element47.useContext)(dataform_context_default);
+  const detailsRef = (0, import_element47.useRef)(null);
+  const contentRef = (0, import_element47.useRef)(null);
+  const [touched, setTouched] = (0, import_element47.useState)(false);
+  const [isOpen, setIsOpen] = (0, import_element47.useState)(false);
+  const form = (0, import_element47.useMemo)(
     () => ({
       layout: DEFAULT_LAYOUT,
       fields: field.children ?? []
     }),
     [field]
   );
+  (0, import_element47.useEffect)(() => {
+    const details = detailsRef.current;
+    if (!details) {
+      return;
+    }
+    const handleToggle = () => {
+      const nowOpen = details.open;
+      if (!nowOpen) {
+        setTouched(true);
+      }
+      setIsOpen(nowOpen);
+    };
+    details.addEventListener("toggle", handleToggle);
+    return () => {
+      details.removeEventListener("toggle", handleToggle);
+    };
+  }, []);
+  useReportValidity(contentRef, isOpen && touched);
+  const handleBlur = (0, import_element47.useCallback)(() => {
+    setTouched(true);
+  }, []);
   if (!field.children) {
     return null;
   }
@@ -6812,40 +9931,92 @@ function FormDetailsField({
   const summaryField = summaryFieldId ? fields.find((fieldDef) => fieldDef.id === summaryFieldId) : void 0;
   let summaryContent;
   if (summaryField && summaryField.render) {
-    summaryContent = /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(summaryField.render, { item: data, field: summaryField });
+    summaryContent = /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(summaryField.render, { item: data, field: summaryField });
   } else {
-    summaryContent = field.label || (0, import_i18n18.__)("More details");
+    summaryContent = field.label || (0, import_i18n20.__)("More details");
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime51.jsxs)("details", { className: "dataforms-layouts-details__details", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime51.jsx)("summary", { className: "dataforms-layouts-details__summary", children: summaryContent }),
-    /* @__PURE__ */ (0, import_jsx_runtime51.jsx)("div", { className: "dataforms-layouts-details__content", children: /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
-      DataFormLayout,
-      {
-        data,
-        form,
-        onChange
-      }
-    ) })
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)(
+    "details",
+    {
+      ref: detailsRef,
+      className: "dataforms-layouts-details__details",
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("summary", { className: "dataforms-layouts-details__summary", children: /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)(
+          Stack,
+          {
+            direction: "row",
+            align: "center",
+            gap: "md",
+            className: "dataforms-layouts-details__summary-content",
+            children: [
+              summaryContent,
+              touched && /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(ValidationBadge, { validity })
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(
+          "div",
+          {
+            ref: contentRef,
+            className: "dataforms-layouts-details__content",
+            onBlur: handleBlur,
+            children: /* @__PURE__ */ (0, import_jsx_runtime60.jsx)(
+              DataFormLayout,
+              {
+                data,
+                form,
+                onChange,
+                validity: validity?.children
+              }
+            )
+          }
+        )
+      ]
+    }
+  );
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/index.js
-var import_jsx_runtime52 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/index.mjs
+var import_jsx_runtime61 = __toESM(require_jsx_runtime(), 1);
 var FORM_FIELD_LAYOUTS = [
   {
     type: "regular",
     component: FormRegularField,
-    wrapper: ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(import_components27.__experimentalVStack, { className: "dataforms-layouts__wrapper", spacing: 4, children })
+    wrapper: ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+      Stack,
+      {
+        direction: "column",
+        className: "dataforms-layouts__wrapper",
+        gap: "lg",
+        children
+      }
+    )
   },
   {
     type: "panel",
     component: FormPanelField,
-    wrapper: ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(import_components27.__experimentalVStack, { className: "dataforms-layouts__wrapper", spacing: 2, children })
+    wrapper: ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+      Stack,
+      {
+        direction: "column",
+        className: "dataforms-layouts__wrapper",
+        gap: "md",
+        children
+      }
+    )
   },
   {
     type: "card",
     component: FormCardField,
-    wrapper: ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(import_components27.__experimentalVStack, { className: "dataforms-layouts__wrapper", spacing: 6, children })
+    wrapper: ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+      Stack,
+      {
+        direction: "column",
+        className: "dataforms-layouts__wrapper",
+        gap: "xl",
+        children
+      }
+    )
   },
   {
     type: "row",
@@ -6853,14 +10024,23 @@ var FORM_FIELD_LAYOUTS = [
     wrapper: ({
       children,
       layout
-    }) => /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(import_components27.__experimentalVStack, { className: "dataforms-layouts__wrapper", spacing: 4, children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("div", { className: "dataforms-layouts-row__field", children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-      import_components27.__experimentalHStack,
+    }) => /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+      Stack,
       {
-        spacing: 4,
-        alignment: layout.alignment,
-        children
+        direction: "column",
+        className: "dataforms-layouts__wrapper",
+        gap: "lg",
+        children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)("div", { className: "dataforms-layouts-row__field", children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(
+          Stack,
+          {
+            direction: "row",
+            gap: "lg",
+            align: layout.alignment,
+            children
+          }
+        ) })
       }
-    ) }) })
+    )
   },
   {
     type: "details",
@@ -6871,9 +10051,9 @@ function getFormFieldLayout(type) {
   return FORM_FIELD_LAYOUTS.find((layout) => layout.type === type);
 }
 
-// node_modules/@wordpress/dataviews/build-module/dataform-layouts/data-form-layout.js
-var import_jsx_runtime53 = __toESM(require_jsx_runtime());
-var DEFAULT_WRAPPER = ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(import_components28.__experimentalVStack, { className: "dataforms-layouts__wrapper", spacing: 4, children });
+// node_modules/@wordpress/dataviews/build-module/components/dataform-layouts/data-form-layout.mjs
+var import_jsx_runtime62 = __toESM(require_jsx_runtime(), 1);
+var DEFAULT_WRAPPER = ({ children }) => /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(Stack, { direction: "column", className: "dataforms-layouts__wrapper", gap: "lg", children });
 function DataFormLayout({
   data,
   form,
@@ -6882,14 +10062,21 @@ function DataFormLayout({
   children,
   as
 }) {
-  const { fields: fieldDefinitions } = (0, import_element27.useContext)(dataform_context_default);
+  const { fields: fieldDefinitions } = (0, import_element48.useContext)(dataform_context_default);
+  const markWhenOptional = (0, import_element48.useMemo)(() => {
+    const requiredCount = fieldDefinitions.filter(
+      (f2) => !!f2.isValid?.required
+    ).length;
+    const optionalCount = fieldDefinitions.length - requiredCount;
+    return requiredCount > optionalCount;
+  }, [fieldDefinitions]);
   function getFieldDefinition2(field) {
     return fieldDefinitions.find(
       (fieldDefinition) => fieldDefinition.id === field.id
     );
   }
   const Wrapper = as ?? getFormFieldLayout(form.layout.type)?.wrapper ?? DEFAULT_WRAPPER;
-  return /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Wrapper, { layout: form.layout, children: form.fields.map((formField) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(Wrapper, { layout: form.layout, children: form.fields.map((formField) => {
     const FieldLayout = getFormFieldLayout(formField.layout.type)?.component;
     if (!FieldLayout) {
       return null;
@@ -6902,15 +10089,17 @@ function DataFormLayout({
       return children(
         FieldLayout,
         formField,
-        validity?.[formField.id]
+        validity?.[formField.id],
+        markWhenOptional
       );
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
       FieldLayout,
       {
         data,
         field: formField,
         onChange,
+        markWhenOptional,
         validity: validity?.[formField.id]
       },
       formField.id
@@ -6918,8 +10107,8 @@ function DataFormLayout({
   }) });
 }
 
-// node_modules/@wordpress/dataviews/build-module/components/dataform/index.js
-var import_jsx_runtime54 = __toESM(require_jsx_runtime());
+// node_modules/@wordpress/dataviews/build-module/dataform/index.mjs
+var import_jsx_runtime63 = __toESM(require_jsx_runtime(), 1);
 function DataForm({
   data,
   form,
@@ -6927,15 +10116,15 @@ function DataForm({
   onChange,
   validity
 }) {
-  const normalizedForm = (0, import_element28.useMemo)(() => normalize_form_default(form), [form]);
-  const normalizedFields = (0, import_element28.useMemo)(
+  const normalizedForm = (0, import_element49.useMemo)(() => normalize_form_default(form), [form]);
+  const normalizedFields = (0, import_element49.useMemo)(
     () => normalizeFields(fields),
     [fields]
   );
   if (!form.fields) {
     return null;
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(DataFormProvider, { fields: normalizedFields, children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(DataFormProvider, { fields: normalizedFields, children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
     DataFormLayout,
     {
       data,
@@ -6947,22 +10136,22 @@ function DataForm({
 }
 
 // routes/ai-home/stage.tsx
-var import_element29 = __toESM(require_element());
-var import_i18n19 = __toESM(require_i18n());
+var import_element50 = __toESM(require_element());
+var import_i18n21 = __toESM(require_i18n());
 var import_notices = __toESM(require_notices());
 
 // routes/ai-home/style.scss
-if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='cae50a07ec']")) {
+if (typeof document !== "undefined" && true && !document.head.querySelector("style[data-wp-hash='0b2d59a3a1']")) {
   const style = document.createElement("style");
-  style.setAttribute("data-wp-hash", "cae50a07ec");
-  style.appendChild(document.createTextNode(".ai-settings-page{box-sizing:border-box;margin:0 auto;max-width:680px;padding:24px;width:100%}@media (max-width:480px){.ai-settings-page{padding:8px}}.ai-settings-page .components-notice{margin:0 0 24px}.ai-feature-settings-form{margin-top:4px;max-width:480px;padding-left:40px}.ai-feature-settings-form .components-base-control__label,.ai-feature-settings-form .components-input-control__label,.ai-feature-settings-form .dataforms-layouts-regular__field-label{text-transform:none!important}.ai-feature-settings-form__actions{display:flex;justify-content:flex-end;margin-top:12px}"));
+  style.setAttribute("data-wp-hash", "0b2d59a3a1");
+  style.appendChild(document.createTextNode(".ai-settings-page{box-sizing:border-box;margin:0 auto;max-width:680px;padding:24px;width:100%}@media (max-width:480px){.ai-settings-page{padding:8px}}.ai-settings-page .dataforms-layouts-card__field-header-label{font-size:1rem;font-weight:600}.ai-settings-page .dataforms-layouts-card__field-description{margin-bottom:36px}.ai-settings-page .components-notice{margin:0 0 24px}.ai-settings-page__actions{align-items:center;display:flex;gap:16px}.ai-settings-page__link{align-items:center;display:inline-flex;gap:4px}.ai-settings-page__link svg{fill:currentColor}.ai-feature-settings-form{margin-top:4px;max-width:480px;padding-left:40px}.ai-feature-settings-form .components-base-control__label,.ai-feature-settings-form .components-input-control__label,.ai-feature-settings-form .dataforms-layouts-regular__field-label{text-transform:none!important}.ai-feature-settings-form__actions{display:flex;justify-content:flex-end;margin-top:12px}.ai-section-actions{border-top:1px solid var(--wp-components-color-gray-200);display:flex;gap:8px;margin-top:16px;padding-top:12px}.ai-showcase-card{background:#fff;border:1px solid #ddd;border-radius:8px;display:flex;flex-direction:column;overflow:hidden}.ai-showcase-card__image{align-items:center;aspect-ratio:16/9;background:#f0f0f0;display:flex;justify-content:center;overflow:hidden;width:100%}.ai-showcase-card__image img{height:100%;object-fit:cover;width:100%}.ai-showcase-card__content{display:flex;flex:1;flex-direction:column;gap:8px;padding:16px}.ai-showcase-card__title{font-size:14px;font-weight:600;line-height:1.4;margin:0}.ai-showcase-card__description{color:#757575;flex:1;font-size:13px;margin:0}.ai-showcase-card__actions{align-items:center;display:flex;gap:8px;margin-top:4px}.ai-showcase-card__enabled-badge{align-items:center;color:#00a32a;display:inline-flex;font-size:12px;font-weight:500;gap:2px;white-space:nowrap}.ai-showcase-card--disabled{opacity:.6}"));
   document.head.appendChild(style);
 }
 
 // routes/ai-home/ai-icon.tsx
-var import_jsx_runtime55 = __toESM(require_jsx_runtime());
+var import_jsx_runtime64 = __toESM(require_jsx_runtime());
 function AIIcon() {
-  return /* @__PURE__ */ (0, import_jsx_runtime55.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
     "svg",
     {
       width: "1em",
@@ -6973,28 +10162,28 @@ function AIIcon() {
       xmlns: "http://www.w3.org/2000/svg",
       "aria-hidden": "true",
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
           "path",
           {
             d: "M193.227 204.475L160.753 120.186V89.1724H173.497V77.0521H82.4936V89.1724H95.2377V120.186L62.7643 204.475C62.2666 205.794 62 207.185 62 208.593C62 214.885 67.1012 220 73.3755 220H182.615C184.02 220 185.406 219.733 186.721 219.234C192.587 216.97 195.502 210.357 193.227 204.475ZM107.324 122.45V89.5288H148.667V122.45L164.823 164.389C161.144 163.445 157.341 162.963 153.466 162.963C142.588 162.963 132.279 166.796 124.085 173.658C118.038 178.724 110.405 181.494 102.525 181.482C96.7129 181.482 91.1318 180.003 86.2084 177.258L107.324 122.45ZM74.4064 207.88L81.8182 188.666C88.1636 191.892 95.2199 193.621 102.543 193.621C113.421 193.621 123.73 189.788 131.924 182.926C137.949 177.9 145.485 175.102 153.484 175.102C159.705 175.102 165.641 176.795 170.831 179.932L181.585 207.88H74.4064Z",
             fill: "currentColor"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
           "path",
           {
             d: "M126.024 95.7743L126.935 98.243C128.129 101.48 128.726 103.099 129.904 104.279C131.081 105.46 132.695 106.059 135.923 107.257L138.385 108.17L135.923 109.084C132.695 110.282 131.081 110.881 129.904 112.061C128.726 113.242 128.129 114.86 126.935 118.098L126.024 120.566L125.113 118.098C123.918 114.86 123.321 113.242 122.144 112.061C120.966 110.881 119.352 110.282 116.124 109.084L113.662 108.17L116.124 107.257C119.352 106.059 120.966 105.46 122.144 104.279C123.321 103.099 123.918 101.48 125.113 98.243L126.024 95.7743Z",
             fill: "currentColor"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
           "path",
           {
             d: "M127.882 54.0236L128.527 55.7728C129.373 58.0666 129.797 59.2135 130.631 60.0501C131.465 60.8868 132.609 61.3111 134.896 62.1599L136.641 62.8072L134.896 63.4545C132.609 64.3032 131.465 64.7276 130.631 65.5643C129.797 66.4009 129.373 67.5478 128.527 69.8416L127.882 71.5908L127.236 69.8416C126.39 67.5478 125.967 66.4009 125.132 65.5643C124.298 64.7276 123.154 64.3032 120.867 63.4545L119.123 62.8072L120.867 62.1599C123.154 61.3111 124.298 60.8868 125.132 60.0501C125.967 59.2135 126.39 58.0666 127.236 55.7728L127.882 54.0236Z",
             fill: "currentColor"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
           "path",
           {
             d: "M140.622 36L141.083 37.2495C141.688 38.8879 141.99 39.7071 142.586 40.3047C143.182 40.9023 143.999 41.2054 145.633 41.8117L146.879 42.274L145.633 42.7364C143.999 43.3426 143.182 43.6458 142.586 44.2434C141.99 44.841 141.688 45.6602 141.083 47.2986L140.622 48.548L140.161 47.2986C139.557 45.6602 139.254 44.841 138.658 44.2434C138.062 43.6458 137.245 43.3426 135.612 42.7364L134.366 42.274L135.612 41.8117C137.245 41.2054 138.062 40.9023 138.658 40.3047C139.254 39.7071 139.557 38.8879 140.161 37.2495L140.622 36Z",
@@ -7007,10 +10196,10 @@ function AIIcon() {
 }
 
 // routes/ai-home/stage.tsx
-var import_jsx_runtime56 = __toESM(require_jsx_runtime());
+var import_jsx_runtime65 = __toESM(require_jsx_runtime());
 var FEATURE_SETTING_PATTERN = /^wpai_feature_(.+)_enabled$/;
 var GLOBAL_FIELD_ID = "wpai_features_enabled";
-var noop = () => {
+var noop2 = () => {
 };
 function isRecord(value) {
   return typeof value === "object" && value !== null;
@@ -7060,7 +10249,9 @@ function parseFeature(value) {
     label: toStringValue(feature.label) || getDefaultLabel(id),
     description: toStringValue(feature.description),
     category: toStringValue(feature.category) || "other",
-    settingsFields: rawFields.filter(isSettingsField)
+    settingsFields: rawFields.filter(isSettingsField),
+    stability: toStringValue(feature.stability) || "experimental",
+    image: toStringValue(feature.image)
   };
 }
 function getFeatureIdFromSettingName(settingName) {
@@ -7079,8 +10270,8 @@ function buildFallbackFeatureGroups(features) {
   );
   return categories.map((category) => ({
     id: category,
-    label: category === "other" ? (0, import_i18n19.__)("Other Features", "ai") : getDefaultLabel(category),
-    description: category === "other" ? (0, import_i18n19.__)("Additional AI-powered features.", "ai") : ""
+    label: category === "other" ? (0, import_i18n21.__)("Other Features", "ai") : getDefaultLabel(category),
+    description: category === "other" ? (0, import_i18n21.__)("Additional AI-powered features.", "ai") : ""
   }));
 }
 function getPageData() {
@@ -7115,17 +10306,45 @@ function getPageData() {
 var PAGE_DATA = getPageData();
 var GLOBAL_FIELD = {
   id: GLOBAL_FIELD_ID,
-  label: (0, import_i18n19.__)("Enable AI", "ai"),
+  label: (0, import_i18n21.__)("Enable AI", "ai"),
   type: "boolean",
   Edit: "toggle"
 };
 function buildToggleMessage(edits, featureDefinitions) {
-  const entry = Object.entries(edits)[0];
+  const entries = Object.entries(edits);
+  if (entries.length === 0) {
+    return (0, import_i18n21.__)("Settings saved.", "ai");
+  }
+  if (entries.length > 1) {
+    const allEnabled = entries.every(([, value]) => value === true);
+    const allDisabled = entries.every(([, value]) => value === false);
+    const count = entries.length;
+    if (allEnabled) {
+      return (0, import_i18n21.sprintf)(
+        // translators: %d: Number of experiments.
+        (0, import_i18n21.__)("%d experiments enabled", "ai"),
+        count
+      );
+    }
+    if (allDisabled) {
+      return (0, import_i18n21.sprintf)(
+        // translators: %d: Number of experiments.
+        (0, import_i18n21.__)("%d experiments disabled", "ai"),
+        count
+      );
+    }
+    return (0, import_i18n21.sprintf)(
+      // translators: %d: Number of experiments.
+      (0, import_i18n21.__)("%d experiments updated", "ai"),
+      count
+    );
+  }
+  const entry = entries[0];
   if (!entry) {
-    return (0, import_i18n19.__)("Settings saved.", "ai");
+    return (0, import_i18n21.__)("Settings saved.", "ai");
   }
   if (entry[0] === GLOBAL_FIELD_ID) {
-    return entry[1] ? (0, import_i18n19.__)("AI enabled.", "ai") : (0, import_i18n19.__)("AI disabled.", "ai");
+    return entry[1] ? (0, import_i18n21.__)("AI enabled.", "ai") : (0, import_i18n21.__)("AI disabled.", "ai");
   }
   const feature = featureDefinitions.find(
     (f2) => f2.settingName === entry[0]
@@ -7133,27 +10352,92 @@ function buildToggleMessage(edits, featureDefinitions) {
   const label = feature?.label ?? entry[0];
   return entry[1] ? (
     // translators: %s: Feature label.
-    (0, import_i18n19.sprintf)((0, import_i18n19.__)("%s enabled.", "ai"), label)
+    (0, import_i18n21.sprintf)((0, import_i18n21.__)("%s enabled.", "ai"), label)
   ) : (
     // translators: %s: Feature label.
-    (0, import_i18n19.sprintf)((0, import_i18n19.__)("%s disabled.", "ai"), label)
+    (0, import_i18n21.sprintf)((0, import_i18n21.__)("%s disabled.", "ai"), label)
   );
 }
 function DisabledToggle({ field, data }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
-    import_components29.ToggleControl,
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+    import_components26.ToggleControl,
     {
       __nextHasNoMarginBottom: true,
       label: field.label,
       help: field.description,
       checked: !!field.getValue({ item: data }),
-      onChange: noop,
+      onChange: noop2,
       disabled: true
     }
   );
 }
+function SectionActions({
+  experimentSettings,
+  data,
+  globalEnabled,
+  onBulkChange
+}) {
+  const allEnabled = (0, import_element50.useMemo)(() => {
+    return experimentSettings.every(
+      (settingName) => data[settingName]
+    );
+  }, [experimentSettings, data]);
+  const allDisabled = (0, import_element50.useMemo)(() => {
+    return experimentSettings.every(
+      (settingName) => !data[settingName]
+    );
+  }, [experimentSettings, data]);
+  const handleEnableAll = (0, import_element50.useCallback)(() => {
+    const edits = {};
+    let enabledCount = 0;
+    for (const settingName of experimentSettings) {
+      if (!data[settingName]) {
+        edits[settingName] = true;
+        enabledCount++;
+      }
+    }
+    if (enabledCount > 0) {
+      onBulkChange(edits);
+    }
+  }, [experimentSettings, data, onBulkChange]);
+  const handleDisableAll = (0, import_element50.useCallback)(() => {
+    const edits = {};
+    let disabledCount = 0;
+    for (const settingName of experimentSettings) {
+      if (data[settingName]) {
+        edits[settingName] = false;
+        disabledCount++;
+      }
+    }
+    if (disabledCount > 0) {
+      onBulkChange(edits);
+    }
+  }, [experimentSettings, data, onBulkChange]);
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { className: "ai-section-actions", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+      import_components26.Button,
+      {
+        variant: "secondary",
+        size: "compact",
+        onClick: handleEnableAll,
+        disabled: !globalEnabled || allEnabled,
+        children: (0, import_i18n21.__)("Enable all", "ai")
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+      import_components26.Button,
+      {
+        variant: "secondary",
+        size: "compact",
+        onClick: handleDisableAll,
+        disabled: !globalEnabled || allDisabled,
+        children: (0, import_i18n21.__)("Disable all", "ai")
+      }
+    )
+  ] });
+}
 function InlineFeatureSettings({ feature }) {
-  const fieldIds = (0, import_element29.useMemo)(
+  const fieldIds = (0, import_element50.useMemo)(
     () => feature.settingsFields.map((f2) => f2.id),
     [feature.settingsFields]
   );
@@ -7167,55 +10451,55 @@ function InlineFeatureSettings({ feature }) {
       ) ?? {}
     };
   }, []);
-  const [isSaving, setIsSaving] = (0, import_element29.useState)(false);
-  const isDirty = (0, import_element29.useMemo)(
+  const [isSaving, setIsSaving] = (0, import_element50.useState)(false);
+  const isDirty = (0, import_element50.useMemo)(
     () => fieldIds.some((id) => id in nonTransientEdits),
     [fieldIds, nonTransientEdits]
   );
   const { editEntityRecord } = (0, import_data.useDispatch)(import_core_data.store);
   const { __experimentalSaveSpecifiedEntityEdits: saveSpecifiedEdits } = (0, import_data.useDispatch)(import_core_data.store);
   const { createSuccessNotice, createErrorNotice } = (0, import_data.useDispatch)(import_notices.store);
-  const data = (0, import_element29.useMemo)(() => {
+  const data = (0, import_element50.useMemo)(() => {
     const base = {};
     for (const field of feature.settingsFields) {
       base[field.id] = editedRecord?.[field.id] ?? field.default;
     }
     return base;
   }, [feature.settingsFields, editedRecord]);
-  const fields = (0, import_element29.useMemo)(
+  const fields = (0, import_element50.useMemo)(
     () => feature.settingsFields.map(
       ({ default: _, ...fieldProps }) => fieldProps
     ),
     [feature.settingsFields]
   );
-  const form = (0, import_element29.useMemo)(
+  const form = (0, import_element50.useMemo)(
     () => ({
       fields: feature.settingsFields.map((f2) => f2.id)
     }),
     [feature.settingsFields]
   );
-  const handleChange = (0, import_element29.useCallback)(
+  const handleChange = (0, import_element50.useCallback)(
     (edits) => {
       editEntityRecord("root", "site", void 0, edits);
     },
     [editEntityRecord]
   );
-  const handleSave = (0, import_element29.useCallback)(async () => {
+  const handleSave = (0, import_element50.useCallback)(async () => {
     setIsSaving(true);
     try {
       await saveSpecifiedEdits("root", "site", void 0, fieldIds, {
         throwOnError: true
       });
       createSuccessNotice(
-        (0, import_i18n19.sprintf)(
+        (0, import_i18n21.sprintf)(
           // translators: %s: Feature label.
-          (0, import_i18n19.__)("%s settings saved.", "ai"),
+          (0, import_i18n21.__)("%s settings saved.", "ai"),
           feature.label
         ),
         { type: "snackbar" }
       );
     } catch {
-      createErrorNotice((0, import_i18n19.__)("Failed to save settings.", "ai"), {
+      createErrorNotice((0, import_i18n21.__)("Failed to save settings.", "ai"), {
         type: "snackbar"
       });
     } finally {
@@ -7228,8 +10512,8 @@ function InlineFeatureSettings({ feature }) {
     createErrorNotice,
     feature.label
   ]);
-  return /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)("div", { className: "ai-feature-settings-form", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { className: "ai-feature-settings-form", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
       DataForm,
       {
         data,
@@ -7238,20 +10522,20 @@ function InlineFeatureSettings({ feature }) {
         onChange: handleChange
       }
     ),
-    isDirty && /* @__PURE__ */ (0, import_jsx_runtime56.jsx)("div", { className: "ai-feature-settings-form__actions", children: /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
-      import_components29.Button,
+    isDirty && /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { className: "ai-feature-settings-form__actions", children: /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+      import_components26.Button,
       {
         variant: "primary",
         onClick: handleSave,
         isBusy: isSaving,
         disabled: isSaving,
         size: "compact",
-        "aria-label": (0, import_i18n19.sprintf)(
+        "aria-label": (0, import_i18n21.sprintf)(
           // translators: %s: Feature label.
-          (0, import_i18n19.__)("Save %s settings", "ai"),
+          (0, import_i18n21.__)("Save %s settings", "ai"),
           feature.label
         ),
-        children: (0, import_i18n19.__)("Save", "ai")
+        children: (0, import_i18n21.__)("Save", "ai")
       }
     ) })
   ] });
@@ -7266,9 +10550,9 @@ function FeatureToggleWithSettings({
 }) {
   const feature = FEATURES_BY_SETTING.get(field.id);
   const checked = !!field.getValue({ item: data });
-  return /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)("div", { className: "ai-feature-toggle-with-settings", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
-      import_components29.ToggleControl,
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { className: "ai-feature-toggle-with-settings", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+      import_components26.ToggleControl,
       {
         __nextHasNoMarginBottom: true,
         label: field.label,
@@ -7279,8 +10563,59 @@ function FeatureToggleWithSettings({
         }
       }
     ),
-    checked && feature && /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(InlineFeatureSettings, { feature })
+    checked && feature && /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(InlineFeatureSettings, { feature })
   ] });
+}
+var VISUAL_CARD_FEATURES = new Map(
+  PAGE_DATA.features.filter((f2) => f2.stability === "stable" && f2.image !== "").map((f2) => [f2.settingName, f2])
+);
+function VisualCardToggle({
+  field,
+  data,
+  onChange
+}) {
+  const feature = VISUAL_CARD_FEATURES.get(field.id);
+  const globalEnabled = !!data[GLOBAL_FIELD_ID];
+  const checked = !!field.getValue({ item: data });
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
+    "div",
+    {
+      className: `ai-showcase-card${!globalEnabled ? " ai-showcase-card--disabled" : ""}`,
+      children: [
+        feature?.image && /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { className: "ai-showcase-card__image", children: /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("img", { src: feature.image, alt: "", loading: "lazy" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { className: "ai-showcase-card__content", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("h3", { className: "ai-showcase-card__title", children: field.label }),
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("p", { className: "ai-showcase-card__description", children: field.description }),
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { className: "ai-showcase-card__actions", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+              import_components26.Button,
+              {
+                variant: checked ? "secondary" : "primary",
+                onClick: () => onChange({ [field.id]: !checked }),
+                disabled: !globalEnabled,
+                size: "compact",
+                children: checked ? (0, import_i18n21.__)("Disable", "ai") : (0, import_i18n21.__)("Enable", "ai")
+              }
+            ),
+            checked && /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("span", { className: "ai-showcase-card__enabled-badge", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+                "svg",
+                {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 24 24",
+                  width: 16,
+                  height: 16,
+                  fill: "currentColor",
+                  children: /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("path", { d: "M16.5 7.5 10 13.9l-2.5-2.4-1 1 3.5 3.6 7.5-7.6z" })
+                }
+              ),
+              (0, import_i18n21.__)("Enabled", "ai")
+            ] })
+          ] })
+        ] })
+      ]
+    }
+  );
 }
 function AISettingsPage() {
   const { editedRecord, isLoading } = (0, import_data.useSelect)((select) => {
@@ -7297,7 +10632,7 @@ function AISettingsPage() {
   const { __experimentalSaveSpecifiedEntityEdits: saveSpecifiedEdits } = (0, import_data.useDispatch)(import_core_data.store);
   const { createSuccessNotice, createErrorNotice } = (0, import_data.useDispatch)(import_notices.store);
   const registry = (0, import_data.useRegistry)();
-  const featureDefinitions = (0, import_element29.useMemo)(() => {
+  const featureDefinitions = (0, import_element50.useMemo)(() => {
     const sourceFeatures = PAGE_DATA.features.length > 0 ? PAGE_DATA.features : Object.keys(editedRecord ?? {}).filter(
       (key) => FEATURE_SETTING_PATTERN.test(key)
     ).sort().map((settingName) => {
@@ -7308,7 +10643,9 @@ function AISettingsPage() {
         label: getDefaultLabel(id),
         description: "",
         category: "other",
-        settingsFields: []
+        settingsFields: [],
+        stability: "experimental",
+        image: ""
       };
     });
     const uniqueFeatures = [];
@@ -7322,114 +10659,26 @@ function AISettingsPage() {
     }
     return uniqueFeatures;
   }, [editedRecord]);
-  const featureGroups = (0, import_element29.useMemo)(
+  const featureGroups = (0, import_element50.useMemo)(
     () => PAGE_DATA.featureGroups.length > 0 ? PAGE_DATA.featureGroups : buildFallbackFeatureGroups(featureDefinitions),
     [featureDefinitions]
   );
-  const aiSettingKeys = (0, import_element29.useMemo)(() => {
+  const aiSettingKeys = (0, import_element50.useMemo)(() => {
     const settingKeys = /* @__PURE__ */ new Set([GLOBAL_FIELD_ID]);
     for (const feature of featureDefinitions) {
       settingKeys.add(feature.settingName);
     }
     return Array.from(settingKeys);
   }, [featureDefinitions]);
-  const data = (0, import_element29.useMemo)(() => {
+  const data = (0, import_element50.useMemo)(() => {
     const aiSettings = {};
     for (const key of aiSettingKeys) {
       aiSettings[key] = Boolean(editedRecord?.[key] ?? false);
     }
     return aiSettings;
   }, [aiSettingKeys, editedRecord]);
-  const globalEnabled = data[GLOBAL_FIELD.id];
-  const fields = (0, import_element29.useMemo)(
-    () => [
-      GLOBAL_FIELD,
-      ...featureDefinitions.map((feature) => {
-        const baseField = {
-          id: feature.settingName,
-          label: feature.label,
-          description: feature.description,
-          type: "boolean"
-        };
-        if (!globalEnabled) {
-          baseField.Edit = DisabledToggle;
-        } else if (feature.settingsFields.length > 0) {
-          baseField.Edit = FeatureToggleWithSettings;
-        } else {
-          baseField.Edit = "toggle";
-        }
-        return baseField;
-      })
-    ],
-    [featureDefinitions, globalEnabled]
-  );
-  const form = (0, import_element29.useMemo)(() => {
-    const groupedFields = /* @__PURE__ */ new Map();
-    for (const feature of featureDefinitions) {
-      const category = feature.category || "other";
-      const categoryFields = groupedFields.get(category) ?? [];
-      categoryFields.push(feature.settingName);
-      groupedFields.set(category, categoryFields);
-    }
-    const sectionFields = [];
-    const seenCategories = /* @__PURE__ */ new Set();
-    for (const group of featureGroups) {
-      const children = groupedFields.get(group.id) ?? [];
-      if (children.length === 0) {
-        continue;
-      }
-      seenCategories.add(group.id);
-      sectionFields.push({
-        id: getSectionId(group.id),
-        label: group.label,
-        description: group.description,
-        layout: {
-          type: "card",
-          withHeader: true,
-          isOpened: true,
-          isCollapsible: true
-        },
-        children
-      });
-    }
-    for (const [category, children] of groupedFields.entries()) {
-      if (children.length === 0 || seenCategories.has(category)) {
-        continue;
-      }
-      sectionFields.push({
-        id: getSectionId(category),
-        label: getDefaultLabel(category),
-        description: "",
-        layout: {
-          type: "card",
-          withHeader: true,
-          isOpened: true,
-          isCollapsible: true
-        },
-        children
-      });
-    }
-    return {
-      fields: [
-        {
-          id: "generalSettings",
-          label: (0, import_i18n19.__)("General Settings", "ai"),
-          description: (0, import_i18n19.__)(
-            "Control whether AI is enabled for your site. When disabled, all features and experiments will be inactive regardless of their individual settings.",
-            "ai"
-          ),
-          layout: {
-            type: "card",
-            withHeader: true,
-            isCollapsible: false
-          },
-          children: [GLOBAL_FIELD_ID]
-        },
-        ...sectionFields
-      ]
-    };
-  }, [featureDefinitions, featureGroups]);
-  const handleChange = (0, import_element29.useCallback)(
+  const globalEnabled = Boolean(data[GLOBAL_FIELD.id]);
+  const handleChange = (0, import_element50.useCallback)(
     async (edits) => {
       const keys = Object.keys(edits);
       editEntityRecord("root", "site", void 0, edits);
@@ -7446,7 +10695,7 @@ function AISettingsPage() {
           revert[key] = serverRecord?.[key];
         }
         editEntityRecord("root", "site", void 0, revert);
-        createErrorNotice((0, import_i18n19.__)("Failed to save settings.", "ai"), {
+        createErrorNotice((0, import_i18n21.__)("Failed to save settings.", "ai"), {
           type: "snackbar"
         });
       }
@@ -7460,59 +10709,182 @@ function AISettingsPage() {
       registry
     ]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
+  const fields = (0, import_element50.useMemo)(() => {
+    const sectionActionsFields = [];
+    const groupedFields = /* @__PURE__ */ new Map();
+    for (const feature of featureDefinitions) {
+      const category = feature.category || "other";
+      const categoryFields = groupedFields.get(category) ?? [];
+      categoryFields.push(feature.settingName);
+      groupedFields.set(category, categoryFields);
+    }
+    for (const group of featureGroups) {
+      const experimentSettings = groupedFields.get(group.id) ?? [];
+      if (experimentSettings.length === 0) {
+        continue;
+      }
+      const actionFieldId = `section-actions-${group.id}`;
+      sectionActionsFields.push({
+        id: actionFieldId,
+        label: "",
+        type: "text",
+        Edit: (props) => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+          SectionActions,
+          {
+            ...props,
+            experimentSettings,
+            globalEnabled,
+            onBulkChange: handleChange
+          }
+        )
+      });
+    }
+    const featureFields = featureDefinitions.map((feature) => {
+      const baseField = {
+        id: feature.settingName,
+        label: feature.label,
+        description: feature.description,
+        type: "boolean"
+      };
+      if (VISUAL_CARD_FEATURES.has(feature.settingName)) {
+        baseField.Edit = VisualCardToggle;
+      } else if (!globalEnabled) {
+        baseField.Edit = DisabledToggle;
+      } else if (feature.settingsFields.length > 0) {
+        baseField.Edit = FeatureToggleWithSettings;
+      } else {
+        baseField.Edit = "toggle";
+      }
+      return baseField;
+    });
+    return [GLOBAL_FIELD, ...sectionActionsFields, ...featureFields];
+  }, [featureDefinitions, featureGroups, globalEnabled, handleChange]);
+  const form = (0, import_element50.useMemo)(() => {
+    const showcaseChildren = [];
+    const groupedFields = /* @__PURE__ */ new Map();
+    for (const feature of featureDefinitions) {
+      if (VISUAL_CARD_FEATURES.has(feature.settingName)) {
+        showcaseChildren.push(feature.settingName);
+      } else {
+        const category = feature.category || "other";
+        const categoryFields = groupedFields.get(category) ?? [];
+        categoryFields.push(feature.settingName);
+        groupedFields.set(category, categoryFields);
+      }
+    }
+    const sectionFields = [];
+    if (showcaseChildren.length > 0) {
+      const rows = [];
+      for (let i2 = 0; i2 < showcaseChildren.length; i2 += 2) {
+        rows.push({
+          id: `showcase-row-${i2}`,
+          layout: { type: "row" },
+          children: showcaseChildren.slice(i2, i2 + 2)
+        });
+      }
+      sectionFields.push({
+        id: "feature-group-showcase",
+        layout: {
+          type: "regular",
+          labelPosition: "none"
+        },
+        children: rows
+      });
+    }
+    const seenCategories = /* @__PURE__ */ new Set();
+    for (const group of featureGroups) {
+      const children = groupedFields.get(group.id) ?? [];
+      if (children.length === 0) {
+        continue;
+      }
+      seenCategories.add(group.id);
+      const actionFieldId = `section-actions-${group.id}`;
+      sectionFields.push({
+        id: getSectionId(group.id),
+        label: group.label,
+        description: group.description,
+        layout: {
+          type: "card",
+          withHeader: true,
+          isOpened: true,
+          isCollapsible: true
+        },
+        children: [...children, actionFieldId]
+      });
+    }
+    for (const [category, children] of groupedFields.entries()) {
+      if (children.length === 0 || seenCategories.has(category)) {
+        continue;
+      }
+      const actionFieldId = `section-actions-${category}`;
+      sectionFields.push({
+        id: getSectionId(category),
+        label: getDefaultLabel(category),
+        description: "",
+        layout: {
+          type: "card",
+          withHeader: true,
+          isOpened: true,
+          isCollapsible: true
+        },
+        children: [...children, actionFieldId]
+      });
+    }
+    return {
+      fields: [
+        {
+          id: "generalSettings",
+          label: (0, import_i18n21.__)("General Settings", "ai"),
+          description: (0, import_i18n21.__)(
+            "Control whether AI is enabled for your site. When disabled, all features and experiments will be inactive regardless of their individual settings.",
+            "ai"
+          ),
+          layout: {
+            type: "card",
+            withHeader: true,
+            isCollapsible: false
+          },
+          children: [GLOBAL_FIELD_ID]
+        },
+        ...sectionFields
+      ]
+    };
+  }, [featureDefinitions, featureGroups]);
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
     page_default,
     {
-      title: /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)(import_jsx_runtime56.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(AIIcon, {}),
-        (0, import_i18n19.__)("AI", "ai")
+      title: /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(import_jsx_runtime65.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(AIIcon, {}),
+        (0, import_i18n21.__)("AI", "ai")
       ] }),
-      subTitle: (0, import_i18n19.__)(
+      subTitle: (0, import_i18n21.__)(
         "Configure AI features and experiments for your WordPress site.",
         "ai"
       ),
-      actions: /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)(import_jsx_runtime56.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
-          import_components29.Button,
-          {
-            variant: "secondary",
-            href: "https://github.com/WordPress/ai/tree/develop/docs",
-            target: "_blank",
-            rel: "noopener noreferrer",
-            children: (0, import_i18n19.__)("Docs", "ai")
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
-          import_components29.Button,
-          {
-            variant: "primary",
-            href: "https://github.com/WordPress/ai/blob/develop/CONTRIBUTING.md",
-            target: "_blank",
-            rel: "noopener noreferrer",
-            children: (0, import_i18n19.__)("Contribute", "ai")
-          }
-        )
+      actions: /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { className: "ai-settings-page__actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(import_components26.ExternalLink, { href: "https://github.com/WordPress/ai/tree/develop/docs", children: (0, import_i18n21.__)("Docs", "ai") }),
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(import_components26.ExternalLink, { href: "https://github.com/WordPress/ai/blob/develop/CONTRIBUTING.md", children: (0, import_i18n21.__)("Contribute", "ai") })
       ] }),
-      children: /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)("div", { className: "ai-settings-page", children: [
-        !PAGE_DATA.hasValidCredentials && /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)(import_components29.Notice, { status: "error", isDismissible: false, children: [
-          !PAGE_DATA.hasCredentials ? (0, import_i18n19.__)(
+      children: /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { className: "ai-settings-page", children: [
+        !PAGE_DATA.hasValidCredentials && /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(import_components26.Notice, { status: "error", isDismissible: false, children: [
+          !PAGE_DATA.hasCredentials ? (0, import_i18n21.__)(
             "The AI plugin requires a valid AI Connector to function properly. Verify you have one or more AI Connectors configured.",
             "ai"
-          ) : (0, import_i18n19.__)(
+          ) : (0, import_i18n21.__)(
             "The AI plugin requires a valid AI Connector to function properly. Please review the AI Connectors you have configured to ensure they are valid.",
             "ai"
           ),
           " ",
-          PAGE_DATA.connectorsUrl && /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
-            import_components29.Button,
+          PAGE_DATA.connectorsUrl && /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+            import_components26.Button,
             {
               variant: "link",
               href: PAGE_DATA.connectorsUrl,
-              children: (0, import_i18n19.__)("Manage Connectors", "ai")
+              children: (0, import_i18n21.__)("Manage Connectors", "ai")
             }
           )
         ] }),
-        isLoading ? /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(import_components29.Spinner, {}) : /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
+        isLoading ? /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(import_components26.Spinner, {}) : /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
           DataForm,
           {
             data,
