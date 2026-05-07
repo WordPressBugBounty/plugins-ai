@@ -1,15 +1,15 @@
 <?php
 /**
- * Content summarization experiment implementation.
+ * Content resizing experiment implementation.
  *
  * @package WordPress\AI
  */
 
 declare( strict_types=1 );
 
-namespace WordPress\AI\Experiments\Summarization;
+namespace WordPress\AI\Experiments\Content_Resizing;
 
-use WordPress\AI\Abilities\Summarization\Summarization as Summarization_Ability;
+use WordPress\AI\Abilities\Content_Resizing\Content_Resizing as Content_Resizing_Ability;
 use WordPress\AI\Abstracts\Abstract_Feature;
 use WordPress\AI\Asset_Loader;
 use WordPress\AI\Experiments\Experiment_Category;
@@ -20,17 +20,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Content summarization experiment.
+ * Content resizing experiment.
  *
- * @since 0.2.0
+ * @since 0.9.0
  */
-class Summarization extends Abstract_Feature {
+class Content_Resizing extends Abstract_Feature {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public static function get_id(): string {
-		return 'summarization';
+		return 'content-resizing';
 	}
 
 	/**
@@ -38,8 +38,8 @@ class Summarization extends Abstract_Feature {
 	 */
 	protected function load_metadata(): array {
 		return array(
-			'label'       => __( 'Content Summarization', 'ai' ),
-			'description' => __( 'Summarizes long-form content into digestible overviews. Requires an AI connector that includes support for text generation models.', 'ai' ),
+			'label'       => __( 'Content Resizing', 'ai' ),
+			'description' => __( 'Shorten, expand, or rephrase selected block content. Requires an AI connector that includes support for text generation models.', 'ai' ),
 			'category'    => Experiment_Category::EDITOR,
 		);
 	}
@@ -48,33 +48,14 @@ class Summarization extends Abstract_Feature {
 	 * {@inheritDoc}
 	 */
 	public function register(): void {
-		$this->register_post_meta();
 		add_action( 'wp_abilities_api_init', array( $this, 'register_abilities' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
-	}
-
-	/**
-	 * Register any needed post meta.
-	 *
-	 * @since 0.3.0
-	 */
-	public function register_post_meta(): void {
-		register_meta(
-			'post',
-			'ai_generated_summary',
-			array(
-				'type'         => 'string',
-				'single'       => true,
-				'show_in_rest' => true,
-			)
-		);
 	}
 
 	/**
 	 * Registers any needed abilities.
 	 *
-	 * @since 0.2.0
+	 * @since 0.9.0
 	 */
 	public function register_abilities(): void {
 		wp_register_ability(
@@ -82,7 +63,7 @@ class Summarization extends Abstract_Feature {
 			array(
 				'label'         => $this->get_label(),
 				'description'   => $this->get_description(),
-				'ability_class' => Summarization_Ability::class,
+				'ability_class' => Content_Resizing_Ability::class,
 			),
 		);
 	}
@@ -90,7 +71,7 @@ class Summarization extends Abstract_Feature {
 	/**
 	 * Enqueues and localizes the admin script.
 	 *
-	 * @since 0.3.0
+	 * @since 0.9.0
 	 *
 	 * @param string $hook_suffix The current admin page hook suffix.
 	 */
@@ -100,22 +81,14 @@ class Summarization extends Abstract_Feature {
 			return;
 		}
 
-		Asset_Loader::enqueue_script( 'summarization', 'experiments/summarization' );
+		Asset_Loader::enqueue_script( 'content_resizing', 'experiments/content-resizing' );
+		Asset_Loader::enqueue_style( 'content_resizing', 'experiments/content-resizing' );
 		Asset_Loader::localize_script(
-			'summarization',
-			'SummarizationData',
+			'content_resizing',
+			'ContentResizingData',
 			array(
 				'enabled' => $this->is_enabled(),
 			)
 		);
-	}
-
-	/**
-	 * Enqueues the block stylesheet for the editor iframe and the front end.
-	 *
-	 * @since 0.9.0
-	 */
-	public function enqueue_block_assets(): void {
-		Asset_Loader::enqueue_style( 'summarization', 'experiments/summarization' );
 	}
 }

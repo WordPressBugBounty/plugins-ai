@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'wordpress/ai',
-        'pretty_version' => '0.8.0',
-        'version' => '0.8.0.0',
-        'reference' => 'f46690cfc4f74c26adc938f2208990a0af8f91e8',
+        'pretty_version' => '0.9.0',
+        'version' => '0.9.0.0',
+        'reference' => '4498f98999a21ad626a46f5629c0a82c427debaa',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'wordpress/ai' => array(
-            'pretty_version' => '0.8.0',
-            'version' => '0.8.0.0',
-            'reference' => 'f46690cfc4f74c26adc938f2208990a0af8f91e8',
+            'pretty_version' => '0.9.0',
+            'version' => '0.9.0.0',
+            'reference' => '4498f98999a21ad626a46f5629c0a82c427debaa',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

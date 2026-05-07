@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7642fa9733001c87e1df6111c0581a7e
+class ComposerStaticInit5c7ffead2ea45186339910ad61176064
 {
     public static $files = array (
         '901a0fcb8c5137115199739c3d628fd4' => __DIR__ . '/../..' . '/includes/helpers.php',
@@ -26,7 +26,9 @@ class ComposerStaticInit7642fa9733001c87e1df6111c0581a7e
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'WordPress\\AI\\Abilities\\Comment_Moderation\\Comment_Analysis' => __DIR__ . '/../..' . '/includes/Abilities/Comment_Moderation/Comment_Analysis.php',
         'WordPress\\AI\\Abilities\\Content_Classification\\Content_Classification' => __DIR__ . '/../..' . '/includes/Abilities/Content_Classification/Content_Classification.php',
+        'WordPress\\AI\\Abilities\\Content_Resizing\\Content_Resizing' => __DIR__ . '/../..' . '/includes/Abilities/Content_Resizing/Content_Resizing.php',
         'WordPress\\AI\\Abilities\\Excerpt_Generation\\Excerpt_Generation' => __DIR__ . '/../..' . '/includes/Abilities/Excerpt_Generation/Excerpt_Generation.php',
         'WordPress\\AI\\Abilities\\Image\\Alt_Text_Generation' => __DIR__ . '/../..' . '/includes/Abilities/Image/Alt_Text_Generation.php',
         'WordPress\\AI\\Abilities\\Image\\Generate_Image' => __DIR__ . '/../..' . '/includes/Abilities/Image/Generate_Image.php',
@@ -50,6 +52,7 @@ class ComposerStaticInit7642fa9733001c87e1df6111c0581a7e
         'WordPress\\AI\\Admin\\Upgrades\\V0_5_0' => __DIR__ . '/../..' . '/includes/Admin/Upgrades/V0_5_0.php',
         'WordPress\\AI\\Admin\\Upgrades\\V0_6_0' => __DIR__ . '/../..' . '/includes/Admin/Upgrades/V0_6_0.php',
         'WordPress\\AI\\Asset_Loader' => __DIR__ . '/../..' . '/includes/Asset_Loader.php',
+        'WordPress\\AI\\CLI\\Alt_Text_Command' => __DIR__ . '/../..' . '/includes/CLI/Alt_Text_Command.php',
         'WordPress\\AI\\Contracts\\Feature' => __DIR__ . '/../..' . '/includes/Contracts/Feature.php',
         'WordPress\\AI\\Deprecated' => __DIR__ . '/../..' . '/includes/Deprecated.php',
         'WordPress\\AI\\Experiments\\Abilities_Explorer\\Abilities_Explorer' => __DIR__ . '/../..' . '/includes/Experiments/Abilities_Explorer/Abilities_Explorer.php',
@@ -57,7 +60,9 @@ class ComposerStaticInit7642fa9733001c87e1df6111c0581a7e
         'WordPress\\AI\\Experiments\\Abilities_Explorer\\Ability_Table' => __DIR__ . '/../..' . '/includes/Experiments/Abilities_Explorer/Ability_Table.php',
         'WordPress\\AI\\Experiments\\Abilities_Explorer\\Admin_Page' => __DIR__ . '/../..' . '/includes/Experiments/Abilities_Explorer/Admin_Page.php',
         'WordPress\\AI\\Experiments\\Alt_Text_Generation\\Alt_Text_Generation' => __DIR__ . '/../..' . '/includes/Experiments/Alt_Text_Generation/Alt_Text_Generation.php',
+        'WordPress\\AI\\Experiments\\Comment_Moderation\\Comment_Moderation' => __DIR__ . '/../..' . '/includes/Experiments/Comment_Moderation/Comment_Moderation.php',
         'WordPress\\AI\\Experiments\\Content_Classification\\Content_Classification' => __DIR__ . '/../..' . '/includes/Experiments/Content_Classification/Content_Classification.php',
+        'WordPress\\AI\\Experiments\\Content_Resizing\\Content_Resizing' => __DIR__ . '/../..' . '/includes/Experiments/Content_Resizing/Content_Resizing.php',
         'WordPress\\AI\\Experiments\\Example_Experiment\\Example_Experiment' => __DIR__ . '/../..' . '/includes/Experiments/Example_Experiment/Example_Experiment.php',
         'WordPress\\AI\\Experiments\\Excerpt_Generation\\Excerpt_Generation' => __DIR__ . '/../..' . '/includes/Experiments/Excerpt_Generation/Excerpt_Generation.php',
         'WordPress\\AI\\Experiments\\Experiment_Category' => __DIR__ . '/../..' . '/includes/Experiments/Experiment_Category.php',
@@ -72,6 +77,7 @@ class ComposerStaticInit7642fa9733001c87e1df6111c0581a7e
         'WordPress\\AI\\Features\\Loader' => __DIR__ . '/../..' . '/includes/Features/Loader.php',
         'WordPress\\AI\\Features\\Registry' => __DIR__ . '/../..' . '/includes/Features/Registry.php',
         'WordPress\\AI\\Main' => __DIR__ . '/../..' . '/includes/Main.php',
+        'WordPress\\AI\\REST\\Models_Controller' => __DIR__ . '/../..' . '/includes/REST/Models_Controller.php',
         'WordPress\\AI\\Requirements' => __DIR__ . '/../..' . '/includes/Requirements.php',
         'WordPress\\AI\\Services\\AI_Service' => __DIR__ . '/../..' . '/includes/Services/AI_Service.php',
         'WordPress\\AI\\Services\\Guidelines' => __DIR__ . '/../..' . '/includes/Services/Guidelines.php',
@@ -82,9 +88,9 @@ class ComposerStaticInit7642fa9733001c87e1df6111c0581a7e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7642fa9733001c87e1df6111c0581a7e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7642fa9733001c87e1df6111c0581a7e::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit7642fa9733001c87e1df6111c0581a7e::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5c7ffead2ea45186339910ad61176064::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5c7ffead2ea45186339910ad61176064::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit5c7ffead2ea45186339910ad61176064::$classMap;
 
         }, null, ClassLoader::class);
     }
