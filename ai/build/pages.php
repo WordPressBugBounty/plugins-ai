@@ -6,5 +6,11 @@
  * @package ai
  */
 
-require_once __DIR__ . '/pages/ai/page.php';
-require_once __DIR__ . '/pages/ai/page-wp-admin.php';
+foreach ( [
+	__DIR__ . '/pages/ai/page.php',
+	__DIR__ . '/pages/ai/page-wp-admin.php',
+] as $file ) {
+	if ( file_exists( $file ) ) {
+		require_once $file;
+	}
+}
